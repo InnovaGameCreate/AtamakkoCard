@@ -27,8 +27,11 @@ public class StampManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void SendStamp(Vector3 vector3)
     {
+        if (obj != null)
+        {
+            Destroy(obj);
+        }
         obj = Instantiate(mStamp, vector3, Quaternion.identity);
         obj.transform.SetParent(this.transform, false);
-        
     }
 }
