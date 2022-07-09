@@ -19,11 +19,4 @@ public class TestScene : MonoBehaviourPunCallbacks
         // "Room"という名前のルームに参加する（ルームが存在しなければ作成して参加する）
         PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions(), TypedLobby.Default);
     }
-
-    public override void OnJoinedRoom()
-    {
-        // ランダムな座標に自身のアバター（ネットワークオブジェクト）を作成する
-        var position = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f));
-        PhotonNetwork.Instantiate("Avatar", position, Quaternion.identity);
-    }
 }
