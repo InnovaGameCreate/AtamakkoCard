@@ -14,12 +14,11 @@ public class PhysicsShapeRaycastFilter : MonoBehaviour, ICanvasRaycastFilter //
 
     public bool IsRaycastLocationValid(Vector2 screenPoint, Camera eventCamera)
     {
-        var image = _image;
         if (_image == null)
         {
             _image = GetComponent<Image>();
         }
-
+        var image = _image;
         var rectTransform = transform as RectTransform;
         Vector2 local;
         if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, screenPoint, eventCamera, out local))
