@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using Card;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -25,7 +26,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
         _deck1 = Resources.Load<Deck>("Deck1");
 
-        _cardList = ShuffleDeck(_deck1.cardIDList);
+        _cardList = new List<int>(_deck1.cardIDList);
+        _cardList = ShuffleDeck(_cardList);
         
         DrawCard();
     }
