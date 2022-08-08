@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4599558336262992591}
   - component: {fileID: 1227436198704374735}
   - component: {fileID: 2921594876601267064}
+  - component: {fileID: 9107127796097611887}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -83,6 +84,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view: {fileID: 1227436198704374735}
+--- !u!114 &9107127796097611887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593849358202494829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1ebba9a293f894458b18b0a5275e8b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  draggedCard: {fileID: 593849358202494829}
 --- !u!1 &632892513592473206
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,8 +469,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 94787f1038eaf2d4f9b3f2fe0d625259, type: 2}
-  m_sharedMaterial: {fileID: 3338002461336899553, guid: 94787f1038eaf2d4f9b3f2fe0d625259, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -977,8 +991,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u540D\u524D"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 94787f1038eaf2d4f9b3f2fe0d625259, type: 2}
-  m_sharedMaterial: {fileID: 3338002461336899553, guid: 94787f1038eaf2d4f9b3f2fe0d625259, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1112,8 +1126,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u8AAC\u660E"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 94787f1038eaf2d4f9b3f2fe0d625259, type: 2}
-  m_sharedMaterial: {fileID: 3338002461336899553, guid: 94787f1038eaf2d4f9b3f2fe0d625259, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
