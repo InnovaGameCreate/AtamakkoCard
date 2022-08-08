@@ -12,9 +12,10 @@ namespace Assemble
         [SerializeField]
         private Item[] allItems;
 
-        private int slotNumber = 10;
+        private int slotNumber;
         void Start()
         {
+            slotNumber = allItems.Length;
             for (int i = 0; i < slotNumber; i++)
             {
                 GameObject slotObj = Instantiate(slotPrefab, this.transform);
