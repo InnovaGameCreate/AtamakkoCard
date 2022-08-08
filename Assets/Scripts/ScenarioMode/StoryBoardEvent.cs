@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class StoryBoardEvent : MonoBehaviour
 {
-    private bool[] eventCheck;
     public void Event(int eventNum)
     {
         switch (eventNum)
