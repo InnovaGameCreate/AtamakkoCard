@@ -7,6 +7,10 @@ namespace Assemble
 {
     public class AssembleDeck : MonoBehaviour
     {
+        [SerializeField]
+        private List<int> DeckDataList;
+        public static List<int> Deck = new List<int>();
+
         private List<Item> item = new List<Item>();
 
 
@@ -15,35 +19,32 @@ namespace Assemble
             StartCoroutine("finishAssemble");
         }
 
-        /*
-        public int MyTAtk
+
+        public void createDeck()
         {
-            get
+            if(DeckDataList != null) DeckDataList.RemoveRange(0, DeckDataList.Count);//DeckDatListがnullでない場合は初期化する
+            foreach (Item item in MyItems)
             {
-                int itemAtk = 0;
+                DeckDataList.Add(item.MyCardNum1);
+                DeckDataList.Add(item.MyCardNum2);
+                /*
+                weapon Weapon = item as weapon;
 
-                foreach (Item item in MyItems)
+                if (Weapon != null) itemAtk += Weapon.MyTAtk;
+                if (Weapon.IsRightWeapon)
                 {
-                    weapon Weapon = item as weapon;
-
-                    if (Weapon != null) itemAtk += Weapon.MyTAtk;
-                    if (Weapon.IsRightWeapon)
-                    {
-                        RTAtk = itemAtk;
-                        RReloadTime = Weapon.MyReloadTime;
-                    }
-
-                    else
-                    {
-                        LTAtk = itemAtk;
-                        LReloadTime = Weapon.MyReloadTime;
-                    }
+                    RTAtk = itemAtk;
+                    RReloadTime = Weapon.MyReloadTime;
                 }
 
-                return TAtk + itemAtk;
+                else
+                {
+                    LTAtk = itemAtk;
+                    LReloadTime = Weapon.MyReloadTime;
+                }
+                */
             }
-        }
-        */
+        } 
         public List<Item> MyItems { get => item; set => item = value; }
 
         public void RemoveItem(Item item)
@@ -60,12 +61,26 @@ namespace Assemble
         IEnumerator finishAssemble()
         {
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Escape));
+            createDeck();//デッキを作る
             saveData();
+
+            yield return new WaitForSeconds(0.1f);
+            StartCoroutine("finishAssemble");
         }
 
         private void saveData()
         {
             //カードのデッキをセーブする
+            if (DeckDataList.Count != 12)
+            {
+                Debug.Log("カードの枚数が12枚ではないです");
+                return;
+            }
+            for (int i = 0; i < 11; i++)
+            {
+                if(Deck != null) Deck.RemoveRange(0, Deck.Count);//デッキにデータがあれば消す
+                Deck.Add(DeckDataList[i]);
+            }
         }
     }
 }
