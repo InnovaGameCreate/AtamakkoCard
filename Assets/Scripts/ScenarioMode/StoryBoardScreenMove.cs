@@ -35,12 +35,12 @@ public class StoryBoardScreenMove : MonoBehaviour
         if (Input.GetKey(KeyCode.E))
         {
             rotation--;
-            this.gameObject.transform.rotation = Quaternion.Euler(30, 0, RotateSpeed * rotation);
+            this.gameObject.transform.rotation = Quaternion.Euler(60, 0, RotateSpeed * rotation);
         }
         if (Input.GetKey(KeyCode.Q))
         {
             rotation++;
-            this.gameObject.transform.rotation = Quaternion.Euler(30, 0, RotateSpeed * rotation);
+            this.gameObject.transform.rotation = Quaternion.Euler(60, 0, RotateSpeed * rotation);
         }
 
         if (Input.GetKey(KeyCode.Z))
