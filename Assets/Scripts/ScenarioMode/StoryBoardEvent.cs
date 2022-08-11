@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class StoryBoardEvent : MonoBehaviour
 {
+    [SerializeField]
+    NovelComment Comment;
+    [SerializeField]
+    private GameObject NovelCanvas;
+    private void Start()
+    {
+        Comment.currentChapter = 0;
+    }
     public void Event(int eventNum)
     {
         switch (eventNum)
@@ -21,6 +29,9 @@ public class StoryBoardEvent : MonoBehaviour
                 Debug.Log("tile4のイベントです");
                 break;
             case 10:
+                Comment.currentChapter = 1;
+                NovelCanvas.SetActive(true);
+                Comment.nextText();
                 Debug.Log("ゴール");
                 break;
             default:
