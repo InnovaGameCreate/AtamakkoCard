@@ -5,18 +5,13 @@ namespace Card
 {
     public class CardSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IDropHandler, IEndDragHandler
     {
-        private int _cardID;
-        [SerializeField] private CardController cardPrefab;
-        public int MyCardID
-        {
-            get => _cardID;
-            private set => _cardID = value;
-        }
+        [SerializeField] private GameObject cardPrefab;
+        public int MyCardID { get; set; } = -1;
+
         private Hand _hand;
         private GameObject _draggingCard;
         private Transform _canvasTransform;
         
-        // Start is called before the first frame update
         void Start()
         {
             _canvasTransform = FindObjectOfType<Canvas>().transform;
@@ -24,46 +19,43 @@ namespace Card
             _hand = FindObjectOfType<Hand>();
         }
 
-        // Update is called once per frame
-        void Update()
+        public void CreateCard(int cardID)
         {
-        
-        }
-        
-        public void SetCard(int cardID)
-        {
-            if (cardID > 0)
+            MyCardID = cardID;
+            if (cardID >= 0)
             {
                 var card = Instantiate(cardPrefab, transform);
-                card.Init(CardData.CardDataArrayList[cardID]);
+                card.GetComponent<CardController>().Init(CardData.CardDataArrayList[MyCardID]);
             }
+            Debug.Log(gameObject.name + "," +MyCardID);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            Debug.Log("Drag Start");
-
-            GameObject draggedCard = this.gameObject;
-            _draggingCard = Instantiate(draggedCard, _canvasTransform);
-            _draggingCard.transform.SetAsFirstSibling();
+            if (MyCardID == -1) return;
+            _draggingCard = Instantiate(cardPrefab, _canvasTransform);
+            _draggingCard.GetComponent<CardController>().Init(CardData.CardDataArrayList[MyCardID]);
+            //_draggingCard.GetComponent<CardSlot>().MyCardID = MyCardID;
+            _draggingCard.transform.SetAsLastSibling();
+            Debug.Log(MyCardID);
             _hand.SetGrabbingCardID(MyCardID);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            Debug.Log("Drag Now");
+            if (MyCardID == -1) return;
             _draggingCard.transform.position = _hand.transform.position;
         }
-
-
+        
         public void OnDrop(PointerEventData eventData)
         {
+            Debug.Log("OnDrop" + gameObject.name);
             if (!_hand.IsHavaintCardID()) return;
             
             int gotCardID = _hand.GetGrabbingCardID();
             
             _hand.SetGrabbingCardID(MyCardID);
-            SetCard(gotCardID);
+            CreateCard(gotCardID);
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -71,7 +63,7 @@ namespace Card
             Destroy(_draggingCard);
 
             int gotCardID = _hand.GetGrabbingCardID();
-            SetCard(gotCardID);
+            CreateCard(gotCardID);
         }
     }
 }

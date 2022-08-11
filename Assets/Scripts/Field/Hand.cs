@@ -1,31 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
-    private int grabbingCardID;
+    private int _grabbingCardID;
 
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = Input.mousePosition;
+        if (Camera.main != null)
+        {
+            var targetPos = Input.mousePosition;//Camera.main.ScreenToWorldPoint()
+            targetPos.z = 0f;
+            transform.position = targetPos;
+        }
     }
 
     public int GetGrabbingCardID()
     {
-        int oldCardID = grabbingCardID;
-        grabbingCardID = -1;
+        int oldCardID = _grabbingCardID;
+        _grabbingCardID = -1;
         return oldCardID;
     }
 
     public void SetGrabbingCardID(int cardID)
     {
-        grabbingCardID = cardID;
+        _grabbingCardID = cardID;
     }
 
     public bool IsHavaintCardID()
     {
-        return grabbingCardID != -1;
+        return _grabbingCardID != -1;
     }
 }

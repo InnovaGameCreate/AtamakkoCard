@@ -1,17 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
 using Card;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Networking;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private CardController cardPrefab;
+    [SerializeField] private CardSlot slotPrefab;
     [SerializeField] private Transform cardManager;
     private Deck _deck1;
     private List<int> _cardList;
@@ -48,14 +44,14 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < 6; i++)
         {
-            CreateCard(_cardList[0]);
+            CreateSlot(_cardList[0]);
             _cardList.Remove(_cardList[0]);
         }
     }
     
-    void CreateCard(int cData)
+    void CreateSlot(int cData)
     {
-        var card = Instantiate(cardPrefab, cardManager);
-        card.Init(CardData.CardDataArrayList[cData]);
+        var slot = Instantiate(slotPrefab, cardManager);
+        slot.CreateCard(cData);
     }
 }
