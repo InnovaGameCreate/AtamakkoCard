@@ -9,14 +9,17 @@ using TMPro;
 public class NovelComment : MonoBehaviour
 {
     const string SHEET_ID = "1OBn1iwK1yuuwgfM-vpQWOdmHe6XepyghLTHrdLZ4Mto";
-    const string SHEET_NAME = "テストシート";
 
     private int TextNum = 0;
     [SerializeField]
-    private string seatName;
+    private string SHEET_NAME;
     List<string[]> characterDataArrayList;
     private float textSpeed = 0.05f;//文字送り速度
     public int currentChapter;
+    [SerializeField]
+    private Image StillImage;
+    [SerializeField]
+    private Image BackGroundImage;
 
     //テキスト
     [SerializeField]
@@ -39,7 +42,9 @@ public class NovelComment : MonoBehaviour
 
     //吹き出し系
     [SerializeField]
-    private Sprite[] Steel;
+    private Sprite[] Still;
+    [SerializeField]
+    private Sprite[] BackImage;
 
     //スチル画像
 
@@ -52,6 +57,8 @@ public class NovelComment : MonoBehaviour
     {
         autoWriting = false;
         skipWriting = false;
+        StartCoroutine(next());
+        textSpeed = 0.05f;
     }
     private void Start()
     {
@@ -71,29 +78,13 @@ public class NovelComment : MonoBehaviour
         }
         else if (capter != currentChapter.ToString())//目標のchapterではなかった場合
         {
+            if (characterDataArrayList.Count - 1 > TextNum) TextNum++;
+            else TextNum = 0;
             nextText();
         }
 
         StartCoroutine(textDisplay());                              //テキストの反映
         CharacterName.text = characterName;                                  //名前
-
-        /*
-        switch (Speechbubble)
-        {
-            case "Default":
-                SpeechbubbleImage.sprite = image[0];
-                break;
-            case "Think":
-                SpeechbubbleImage.sprite = image[1];
-                break;
-            case "Uni":
-                SpeechbubbleImage.sprite = image[2];
-                break;
-            default:
-                break;
-        }
-        */
-
 
         if (characterDataArrayList.Count - 1 > TextNum) TextNum++;    //読み込んだdataの行数以上には行かない
     }
@@ -133,9 +124,6 @@ public class NovelComment : MonoBehaviour
         characterName = _dataList[2];
         diff = _dataList[3];
         comment = _dataList[4];
-
-
-        
     }
     List<string[]> ConvertToArrayListFrom(string _text)
     {
@@ -163,7 +151,6 @@ public class NovelComment : MonoBehaviour
     {
         if(Type == "テキスト")
         {
-
             isWriting = true;
             CommentText.text = "";
             //SeManager.Instance.ShotSe(SeType.talk);
@@ -188,8 +175,17 @@ public class NovelComment : MonoBehaviour
         }
         else if(Type == "スチル")
         {
-            showSteel();
+            showSteel(int.Parse(comment));
+            yield return new WaitForSeconds(0.1f);
             yield return new WaitUntil(() => Input.anyKey);
+            StillImage.sprite = Still[0];
+            nextText();
+        }
+        else if (Type == "背景")
+        {
+            ChangeBackGroundImage(int.Parse(comment));
+            yield return new WaitForSeconds(0.4f);
+            nextText();
         }
     }
 
@@ -200,9 +196,25 @@ public class NovelComment : MonoBehaviour
         startTalk();
     }
 
-    public void showSteel()
+    public void showSteel(int num)
     {
+        StillImage.sprite = Still[num];
+    }
+    public void ChangeBackGroundImage(int num)
+    {
+        Debug.Log("背景を" + num + "に変更しました");
+        BackGroundImage.sprite = BackImage[num];
+    }
 
+    IEnumerator next()
+    {
+        while (true)
+        {
+            yield return new WaitUntil(() => readEnd);
+            yield return new WaitUntil(() => Input.GetKey(KeyCode.Mouse0));
+            nextText();
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 
     public void Auto()
