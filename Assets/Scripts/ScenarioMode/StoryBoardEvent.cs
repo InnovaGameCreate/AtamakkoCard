@@ -57,6 +57,58 @@ public class StoryBoardEvent : MonoBehaviour
                     Scene[0].SetActive(false);
                     Scene[1].SetActive(true);
                     break;
+                case 6:
+                    Comment.currentChapter = 5;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 7:
+                    Comment.currentChapter = 7;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 8:
+                    Comment.currentChapter = 8;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 9:
+                    Comment.currentChapter = 9;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 10:
+                    //新しいカードの入手
+                    Comment.currentChapter = 10;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 11:
+                    Comment.currentChapter = 11;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 12:
+                    Comment.currentChapter = 12;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 13:
+                    Comment.currentChapter = 13;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 14:
+                    Comment.currentChapter = 14;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 15:
+                    //ボス戦
+                    Comment.currentChapter = 15;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
                 default:
                     Debug.Log("何も設定されていないイベントです");
                     break;
