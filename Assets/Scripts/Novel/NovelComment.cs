@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.IO;
 using TMPro;
+using System.Audio;
 
 public class NovelComment : MonoBehaviour
 {
@@ -185,6 +186,12 @@ public class NovelComment : MonoBehaviour
         {
             ChangeBackGroundImage(int.Parse(comment));
             yield return new WaitForSeconds(0.4f);
+            nextText();
+        }
+        else if(Type == "SE")
+        {
+            SeManager.Instance.ShotSe((SeType)System.Enum.Parse(typeof(SeType), comment, true));
+            yield return new WaitForSeconds(0.3f);
             nextText();
         }
     }
