@@ -11,5 +11,6 @@ namespace System.Audio
         MoveCard,
         CardDraw,
         ButtonClick,
+        dragonFlap,
     }
 }

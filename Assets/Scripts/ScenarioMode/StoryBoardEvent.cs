@@ -63,17 +63,17 @@ public class StoryBoardEvent : MonoBehaviour
                     Comment.nextText();
                     break;
                 case 7:
-                    Comment.currentChapter = 7;
+                    Comment.currentChapter = 6;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
                 case 8:
-                    Comment.currentChapter = 8;
+                    Comment.currentChapter = 7;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
                 case 9:
-                    Comment.currentChapter = 9;
+                    Comment.currentChapter = 8;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
