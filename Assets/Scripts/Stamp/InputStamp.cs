@@ -18,10 +18,8 @@ namespace Stamp
 
         public IObservable<byte> OnClickStamp => _stampClick;
 
-        // Start is called before the first frame update
         void Start()
         {
-            
             button.OnClickAsObservable()
                 .Subscribe(_ => _stampClick.OnNext(CheckImageID()))
                 .AddTo(this);
