@@ -5,8 +5,15 @@ namespace Card
 {
     public class CardSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IDropHandler, IEndDragHandler
     {
+        private int _cardID = -1;
+        
         [SerializeField] private GameObject cardPrefab;
-        public int MyCardID { get; set; } = -1;
+
+        public int MyCardID
+        {
+            get => _cardID;
+            set => _cardID = value;
+        }
 
         private Hand _hand;
         private GameObject _draggingCard;
@@ -25,25 +32,31 @@ namespace Card
             if (cardID >= 0)
             {
                 var card = Instantiate(cardPrefab, transform);
-                card.GetComponent<CardController>().Init(CardData.CardDataArrayList[MyCardID]);
+                card.GetComponent<CardController>().Init(CardData.CardDataArrayList[_cardID]);
             }
-            Debug.Log(gameObject.name + "," +MyCardID);
+            else
+            {
+                foreach (Transform childObj in transform)
+                {
+                    Destroy(childObj.gameObject);
+                }
+            }
+            Debug.Log(gameObject.name + "," +_cardID);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (MyCardID == -1) return;
+            if (_cardID == -1) return;
             _draggingCard = Instantiate(cardPrefab, _canvasTransform);
-            _draggingCard.GetComponent<CardController>().Init(CardData.CardDataArrayList[MyCardID]);
-            //_draggingCard.GetComponent<CardSlot>().MyCardID = MyCardID;
+            _draggingCard.GetComponent<CardController>().Init(CardData.CardDataArrayList[_cardID]);
             _draggingCard.transform.SetAsLastSibling();
-            Debug.Log(MyCardID);
-            _hand.SetGrabbingCardID(MyCardID);
+            Debug.Log(_cardID);
+            _hand.SetGrabbingCardID(_cardID);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (MyCardID == -1) return;
+            if (_cardID == -1) return;
             _draggingCard.transform.position = _hand.transform.position;
         }
         
@@ -54,7 +67,7 @@ namespace Card
             
             int gotCardID = _hand.GetGrabbingCardID();
             
-            _hand.SetGrabbingCardID(MyCardID);
+            _hand.SetGrabbingCardID(_cardID);
             CreateCard(gotCardID);
         }
 
