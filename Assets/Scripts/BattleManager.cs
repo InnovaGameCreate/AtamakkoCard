@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Card;
 using Cysharp.Threading.Tasks;
@@ -20,11 +19,13 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField] private CardSlot slotPrefab;
     [SerializeField] private Transform cardManager;
-    [SerializeField] private DecisionButton _decisionButton;
+    [SerializeField] private DecisionButton decisionButton;
+    [SerializeField] private CardSlot[] battleSlots;
+    [SerializeField] private GameObject playerHand;
     private Deck _deck1;
     private List<int> _cardList;
 
-    public static BattleManager Instance = null;
+    public static BattleManager Instance;
 
     private void Awake()
     {
@@ -61,7 +62,7 @@ public class BattleManager : MonoBehaviour
             .AddTo(this);
     }
 
-    private async UniTask StartGame()
+    private async void StartGame()
     {
         await StartCoroutine(CardData.GetData());
         _deck1 = Resources.Load<Deck>("Deck1");
@@ -76,11 +77,14 @@ public class BattleManager : MonoBehaviour
     {
         if (_cardList.Count <= 0)
         {
-            _cardList = new List<int>(_deck1.cardIDList);;
+            _cardList = new List<int>(_deck1.cardIDList);
             _cardList = ShuffleDeck(_cardList);
         }
-        
-        DrawCard();
+
+        if (playerHand.transform.childCount <= 0)
+        {
+            DrawCard();
+        }
 
         gameState.Value = State.Select;
     }
@@ -88,19 +92,35 @@ public class BattleManager : MonoBehaviour
     private void SelectFaze()
     {
         Debug.Log("SelectFaze");
-        _decisionButton.Decision
+        decisionButton.Decision
             .Subscribe(_ =>
             {
-                _decisionButton.MyInteractable = false;
+                decisionButton.MyInteractable = false;
         
                 gameState.Value = State.Battle;
             })
             .AddTo(this);
     }
     
-    private void BattleFaze()
+    private async void BattleFaze()
     {
         Debug.Log("BattleFaze");
+        foreach (var slot in battleSlots)
+        {
+            await Battle(slot.MyCardID);
+            slot.CreateCard(-1);
+        }
+
+        gameState.Value = State.Draw;
+    }
+
+    private async UniTask Battle(int cardID)
+    {
+        var card = new CardModel(CardData.CardDataArrayList[cardID]);
+        Debug.Log("ID"+cardID);
+        Debug.Log("Attack"+card.Attack);
+        Debug.Log("Move"+card.Move);
+        await UniTask.Delay(1000);
     }
 
     private List<int> ShuffleDeck(List<int> idList)
