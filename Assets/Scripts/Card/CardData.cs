@@ -13,14 +13,9 @@ namespace Card
     
         public static List<string[]> CardDataArrayList;
 
-        private void Awake()
+        public static IEnumerator GetData()
         {
-            StartCoroutine(GetData(SHEET_NAME));
-        }
-
-        IEnumerator GetData(string _SHEET_NAME)
-        {
-            UnityWebRequest request = UnityWebRequest.Get("https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/gviz/tq?tqx=out:csv&sheet="+_SHEET_NAME);
+            UnityWebRequest request = UnityWebRequest.Get("https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/gviz/tq?tqx=out:csv&sheet="+SHEET_NAME);
             yield return request.SendWebRequest();
 
             if (request.isHttpError || request.isNetworkError)
@@ -32,8 +27,8 @@ namespace Card
                 CardDataArrayList = ConvertToArrayListFrom(request.downloadHandler.text);
             }
         }
-    
-        List<string[]> ConvertToArrayListFrom(string text)
+
+        static List<string[]> ConvertToArrayListFrom(string text)
         {
             List<string[]> cardDataStringsList = new List<string[]>();
             StringReader reader = new StringReader(text);
@@ -41,17 +36,20 @@ namespace Card
             while (reader.Peek() != -1)
             {
                 string line = reader.ReadLine();
-                string[] elements = line.Split(',');
-                for (int i = 0; i < elements.Length; i++)
+                if (line != null)
                 {
-                    if (elements[i] == "\"\"")
+                    string[] elements = line.Split(',');
+                    for (int i = 0; i < elements.Length; i++)
                     {
-                        continue;
-                    }
+                        if (elements[i] == "\"\"")
+                        {
+                            continue;
+                        }
 
-                    elements[i] = elements[i].TrimStart('"').TrimEnd('"');
+                        elements[i] = elements[i].TrimStart('"').TrimEnd('"');
+                    }
+                    cardDataStringsList.Add(elements);
                 }
-                cardDataStringsList.Add(elements);
             }
 
             return cardDataStringsList;
