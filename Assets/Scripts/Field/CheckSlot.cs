@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Card;
 using UniRx;
@@ -14,18 +13,22 @@ namespace Field
         
         void Start()
         {
-            // 本当はUniRxで書きたかった
-        }
-
-        private void Update()
-        {
-            if (displaySlots[0].MyCardID < 0 || displaySlots[1].MyCardID < 0 || displaySlots[2].MyCardID < 0)
+            foreach (var cardSlot in displaySlots)
             {
-                dButton.MyInteractable = false;
-            }
-            else
-            {
-                dButton.MyInteractable = true;
+                cardSlot.CheckCardID
+                    .Subscribe(_ =>
+                    {
+                        if (displaySlots[0].MyCardID < 0 || displaySlots[1].MyCardID < 0 ||
+                            displaySlots[2].MyCardID < 0)
+                        {
+                            dButton.MyInteractable = false;
+                        }
+                        else
+                        {
+                            dButton.MyInteractable = true;
+                        }
+                    })
+                    .AddTo(this);
             }
         }
     }

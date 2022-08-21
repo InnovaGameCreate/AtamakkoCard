@@ -1,3 +1,5 @@
+using System;
+using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,7 +20,10 @@ namespace Card
         private Hand _hand;
         private GameObject _draggingCard;
         private Transform _canvasTransform;
-        
+
+        private readonly Subject<int> _settingCard = new Subject<int>();
+        public IObservable<int> CheckCardID => _settingCard;
+
         void Start()
         {
             _canvasTransform = FindObjectOfType<Canvas>().transform;
@@ -41,12 +46,12 @@ namespace Card
                     Destroy(childObj.gameObject);
                 }
             }
-            Debug.Log(gameObject.name + "," +_cardID);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (_cardID == -1) return;
+            if (BattleManager.Instance.gameState.Value != BattleManager.State.Select) return;
             _draggingCard = Instantiate(cardPrefab, _canvasTransform);
             _draggingCard.GetComponent<CardController>().Init(CardData.CardDataArrayList[_cardID]);
             _draggingCard.transform.SetAsLastSibling();
@@ -57,26 +62,32 @@ namespace Card
         public void OnDrag(PointerEventData eventData)
         {
             if (_cardID == -1) return;
+            if (BattleManager.Instance.gameState.Value != BattleManager.State.Select) return;
             _draggingCard.transform.position = _hand.transform.position;
         }
         
         public void OnDrop(PointerEventData eventData)
         {
-            Debug.Log("OnDrop" + gameObject.name);
             if (!_hand.IsHavaintCardID()) return;
+            if (BattleManager.Instance.gameState.Value != BattleManager.State.Select) return;
             
             int gotCardID = _hand.GetGrabbingCardID();
             
             _hand.SetGrabbingCardID(_cardID);
             CreateCard(gotCardID);
+            
+            _settingCard.OnNext(_cardID);
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            if (BattleManager.Instance.gameState.Value != BattleManager.State.Select) return;
             Destroy(_draggingCard);
 
             int gotCardID = _hand.GetGrabbingCardID();
             CreateCard(gotCardID);
+            
+            _settingCard.OnNext(_cardID);
         }
     }
 }
