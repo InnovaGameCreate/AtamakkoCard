@@ -1,4 +1,6 @@
 using System;
+using Field;
+using Photon.Pun.Demo.PunBasics;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -29,6 +31,17 @@ namespace Card
             _canvasTransform = FindObjectOfType<Canvas>().transform;
 
             _hand = FindObjectOfType<Hand>();
+
+            BattleManager.Instance.gameState
+                .Where(s => s == BattleManager.State.Battle)
+                .Subscribe(_ =>
+                {
+                    if (MyCardID < 0)
+                    {
+                        Destroy(gameObject);
+                    }
+                })
+                .AddTo(this);
         }
 
         public void CreateCard(int cardID)
