@@ -24,7 +24,9 @@ public class StoryBoardEvent : MonoBehaviour
             Scene[1].SetActive(false);
         }
     }
-    public void Event(int eventNum)
+
+    //タイルを選択したときにおこるイベント
+    public void startEvent(int eventNum)
     {
         if (scenario == scenarioType.scenario1_1)
         {
@@ -54,13 +56,9 @@ public class StoryBoardEvent : MonoBehaviour
                     Comment.currentChapter = 4;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
-                    Scene[0].SetActive(false);
-                    Scene[1].SetActive(true);
                     break;
                 case 6:
-                    Comment.currentChapter = 5;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
+                    //5の終了時イベントに以降
                     break;
                 case 7:
                     Comment.currentChapter = 6;
@@ -73,12 +71,12 @@ public class StoryBoardEvent : MonoBehaviour
                     Comment.nextText();
                     break;
                 case 9:
+                    //戦闘
                     Comment.currentChapter = 8;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
                 case 10:
-                    //新しいカードの入手
                     Comment.currentChapter = 10;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
@@ -88,10 +86,8 @@ public class StoryBoardEvent : MonoBehaviour
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
-                case 12:
+                case 12://ドラゴンとの戦闘
                     Comment.currentChapter = 12;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
                     break;
                 case 13:
                     Comment.currentChapter = 13;
@@ -104,16 +100,79 @@ public class StoryBoardEvent : MonoBehaviour
                     Comment.nextText();
                     break;
                 case 15:
-                    //ボス戦
                     Comment.currentChapter = 15;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
+                case 16:
+                    Comment.currentChapter = 16;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 17://敵との戦闘
+                    Comment.currentChapter = 17;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 18:
+                    Comment.currentChapter = 18;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 19://ボス戦
+                    Comment.currentChapter = 19;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
                 default:
-                    Debug.Log("何も設定されていないイベントです");
+                    Debug.Log("何も設定されていない開始イベントです");
                     break;
             }
         }
     }
-    
+
+    //会話終了時に起こるイベント
+    public void endEvent(int eventNum)
+    {
+        StartCoroutine(talkEndEvent(eventNum));
+    }
+
+    IEnumerator talkEndEvent(int eventNum)
+    {
+        yield return new WaitForFixedUpdate();
+        if (scenario == scenarioType.scenario1_1)
+        {
+            switch (eventNum)
+            {
+                case 5:
+                    Scene[0].SetActive(false);
+                    Scene[1].SetActive(true);
+                    Comment.currentChapter = 5;
+                    NovelCanvas.SetActive(true);
+                    Comment.ChangeBackGroundImage(1);
+                    Comment.nullText();
+                    Comment.onAnimation = true;
+                    yield return new WaitForSeconds(2f);
+                    Comment.ChangeBackGroundImage(2);
+                    yield return new WaitForSeconds(2f);
+                    Comment.nextText();
+                    Comment.onAnimation = false;
+                    Debug.Log("終了イベント5");
+                    break;
+                case 17:
+                    Comment.ChangeBackGroundImage(0);
+                    //戦闘開始の信号を送る
+                    Debug.Log("終了イベント17");
+                    break;
+                case 19:
+                    Comment.ChangeBackGroundImage(0);
+                    //戦闘開始の信号を送る
+                    Debug.Log("終了イベント19");
+                    break;
+                default:
+                    Debug.Log("何も設定されていない終了イベントです");
+                    break;
+            }
+        }
+    }
 }
