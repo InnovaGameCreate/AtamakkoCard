@@ -77,50 +77,50 @@ public class StoryBoardEvent : MonoBehaviour
                     Comment.nextText();
                     break;
                 case 10:
-                    Comment.currentChapter = 10;
+                    Comment.currentChapter = 9;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
                 case 11:
-                    Comment.currentChapter = 11;
+                    Comment.currentChapter = 10;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
                 case 12://ÉhÉâÉSÉìÇ∆ÇÃêÌì¨
-                    Comment.currentChapter = 12;
+                    Comment.currentChapter = 11;
                     break;
                 case 13:
-                    Comment.currentChapter = 13;
+                    Comment.currentChapter = 12;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
                 case 14:
-                    Comment.currentChapter = 14;
+                    Comment.currentChapter = 13;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
                 case 15:
-                    Comment.currentChapter = 15;
+                    Comment.currentChapter = 14;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
                 case 16:
-                    Comment.currentChapter = 16;
+                    Comment.currentChapter = 15;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
                 case 17://ìGÇ∆ÇÃêÌì¨
-                    Comment.currentChapter = 17;
+                    Comment.currentChapter = 16;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
                 case 18:
-                    Comment.currentChapter = 18;
+                    Comment.currentChapter = 17;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
                 case 19://É{ÉXêÌ
-                    Comment.currentChapter = 19;
+                    Comment.currentChapter = 18;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;

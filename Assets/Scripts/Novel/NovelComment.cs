@@ -86,6 +86,7 @@ public class NovelComment : MonoBehaviour
             if (characterDataArrayList.Count - 1 > TextNum) TextNum++;
             else TextNum = 0;
             nextText();
+            return;
         }
 
         StartCoroutine(textDisplay());                              //ƒeƒLƒXƒg‚Ì”½‰f
@@ -214,7 +215,7 @@ public class NovelComment : MonoBehaviour
     }
     public void ChangeBackGroundImage(int num)
     {
-        Debug.Log("”wŒi‚ğ" + num + "‚É•ÏX‚µ‚Ü‚µ‚½");
+        //Debug.Log("”wŒi‚ğ" + num + "‚É•ÏX‚µ‚Ü‚µ‚½");
         BackGroundImage.sprite = BackImage[num];
     }
 
