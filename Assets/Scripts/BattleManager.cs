@@ -120,6 +120,7 @@ public class BattleManager : MonoBehaviour
     {
         var card = new CardModel(CardData.CardDataArrayList[cardID]);
         Debug.Log("ID"+cardID);
+        await UniTask.Delay(10);
         Debug.Log("Attack"+card.Attack);
         await player.CanMove(cardID);
     }
