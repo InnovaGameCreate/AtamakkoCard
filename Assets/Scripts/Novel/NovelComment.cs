@@ -21,6 +21,7 @@ public class NovelComment : MonoBehaviour
     private Image StillImage;
     [SerializeField]
     private Image BackGroundImage;
+    StoryBoardEvent eventSystem;
 
     //テキスト
     [SerializeField]
@@ -30,6 +31,8 @@ public class NovelComment : MonoBehaviour
     private bool isWriting = false;                                 //書いているかどうか
     private bool autoWriting = false;
     private bool skipWriting = false;
+
+    public bool onAnimation = false;
 
     //エクセル内data
     private string capter;
@@ -64,6 +67,7 @@ public class NovelComment : MonoBehaviour
     private void Start()
     {
         StartCoroutine(startText());
+        eventSystem = GameObject.FindObjectOfType<StoryBoardEvent>().GetComponent<StoryBoardEvent>();
     }
 
     public void nextText()
@@ -98,6 +102,7 @@ public class NovelComment : MonoBehaviour
     private void endTalk()
     {
         Debug.Log("chapterが代わりました。lastCpaterは" + lastCapter + "：capterは" + capter);
+        eventSystem.endEvent(int.Parse(capter));
         transform.parent.gameObject.SetActive(false);
     }
 
@@ -219,7 +224,7 @@ public class NovelComment : MonoBehaviour
         {
             yield return new WaitUntil(() => readEnd);
             yield return new WaitUntil(() => Input.GetKey(KeyCode.Mouse0));
-            nextText();
+            if(!onAnimation) nextText();
             yield return new WaitForSeconds(0.5f);
         }
     }
@@ -259,6 +264,11 @@ public class NovelComment : MonoBehaviour
             skipWriting = false;
             textSpeed = 0.05f;
         }
+    }
+
+    public void nullText()//テキスト内を消す
+    {
+        CommentText.text = "";
     }
 }
 

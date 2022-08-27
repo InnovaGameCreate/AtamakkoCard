@@ -29,7 +29,7 @@ public class StoryBoardPlayerMove : MonoBehaviour
         {
             this.transform.position = TileObject.transform.position;
 
-            if (TileObject.GetComponent<EventCheck>().yet()) Event.Event(tileNum);//tileのイベントを行う
+            if (TileObject.GetComponent<EventCheck>().yet()) Event.startEvent(tileNum);//tileのイベントを行う
             TileObject.GetComponent<EventCheck>().EventUsed();//タイルのイベント処理後のアクションを行う
         }
     }
