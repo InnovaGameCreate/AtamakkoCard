@@ -1,6 +1,5 @@
 using System;
 using Field;
-using Photon.Pun.Demo.PunBasics;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -28,7 +27,7 @@ namespace Card
 
         void Start()
         {
-            _canvasTransform = FindObjectOfType<Canvas>().transform;
+            _canvasTransform = GameObject.FindGameObjectWithTag("Stage").transform;
 
             _hand = FindObjectOfType<Hand>();
 
@@ -68,7 +67,6 @@ namespace Card
             _draggingCard = Instantiate(cardPrefab, _canvasTransform);
             _draggingCard.GetComponent<CardController>().Init(CardData.CardDataArrayList[_cardID]);
             _draggingCard.transform.SetAsLastSibling();
-            Debug.Log(_cardID);
             _hand.SetGrabbingCardID(_cardID);
         }
 
@@ -99,6 +97,7 @@ namespace Card
 
             int gotCardID = _hand.GetGrabbingCardID();
             CreateCard(gotCardID);
+            Debug.Log(gotCardID);
             
             _settingCard.OnNext(_cardID);
         }

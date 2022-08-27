@@ -22,6 +22,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private DecisionButton decisionButton;
     [SerializeField] private CardSlot[] battleSlots;
     [SerializeField] private GameObject playerHand;
+    [SerializeField] private Player player;
     private Deck _deck1;
     private List<int> _cardList;
 
@@ -107,6 +108,7 @@ public class BattleManager : MonoBehaviour
         Debug.Log("BattleFaze");
         foreach (var slot in battleSlots)
         {
+            // var token = new CancellationTokenSource();
             await Battle(slot.MyCardID);
             slot.CreateCard(-1);
         }
@@ -119,8 +121,7 @@ public class BattleManager : MonoBehaviour
         var card = new CardModel(CardData.CardDataArrayList[cardID]);
         Debug.Log("ID"+cardID);
         Debug.Log("Attack"+card.Attack);
-        Debug.Log("Move"+card.Move);
-        await UniTask.Delay(1000);
+        await player.CanMove(cardID);
     }
 
     private List<int> ShuffleDeck(List<int> idList)
