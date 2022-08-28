@@ -124,6 +124,81 @@ public class StoryBoardEvent : MonoBehaviour
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
+                case 21:
+                    Comment.currentChapter = 20;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 22:
+                    Comment.currentChapter = 21;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 23:
+                    Comment.currentChapter = 22;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 24://仲間と合流
+                    Comment.currentChapter = 23;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 25://戦闘
+
+                    break;
+                case 26:
+                    Comment.currentChapter = 25;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 27:
+                    Comment.currentChapter = 26;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 28://ボス戦
+                    Comment.currentChapter = 27;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 29:
+                    Comment.currentChapter = 28;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 30://戦闘
+                    Comment.currentChapter = 29;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 31:
+                    Comment.currentChapter = 30;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 32:
+                    Comment.currentChapter = 31;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 33:
+                    Comment.currentChapter = 32;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 34://戦闘
+                    Comment.currentChapter = 33;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 35:
+                    Comment.currentChapter = 34;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 36://戦闘
+                    break;
                 default:
                     Debug.Log("何も設定されていない開始イベントです");
                     break;
@@ -168,6 +243,11 @@ public class StoryBoardEvent : MonoBehaviour
                     Comment.ChangeBackGroundImage(0);
                     //戦闘開始の信号を送る
                     Debug.Log("終了イベント19");
+                    break;
+                case 28:
+                    Comment.ChangeBackGroundImage(0);
+                    //戦闘開始の信号を送る
+                    Debug.Log("終了イベント28");
                     break;
                 default:
                     Debug.Log("何も設定されていない終了イベントです");
