@@ -620,7 +620,7 @@ MonoBehaviour:
   - {fileID: 1441495766}
   - {fileID: 1377712188}
   playerHand: {fileID: 1662660820}
-  player: {fileID: 719954268}
+  player: {fileID: 719954264}
 --- !u!1 &399115894
 GameObject:
   m_ObjectHideFlags: 0
@@ -2522,7 +2522,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8530737349489890158, guid: 3288ed2f629801a4aa4191bb2336a959, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -517.5
+      value: -517.50006
       objectReference: {fileID: 0}
     - target: {fileID: 8530737349489890158, guid: 3288ed2f629801a4aa4191bb2336a959, type: 3}
       propertyPath: m_AnchoredPosition.y

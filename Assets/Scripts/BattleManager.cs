@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Card;
 using Cysharp.Threading.Tasks;
 using Field;
+using Player;
 using UniRx;
 using UnityEngine;
 
@@ -22,7 +23,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private DecisionButton decisionButton;
     [SerializeField] private CardSlot[] battleSlots;
     [SerializeField] private GameObject playerHand;
-    [SerializeField] private Player player;
+    [SerializeField] private GameObject player;
+    private PlayerMove _move;
     private Deck _deck1;
     private List<int> _cardList;
 
@@ -42,6 +44,8 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        _move = player.GetComponent<PlayerMove>();
+        
         gameState
             .Where(x => x == State.Init)
             .Subscribe(_ => StartGame())
@@ -122,7 +126,7 @@ public class BattleManager : MonoBehaviour
         Debug.Log("ID"+cardID);
         await UniTask.Delay(10);
         Debug.Log("Attack"+card.Attack);
-        await player.CanMove(cardID);
+        await _move.CanMove(cardID);
     }
 
     private List<int> ShuffleDeck(List<int> idList)

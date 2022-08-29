@@ -1,12 +1,13 @@
 using System;
 using Card;
 using Cysharp.Threading.Tasks;
+using Field;
 using UniRx;
 using UnityEngine;
 
-namespace Field
+namespace Player
 {
-    public class Player : MonoBehaviour
+    public class PlayerMove : MonoBehaviour
     {
         private int _position;
 
@@ -33,7 +34,7 @@ namespace Field
                     var toPlayer = Instantiate(pButton, transform.position, Quaternion.identity,
                         sSlot[toPosition].transform);
                     toPlayer.MyPlace = toPosition;
-                    toPlayer.player = this;
+                    toPlayer.playerMove = this;
                 }
             }
             if (card.Move[0] == "〇" || card.Move[1] == "〇" || card.Move[2] == "〇" || card.Move[3] == "〇" || card.Move[4] == "〇" || card.Move[5] == "〇")
