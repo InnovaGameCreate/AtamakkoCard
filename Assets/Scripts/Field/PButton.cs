@@ -1,6 +1,7 @@
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using Button = UnityEngine.UI.Button;
 
 namespace Field
@@ -10,7 +11,7 @@ namespace Field
         private int _place;
         private Button _myButton;
 
-        public Player player;
+        [FormerlySerializedAs("atamakko")] [FormerlySerializedAs("player")] public Player.PlayerMove playerMove;
 
         public int MyPlace
         {
@@ -22,10 +23,10 @@ namespace Field
             _myButton = GetComponent<Button>();
 
             _myButton.OnClickAsObservable()
-                .Subscribe(_ =>player.MyPosition = _place)
+                .Subscribe(_ =>playerMove.MyPosition = _place)
                 .AddTo(this);
 
-            player.Moved
+            playerMove.Moved
                 .Subscribe(_ => Destroy(gameObject))
                 .AddTo(this);
         }
