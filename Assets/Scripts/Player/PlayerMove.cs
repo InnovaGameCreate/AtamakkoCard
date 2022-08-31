@@ -9,47 +9,49 @@ namespace Player
 {
     public class PlayerMove : MonoBehaviour
     {
-        private int _position;
+        private AtamakkoStatus _atamakkoStatus;
+        [NonSerialized] public int Position;
+        
+        [SerializeField] private GameObject[] sSlot;
+        [SerializeField] private MoveButton moveButton;
 
-        public int MyPosition
+        public readonly Subject<bool> MSelected = new Subject<bool>();
+        public IObservable<bool> MoveSelected => MSelected;
+
+        private void Start()
         {
-            get => _position;
-            set => _position = value;
+            _atamakkoStatus = gameObject.GetComponent<AtamakkoStatus>();
         }
 
-        [SerializeField] private GameObject[] sSlot;
-        [SerializeField] private PButton pButton;
-
-        private readonly Subject<bool> _moved = new Subject<bool>();
-        public IObservable<bool> Moved => _moved;
-
-        public async UniTask CanMove(int cardID)
+        public async UniTask CanMove(CardModel card)
         {
-            var card = new CardModel(CardData.CardDataArrayList[cardID]);
-            for(int i = 0; i < card.Move.Length; i++)
+            Position = _atamakkoStatus.MyPosition;
+            
+            if (card.Kind == "移動")
             {
-                if (card.Move[i] == "〇")
+                for(int i = 0; i < card.Move.Length; i++)
                 {
-                    var toPosition = (i + _position) % 6;
-                    var toPlayer = Instantiate(pButton, transform.position, Quaternion.identity,
-                        sSlot[toPosition].transform);
-                    toPlayer.MyPlace = toPosition;
-                    toPlayer.playerMove = this;
+                    if (card.Move[i] == "〇")
+                    {
+                        var toPosition = (i + Position) % 6;
+                        var toPlayer = Instantiate(moveButton, transform.position, Quaternion.identity,
+                            sSlot[toPosition].transform);
+                        toPlayer.MyPlace = toPosition;
+                        toPlayer.playerMove = this;
+                    }
                 }
+                
+                await MSelected.ToUniTask(true);
             }
-            if (card.Move[0] == "〇" || card.Move[1] == "〇" || card.Move[2] == "〇" || card.Move[3] == "〇" || card.Move[4] == "〇" || card.Move[5] == "〇")
-            {
-                await UniTask.WaitUntilValueChanged(this, player => player._position);
-            }
-            Move(_position);
+            Move(Position);
         }
 
         private void Move(int slotNum)
         {
             gameObject.transform.SetParent(sSlot[slotNum].transform);
-            _position = slotNum;
-            Debug.Log("Moved" + slotNum);
-            _moved.OnNext(true);
+            Position = slotNum;
+            _atamakkoStatus.MyPosition = Position;
+            Debug.Log("Moved " + slotNum);
         }
     }
 }

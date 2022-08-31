@@ -25,6 +25,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private GameObject playerHand;
     [SerializeField] private GameObject player;
     private PlayerMove _move;
+    private PlayerAttack _attack;
     private Deck _deck1;
     private List<int> _cardList;
 
@@ -45,6 +46,7 @@ public class BattleManager : MonoBehaviour
     private void Start()
     {
         _move = player.GetComponent<PlayerMove>();
+        _attack = player.GetComponent<PlayerAttack>();
         
         gameState
             .Where(x => x == State.Init)
@@ -125,8 +127,8 @@ public class BattleManager : MonoBehaviour
         var card = new CardModel(CardData.CardDataArrayList[cardID]);
         Debug.Log("ID"+cardID);
         await UniTask.Delay(10);
-        Debug.Log("Attack"+card.Attack);
-        await _move.CanMove(cardID);
+        await _attack.Attack(card);
+        await _move.CanMove(card);
     }
 
     private List<int> ShuffleDeck(List<int> idList)
