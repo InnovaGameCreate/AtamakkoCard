@@ -14,7 +14,8 @@ public class BattleManager : MonoBehaviour
         Init,
         Draw,
         Select,
-        Battle
+        Battle,
+        End
     }
     public ReactiveProperty<State> gameState = new ReactiveProperty<State>(State.Init);
 
@@ -24,10 +25,13 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private CardSlot[] battleSlots;
     [SerializeField] private GameObject playerHand;
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject enemy;
     private PlayerMove _move;
     private PlayerAttack _attack;
     private Deck _deck1;
     private List<int> _cardList;
+    private AtamakkoStatus _playerStatus;
+    private AtamakkoStatus _enemyStatus;
 
     public static BattleManager Instance;
 
@@ -47,6 +51,9 @@ public class BattleManager : MonoBehaviour
     {
         _move = player.GetComponent<PlayerMove>();
         _attack = player.GetComponent<PlayerAttack>();
+        _playerStatus = player.GetComponent<AtamakkoStatus>();
+
+        _enemyStatus = enemy.GetComponent<AtamakkoStatus>();
         
         gameState
             .Where(x => x == State.Init)
@@ -66,6 +73,24 @@ public class BattleManager : MonoBehaviour
         gameState
             .Where(x => x == State.Battle)
             .Subscribe(_ => BattleFaze())
+            .AddTo(this);
+
+        _playerStatus.MyHp
+            .Where(hp => hp == 0)
+            .Subscribe(_ =>
+            {
+                gameState.Value = State.End;
+                Debug.Log("You Lose!");
+            })
+            .AddTo(this);
+        
+        _enemyStatus.MyHp
+            .Where(hp => hp == 0)
+            .Subscribe(_ =>
+            {
+                gameState.Value = State.End;
+                Debug.Log("You Win!");
+            })
             .AddTo(this);
     }
 

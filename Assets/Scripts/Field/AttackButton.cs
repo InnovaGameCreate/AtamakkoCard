@@ -20,8 +20,8 @@ namespace Field
             _myButton.OnClickAsObservable()
                 .Subscribe(_ =>
                 {
-                    Debug.Log(AttackPlace);
                     PlayerAttack.AttackPlace = AttackPlace;
+                    Debug.Log(AttackPlace);
                     PlayerAttack.ASelected.OnNext(true);
                 })
                 .AddTo(this);
