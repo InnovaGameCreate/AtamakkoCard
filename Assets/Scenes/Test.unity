@@ -621,6 +621,7 @@ MonoBehaviour:
   - {fileID: 1377712188}
   playerHand: {fileID: 1662660820}
   player: {fileID: 719954264}
+  enemy: {fileID: 2005962705}
 --- !u!1 &399115894
 GameObject:
   m_ObjectHideFlags: 0
