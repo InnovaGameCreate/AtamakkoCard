@@ -1,16 +1,23 @@
 using UniRx;
 using UnityEngine;
 
-namespace Field
+namespace Player
 {
-    public class HpStatus : MonoBehaviour
+    public class AtamakkoStatus : MonoBehaviour
     {
         private ReactiveProperty<int> _hp = new ReactiveProperty<int>(6);
-
-        public ReactiveProperty<int> MyHP
+        public ReactiveProperty<int> MyHp
         {
             get => _hp;
-            set => value = _hp;
+            set => _hp = value;
+        }
+        
+        [SerializeField] private int position;
+
+        public int MyPosition
+        {
+            get => position;
+            set => position = value;
         }
         
         // Start is called before the first frame update
