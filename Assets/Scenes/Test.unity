@@ -1252,6 +1252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a960d6eefe45a34c853840a1b70ead3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyStatus: {fileID: 2005962709}
   stage: {fileID: 399115894}
   attackButton: {fileID: 7036546511688966486, guid: 9b1a366252da8b84eb05d49a08f7606a, type: 3}
 --- !u!1 &720274129
