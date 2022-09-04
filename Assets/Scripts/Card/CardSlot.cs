@@ -31,7 +31,7 @@ namespace Card
 
             _hand = FindObjectOfType<Hand>();
 
-            BattleManager.Instance.gameState
+            BattleManager.Instance.MyGameState
                 .Where(s => s == BattleManager.State.Battle)
                 .Subscribe(_ =>
                 {
@@ -63,7 +63,7 @@ namespace Card
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (_cardID == -1) return;
-            if (BattleManager.Instance.gameState.Value != BattleManager.State.Select) return;
+            if (BattleManager.Instance.MyGameState.Value != BattleManager.State.Select) return;
             _draggingCard = Instantiate(cardPrefab, _canvasTransform);
             _draggingCard.GetComponent<CardController>().Init(CardData.CardDataArrayList[_cardID]);
             _draggingCard.transform.SetAsLastSibling();
@@ -73,14 +73,14 @@ namespace Card
         public void OnDrag(PointerEventData eventData)
         {
             if (_cardID == -1) return;
-            if (BattleManager.Instance.gameState.Value != BattleManager.State.Select) return;
+            if (BattleManager.Instance.MyGameState.Value != BattleManager.State.Select) return;
             _draggingCard.transform.position = _hand.transform.position;
         }
         
         public void OnDrop(PointerEventData eventData)
         {
             if (!_hand.IsHavaintCardID()) return;
-            if (BattleManager.Instance.gameState.Value != BattleManager.State.Select) return;
+            if (BattleManager.Instance.MyGameState.Value != BattleManager.State.Select) return;
             
             int gotCardID = _hand.GetGrabbingCardID();
             
@@ -92,7 +92,7 @@ namespace Card
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (BattleManager.Instance.gameState.Value != BattleManager.State.Select) return;
+            if (BattleManager.Instance.MyGameState.Value != BattleManager.State.Select) return;
             Destroy(_draggingCard);
 
             int gotCardID = _hand.GetGrabbingCardID();

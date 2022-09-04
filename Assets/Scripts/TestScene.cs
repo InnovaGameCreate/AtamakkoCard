@@ -16,6 +16,24 @@ public class TestScene : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         // "Room"という名前のルームに参加する（ルームが存在しなければ作成して参加する）
-        PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions(), TypedLobby.Default);
+        PhotonNetwork.JoinRandomRoom();
+    }
+
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        var roomOptions = new RoomOptions
+        {
+            MaxPlayers = 2
+        };
+
+        PhotonNetwork.CreateRoom(null, roomOptions);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+        }
     }
 }

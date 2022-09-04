@@ -610,8 +610,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 733e85cdb7bc4564b88a0a8e88130243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameState:
-    value: 0
   slotPrefab: {fileID: 5094284188052895845, guid: a2e259a45e1d9f34fbdf6e2a721eee9f, type: 3}
   cardManager: {fileID: 1662660821}
   decisionButton: {fileID: 1440085936}
