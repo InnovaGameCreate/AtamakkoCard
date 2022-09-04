@@ -3,21 +3,39 @@ using System.Collections.Generic;
 using Card;
 using Cysharp.Threading.Tasks;
 using Field;
+using Photon.Pun;
 using Player;
 using UniRx;
 using UnityEngine;
 
-public class BattleManager : MonoBehaviour
+public class BattleManager : MonoBehaviourPunCallbacks
 {
     public enum State
     {
+        Waiting,
         Init,
         Draw,
         Select,
         Battle,
         End
     }
-    public ReactiveProperty<State> gameState = new ReactiveProperty<State>(State.Init);
+    private ReactiveProperty<State> _gameState = new ReactiveProperty<State>(State.Waiting);
+    public ReactiveProperty<State> MyGameState
+    {
+        get => _gameState;
+        set => _gameState = value;
+    }
+
+    private ReactiveProperty<bool> _ready = new ReactiveProperty<bool>(false);
+    public ReactiveProperty<bool> MyReady
+    {
+        get => _ready;
+        set => _ready = value;
+    }
+    private bool _otherReady;
+
+    private readonly Subject<bool> _next = new Subject<bool>();
+    public IObserver<bool> Next => _next;
 
     [SerializeField] private CardSlot slotPrefab;
     [SerializeField] private Transform cardManager;
@@ -55,22 +73,27 @@ public class BattleManager : MonoBehaviour
 
         _enemyStatus = enemy.GetComponent<AtamakkoStatus>();
         
-        gameState
+        _gameState
+            .Where(x => x == State.Waiting)
+            .Subscribe(_ => WaitingGame())
+            .AddTo(this);
+        
+        _gameState
             .Where(x => x == State.Init)
             .Subscribe(_ => StartGame())
             .AddTo(this);
 
-        gameState
+        _gameState
             .Where(x => x == State.Draw)
             .Subscribe(_ => DrawFaze())
             .AddTo(this);
 
-        gameState
+        _gameState
             .Where(x => x == State.Select)
             .Subscribe(_ => SelectFaze())
             .AddTo(this);
 
-        gameState
+        _gameState
             .Where(x => x == State.Battle)
             .Subscribe(_ => BattleFaze())
             .AddTo(this);
@@ -79,7 +102,7 @@ public class BattleManager : MonoBehaviour
             .Where(hp => hp == 0)
             .Subscribe(_ =>
             {
-                gameState.Value = State.End;
+                _gameState.Value = State.End;
                 Debug.Log("You Lose!");
             })
             .AddTo(this);
@@ -88,10 +111,51 @@ public class BattleManager : MonoBehaviour
             .Where(hp => hp == 0)
             .Subscribe(_ =>
             {
-                gameState.Value = State.End;
+                _gameState.Value = State.End;
                 Debug.Log("You Win!");
             })
             .AddTo(this);
+
+        _ready
+            .Where(r => r)
+            .Subscribe(_ =>
+            {
+                if (_otherReady)
+                {
+                    photonView.RPC(nameof(NextStart), RpcTarget.AllViaServer);
+                    _otherReady = false;
+                }
+                else
+                {
+                    photonView.RPC(nameof(SendReady), RpcTarget.Others);
+                }
+            })
+            .AddTo(this);
+    }
+
+    [PunRPC]
+    private void SendReady()
+    {
+        if (_ready.Value)
+        {
+            photonView.RPC(nameof(NextStart), RpcTarget.AllViaServer);
+            return;
+        }
+        _otherReady = true;
+    }
+
+    [PunRPC]
+    private void NextStart()
+    {
+        _next.OnNext(true);
+        _ready.Value = false;
+    }
+
+    private async void WaitingGame()
+    {
+        _ready.Value = true;
+        await _next.ToUniTask(true);
+        _gameState.Value = State.Init;
     }
 
     private async void StartGame()
@@ -102,7 +166,9 @@ public class BattleManager : MonoBehaviour
         _cardList = new List<int>(_deck1.cardIDList);
         _cardList = ShuffleDeck(_cardList);
 
-        gameState.Value = State.Draw;
+        _ready.Value = true;
+        await _next.ToUniTask(true);
+        _gameState.Value = State.Draw;
     }
 
     private void DrawFaze()
@@ -118,7 +184,7 @@ public class BattleManager : MonoBehaviour
             DrawCard();
         }
 
-        gameState.Value = State.Select;
+        _gameState.Value = State.Select;
     }
 
     private void SelectFaze()
@@ -129,7 +195,7 @@ public class BattleManager : MonoBehaviour
             {
                 decisionButton.MyInteractable = false;
         
-                gameState.Value = State.Battle;
+                _gameState.Value = State.Battle;
             })
             .AddTo(this);
     }
@@ -144,7 +210,9 @@ public class BattleManager : MonoBehaviour
             slot.CreateCard(-1);
         }
 
-        gameState.Value = State.Draw;
+        _ready.Value = true;
+        await _next.ToUniTask(true);
+        _gameState.Value = State.Draw;
     }
 
     private async UniTask Battle(int cardID)
