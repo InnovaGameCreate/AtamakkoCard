@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 
-public class OnLoadSceneFaide : MonoBehaviour
+public class OnLoadSceneFade : MonoBehaviour
 {
     [SerializeField]
     Image FadeImage;
