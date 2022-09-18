@@ -23,11 +23,11 @@ namespace Player
             _atamakkoStatus = gameObject.GetComponent<AtamakkoStatus>();
         }
 
-        public async UniTask CanMove(CardModel card)
+        public async UniTask CanMove(CardModel card, int initiative)
         {
             Position = _atamakkoStatus.MyPosition;
             
-            if (card.Kind == "移動")
+            if (card.Kind == "移動" || card.Initiative == initiative)
             {
                 for(int i = 0; i < card.Move.Length; i++)
                 {

@@ -187,17 +187,20 @@ public class BattleManager : MonoBehaviourPunCallbacks
         _gameState.Value = State.Select;
     }
 
-    private void SelectFaze()
+    private async void SelectFaze()
     {
         Debug.Log("SelectFaze");
         decisionButton.Decision
             .Subscribe(_ =>
             {
                 decisionButton.MyInteractable = false;
-        
-                _gameState.Value = State.Battle;
+
+                _ready.Value = true;
             })
             .AddTo(this);
+        
+        await _next.ToUniTask(true);
+        _gameState.Value = State.Battle;
     }
     
     private async void BattleFaze()
@@ -219,9 +222,14 @@ public class BattleManager : MonoBehaviourPunCallbacks
     {
         var card = new CardModel(CardData.CardDataArrayList[cardID]);
         Debug.Log("ID"+cardID);
-        await UniTask.Delay(10);
-        await _attack.Attack(card);
-        await _move.CanMove(card);
+        for (int i = 6; i > 0; i--)
+        {
+            await UniTask.Delay(10);
+            await _attack.Attack(card, i);
+            await _move.CanMove(card, i);
+            _ready.Value = true;
+            await _next.ToUniTask(true);
+        }
     }
 
     private List<int> ShuffleDeck(List<int> idList)

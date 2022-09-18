@@ -23,9 +23,9 @@ namespace Player
             _atamakkoStatus = gameObject.GetComponent<AtamakkoStatus>();
         }
 
-        public async UniTask Attack(CardModel card)
+        public async UniTask Attack(CardModel card, int initiative)
         {
-            if (card.Kind == "攻撃")
+            if (card.Kind == "攻撃" || card.Initiative == initiative)
             {
                 for (int i = 0; i < card.Attack.Length; i++)
                 {
