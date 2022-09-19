@@ -27,7 +27,7 @@ namespace Player
         {
             Position = _atamakkoStatus.MyPosition;
             
-            if (card.Kind == "移動" || card.Initiative == initiative)
+            if (card.Kind == "移動" && card.Initiative == initiative)
             {
                 for(int i = 0; i < card.Move.Length; i++)
                 {
