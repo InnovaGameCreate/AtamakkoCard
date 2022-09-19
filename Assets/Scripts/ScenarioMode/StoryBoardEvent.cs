@@ -9,8 +9,8 @@ public class StoryBoardEvent : MonoBehaviour
     {
         scenario1,
         scenario2,
-        scenario3,
-        scenario4,
+        scenarioBlue1,
+        scenarioBlue2,
 
     }
     [SerializeField]
@@ -24,10 +24,7 @@ public class StoryBoardEvent : MonoBehaviour
     private void Start()
     {
         Comment.currentChapter = 0;
-        if (scenario == scenarioType.scenario1)
-        {
-            Scene[1].SetActive(false);
-        }
+        Scene[1].SetActive(false);
     }
 
     //タイルを選択したときにおこるイベント
@@ -209,7 +206,7 @@ public class StoryBoardEvent : MonoBehaviour
                     break;
             }
         }
-        if (scenario == scenarioType.scenario2)
+        else if (scenario == scenarioType.scenario2)
         {
             switch (eventNum)
             {
@@ -300,7 +297,101 @@ public class StoryBoardEvent : MonoBehaviour
                     Comment.nextText();
                     break;
                 case 19:
-                    //ボス戦
+                //ボス戦
+                default:
+                    break;
+            }
+        }
+        else if (scenario == scenarioType.scenarioBlue1)
+        {
+            switch (eventNum)
+            {
+                case 1:
+                    Comment.currentChapter = 0;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 2:
+                    Comment.currentChapter = 1;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 3:
+                    Comment.currentChapter = 2;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 4:
+                    Comment.currentChapter = 3;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 5:
+                    Comment.currentChapter = 4;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 6:
+                    Comment.currentChapter = 5;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 7:
+                    Comment.currentChapter = 6;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 8:
+                    Comment.currentChapter = 7;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 9:
+                    Comment.currentChapter = 8;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 10:
+                    Comment.currentChapter = 9;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 11:
+                    Comment.currentChapter = 10;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 12:
+                    Comment.currentChapter = 11;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 13:
+                    Comment.currentChapter = 12;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 14:
+                    Comment.currentChapter = 13;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 15:
+                    Comment.currentChapter = 14;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    //戦闘
+                    break;
+                case 16:
+                    Comment.currentChapter = 15;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 17:
+                    Comment.currentChapter = 16;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
                 default:
                     break;
             }
@@ -410,6 +501,34 @@ public class StoryBoardEvent : MonoBehaviour
                     break;
                 default:
                     Debug.Log("何も設定されていない終了イベントです");
+                    break;
+            }
+        }
+        else if (scenario == scenarioType.scenarioBlue1)
+        {
+
+            switch (eventNum)
+            {
+                case 7:
+                    Scene[0].SetActive(false);
+                    Scene[1].SetActive(true);
+                    Comment.currentChapter = 7;
+                    NovelCanvas.SetActive(true);
+                    Comment.ChangeBackGroundImage(1);
+                    Comment.nullText();
+                    Comment.onAnimation = true;
+                    yield return new WaitForSeconds(2f);
+                    Comment.ChangeBackGroundImage(2);
+                    yield return new WaitForSeconds(2f);
+                    Comment.nextText();
+                    Comment.onAnimation = false;
+                    Debug.Log("終了イベント7");
+                    break;
+                case 14:
+                    //教導の使徒と戦闘
+                    break;
+
+                default:
                     break;
             }
         }
