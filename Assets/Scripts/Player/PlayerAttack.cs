@@ -25,7 +25,7 @@ namespace Player
 
         public async UniTask Attack(CardModel card, int initiative)
         {
-            if (card.Kind == "攻撃" || card.Initiative == initiative)
+            if (card.Kind == "攻撃" && card.Initiative == initiative)
             {
                 for (int i = 0; i < card.Attack.Length; i++)
                 {

@@ -225,7 +225,11 @@ public class BattleManager : MonoBehaviourPunCallbacks
         for (int i = 6; i > 0; i--)
         {
             await UniTask.Delay(10);
+            
             await _attack.Attack(card, i);
+            _ready.Value = true;
+            await _next.ToUniTask(true);
+            
             await _move.CanMove(card, i);
             _ready.Value = true;
             await _next.ToUniTask(true);
