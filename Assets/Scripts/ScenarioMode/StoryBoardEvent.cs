@@ -392,6 +392,65 @@ public class StoryBoardEvent : MonoBehaviour
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
                     break;
+                case 18:
+                    Comment.currentChapter = 17;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 19:
+                    Comment.currentChapter = 18;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 20:
+                    Comment.currentChapter = 19;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 21:
+                    Comment.currentChapter = 20;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 22:
+                    Comment.currentChapter = 21;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 23:
+                    Comment.currentChapter = 22;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 24:
+                    break;
+                case 25:
+                    Comment.currentChapter = 23;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 26:
+                    Comment.currentChapter = 24;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 27:
+                    //êÌì¨
+                    break;
+                case 28:
+                    //êÌì¨
+                    break;
+                case 29:
+                    Comment.currentChapter = 25;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 30:
+                    Comment.currentChapter = 26;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    //êÌì¨
+                    break;
                 default:
                     break;
             }
@@ -526,6 +585,9 @@ public class StoryBoardEvent : MonoBehaviour
                     break;
                 case 14:
                     //ã≥ì±ÇÃégìkÇ∆êÌì¨
+                    break;
+                case 30:
+                    //É{ÉXêÌì¨
                     break;
 
                 default:
