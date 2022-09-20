@@ -27,8 +27,8 @@ public class BattleManager : MonoBehaviourPunCallbacks
         set => _gameState = value;
     }
 
-    private ReactiveProperty<bool> _ready = new ReactiveProperty<bool>(false);
-    public ReactiveProperty<bool> MyReady
+    private bool _ready;
+    public bool MyReady
     {
         get => _ready;
         set => _ready = value;
@@ -118,28 +118,25 @@ public class BattleManager : MonoBehaviourPunCallbacks
                 Debug.Log("You Win!");
             })
             .AddTo(this);
+    }
 
-        _ready
-            .Where(r => r)
-            .Subscribe(_ =>
-            {
-                if (_otherReady)
-                {
-                    photonView.RPC(nameof(NextStart), RpcTarget.AllViaServer);
-                    _otherReady = false;
-                }
-                else
-                {
-                    photonView.RPC(nameof(SendReady), RpcTarget.Others);
-                }
-            })
-            .AddTo(this);
+    private void Ready()
+    {
+        _ready = true;
+        if (_otherReady)
+        {
+            photonView.RPC(nameof(NextStart), RpcTarget.AllViaServer);
+        }
+        else
+        {
+            photonView.RPC(nameof(SendReady), RpcTarget.Others);
+        }
     }
 
     [PunRPC]
     private void SendReady()
     {
-        if (_ready.Value)
+        if (_ready)
         {
             photonView.RPC(nameof(NextStart), RpcTarget.AllViaServer);
             return;
@@ -151,12 +148,13 @@ public class BattleManager : MonoBehaviourPunCallbacks
     private void NextStart()
     {
         _next.OnNext(true);
-        _ready.Value = false;
+        _otherReady = false;
+        _ready = false;
     }
 
     private async void WaitingGame()
     {
-        _ready.Value = true;
+        Ready();
         await _next.ToUniTask(true);
         _gameState.Value = State.Init;
     }
@@ -169,7 +167,7 @@ public class BattleManager : MonoBehaviourPunCallbacks
         _cardList = new List<int>(_deck1.cardIDList);
         _cardList = ShuffleDeck(_cardList);
 
-        _ready.Value = true;
+        Ready();
         await _next.ToUniTask(true);
         _gameState.Value = State.Draw;
     }
@@ -199,7 +197,7 @@ public class BattleManager : MonoBehaviourPunCallbacks
             {
                 decisionButton.MyInteractable = false;
 
-                _ready.Value = true;
+                Ready();
             })
             .AddTo(this);
         
@@ -227,7 +225,7 @@ public class BattleManager : MonoBehaviourPunCallbacks
             slot.CreateCard(-1);
         }
 
-        _ready.Value = true;
+        Ready();
         await _next.ToUniTask(true);
         _playerStatus.UState = AtamakkoStatus.Ultimate.Normal;
         _gameState.Value = State.Draw;
@@ -247,11 +245,11 @@ public class BattleManager : MonoBehaviourPunCallbacks
             await UniTask.Delay(10);
             
             await _attack.Attack(card, initiative);
-            _ready.Value = true;
+            Ready();
             await _next.ToUniTask(true);
             
             await _move.CanMove(card, initiative);
-            _ready.Value = true;
+            Ready();
             await _next.ToUniTask(true);
         }
     }
