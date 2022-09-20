@@ -52,6 +52,10 @@ namespace Player
             if (enemyStatus.MyPosition == AttackPlace)
             {
                 Debug.Log("ダメージ " + damage);
+                if (_atamakkoStatus.UState == AtamakkoStatus.Ultimate.Attack)
+                {
+                    damage += 1;
+                }
                 enemyStatus.MyHp.Value -= damage;
             }
         }
