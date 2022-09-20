@@ -7,6 +7,7 @@ using Photon.Pun;
 using Player;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviourPunCallbacks
 {
@@ -44,12 +45,14 @@ public class BattleManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject playerHand;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject enemy;
+    [SerializeField] private Button bSpecial;
     private PlayerMove _move;
     private PlayerAttack _attack;
     private Deck _deck1;
     private List<int> _cardList;
     private AtamakkoStatus _playerStatus;
     private AtamakkoStatus _enemyStatus;
+    private bool _usedUltimate;
 
     public static BattleManager Instance;
 
@@ -190,6 +193,7 @@ public class BattleManager : MonoBehaviourPunCallbacks
     private async void SelectFaze()
     {
         Debug.Log("SelectFaze");
+        bSpecial.interactable = !_usedUltimate;
         decisionButton.Decision
             .Subscribe(_ =>
             {
@@ -200,12 +204,22 @@ public class BattleManager : MonoBehaviourPunCallbacks
             .AddTo(this);
         
         await _next.ToUniTask(true);
+        if (_playerStatus.UState != AtamakkoStatus.Ultimate.Normal)
+        {
+            _usedUltimate = true;
+        }
+
+        bSpecial.interactable = false;
         _gameState.Value = State.Battle;
     }
     
     private async void BattleFaze()
     {
         Debug.Log("BattleFaze");
+        if (_playerStatus.UState == AtamakkoStatus.Ultimate.Recover)
+        {
+            _playerStatus.MyHp.Value += 3;
+        }
         foreach (var slot in battleSlots)
         {
             // var token = new CancellationTokenSource();
@@ -215,6 +229,7 @@ public class BattleManager : MonoBehaviourPunCallbacks
 
         _ready.Value = true;
         await _next.ToUniTask(true);
+        _playerStatus.UState = AtamakkoStatus.Ultimate.Normal;
         _gameState.Value = State.Draw;
     }
 
@@ -224,13 +239,18 @@ public class BattleManager : MonoBehaviourPunCallbacks
         Debug.Log("ID"+cardID);
         for (int i = 6; i > 0; i--)
         {
+            int initiative = i;
+            if (_playerStatus.UState == AtamakkoStatus.Ultimate.Speed)
+            {
+                initiative -= 1;
+            }
             await UniTask.Delay(10);
             
-            await _attack.Attack(card, i);
+            await _attack.Attack(card, initiative);
             _ready.Value = true;
             await _next.ToUniTask(true);
             
-            await _move.CanMove(card, i);
+            await _move.CanMove(card, initiative);
             _ready.Value = true;
             await _next.ToUniTask(true);
         }

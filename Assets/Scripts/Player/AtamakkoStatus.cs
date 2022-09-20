@@ -5,6 +5,20 @@ namespace Player
 {
     public class AtamakkoStatus : MonoBehaviour
     {
+        public enum Ultimate
+        {
+            Normal,
+            Recover,
+            Attack,
+            Speed
+        }
+        private Ultimate _ultState = Ultimate.Normal;
+        public Ultimate UState
+        {
+            get => _ultState;
+            set => _ultState = value;
+        }
+
         private ReactiveProperty<int> _hp = new ReactiveProperty<int>(6);
         public ReactiveProperty<int> MyHp
         {
