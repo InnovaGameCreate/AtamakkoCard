@@ -801,6 +801,7 @@ GameObject:
   m_Component:
   - component: {fileID: 397918048}
   - component: {fileID: 397918049}
+  - component: {fileID: 397918050}
   m_Layer: 0
   m_Name: ClientManager
   m_TagString: Untagged
@@ -845,7 +846,29 @@ MonoBehaviour:
   playerHand: {fileID: 1662660820}
   player: {fileID: 719954264}
   enemy: {fileID: 2005962705}
-  bSpecial: {fileID: 0}
+  bSpecial: {fileID: 1802493114}
+--- !u!114 &397918050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397918046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &399115894
 GameObject:
   m_ObjectHideFlags: 0
