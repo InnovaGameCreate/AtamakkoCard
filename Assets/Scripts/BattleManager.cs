@@ -28,11 +28,6 @@ public class BattleManager : MonoBehaviourPunCallbacks
     }
 
     private bool _ready;
-    public bool MyReady
-    {
-        get => _ready;
-        set => _ready = value;
-    }
     private bool _otherReady;
 
     private readonly Subject<bool> _next = new Subject<bool>();
@@ -120,12 +115,22 @@ public class BattleManager : MonoBehaviourPunCallbacks
             .AddTo(this);
     }
 
+    private void Update()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (_ready && _otherReady)
+            {
+                photonView.RPC(nameof(NextStart), RpcTarget.All);
+            }
+        }
+    }
+
     private void Ready()
     {
-        _ready = true;
-        if (_otherReady)
+        if (PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC(nameof(NextStart), RpcTarget.AllViaServer);
+            _ready = true;
         }
         else
         {
@@ -136,11 +141,6 @@ public class BattleManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void SendReady()
     {
-        if (_ready)
-        {
-            photonView.RPC(nameof(NextStart), RpcTarget.AllViaServer);
-            return;
-        }
         _otherReady = true;
     }
 
@@ -227,14 +227,16 @@ public class BattleManager : MonoBehaviourPunCallbacks
 
         Ready();
         await _next.ToUniTask(true);
+        Debug.Log("NextRound");
         _playerStatus.UState = AtamakkoStatus.Ultimate.Normal;
         _gameState.Value = State.Draw;
     }
 
     private async UniTask Battle(int cardID)
     {
+        await UniTask.Delay(10);
         var card = new CardModel(CardData.CardDataArrayList[cardID]);
-        Debug.Log("ID"+cardID);
+        
         for (int i = 6; i > 0; i--)
         {
             int initiative = i;
@@ -245,13 +247,21 @@ public class BattleManager : MonoBehaviourPunCallbacks
             await UniTask.Delay(10);
             
             await _attack.Attack(card, initiative);
+            Debug.Log("Attack" + initiative);
+            await UniTask.Delay(10);
             Ready();
             await _next.ToUniTask(true);
-            
+            _attack.Attack();
+
             await _move.CanMove(card, initiative);
+            Debug.Log("Move" + initiative);
+            await UniTask.Delay(10);
             Ready();
             await _next.ToUniTask(true);
+            _move.MovePart();
         }
+        
+        await UniTask.Delay(10);
     }
 
     private List<int> ShuffleDeck(List<int> idList)
