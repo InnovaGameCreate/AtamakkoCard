@@ -42,6 +42,9 @@ MonoBehaviour:
   - SendStamp
   - NextStart
   - SendReady
+  - AddDamage
+  - Move
+  - EnemyMove
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
