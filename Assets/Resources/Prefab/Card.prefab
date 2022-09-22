@@ -68,7 +68,7 @@ MonoBehaviour:
   nameText: {fileID: 442927002287396115}
   iniText: {fileID: 6246316505026759678}
   expText: {fileID: 8766580174271427277}
-  cardImage: {fileID: 0}
+  cardSprite: {fileID: 6611806108921883923}
   place: {fileID: 4703058064577758525}
 --- !u!114 &2921594876601267064
 MonoBehaviour:
