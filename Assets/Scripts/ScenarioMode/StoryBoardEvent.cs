@@ -11,6 +11,10 @@ public class StoryBoardEvent : MonoBehaviour
         scenario2,
         scenarioBlue1,
         scenarioBlue2,
+        scenarioRed1,
+        scenarioRed2,
+        scenarioWhite1,
+        scenarioWhite2,
 
     }
     [SerializeField]
@@ -32,6 +36,7 @@ public class StoryBoardEvent : MonoBehaviour
     {
         if (scenario == scenarioType.scenario1)
         {
+            #region
             switch (eventNum)
             {
                 case 1:
@@ -205,9 +210,11 @@ public class StoryBoardEvent : MonoBehaviour
                     Debug.Log("何も設定されていない開始イベントです");
                     break;
             }
+            #endregion
         }
         else if (scenario == scenarioType.scenario2)
         {
+            #region
             switch (eventNum)
             {
                 case 1:
@@ -301,9 +308,11 @@ public class StoryBoardEvent : MonoBehaviour
                 default:
                     break;
             }
+            #endregion
         }
         else if (scenario == scenarioType.scenarioBlue1)
         {
+            #region
             switch (eventNum)
             {
                 case 1:
@@ -449,11 +458,142 @@ public class StoryBoardEvent : MonoBehaviour
                     Comment.currentChapter = 26;
                     NovelCanvas.SetActive(true);
                     Comment.nextText();
-                    //戦闘
                     break;
                 default:
                     break;
             }
+            #endregion
+        }
+        else if(scenario == scenarioType.scenarioBlue2)
+        {
+            #region
+            switch (eventNum)
+            {
+                case 1:
+                    Comment.currentChapter = 0;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 2:
+                    Comment.currentChapter = 1;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 3:
+                    Comment.currentChapter = 2;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 4:
+                    Comment.currentChapter = 3;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 5:
+                    Comment.currentChapter = 4;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 6:
+                    Comment.currentChapter = 5;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 7:
+                    Comment.currentChapter = 6;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 8:
+                    Comment.currentChapter = 7;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 9:
+                    Comment.currentChapter = 8;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 10:
+                    Comment.currentChapter = 9;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 11:
+                    Comment.currentChapter = 10;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 12:
+                    Comment.currentChapter = 11;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 13:
+                    Comment.currentChapter = 12;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 14:
+                    Comment.currentChapter = 13;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 15:
+                    Comment.currentChapter = 14;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 16:
+                    Comment.currentChapter = 15;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 17:
+                    Comment.currentChapter = 16;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 18:
+                    Comment.currentChapter = 17;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 19:
+                    Comment.currentChapter = 18;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 20:
+                    Comment.currentChapter = 19;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 21:
+                    //戦闘
+                    break;
+                case 22:
+                    Comment.currentChapter = 20;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 23:
+                    //戦闘
+                    break;
+                case 24:
+                    Comment.currentChapter = 21;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                case 25:
+                    Comment.currentChapter = 22;
+                    NovelCanvas.SetActive(true);
+                    Comment.nextText();
+                    break;
+                default:
+                    break;
+            }
+            #endregion
         }
     }
     //会話終了時に起こるイベント
@@ -467,6 +607,7 @@ public class StoryBoardEvent : MonoBehaviour
         yield return new WaitForFixedUpdate();
         if (scenario == scenarioType.scenario1)
         {
+            #region
             switch (eventNum)
             {
                 case 5:
@@ -503,69 +644,33 @@ public class StoryBoardEvent : MonoBehaviour
                     Debug.Log("何も設定されていない終了イベントです");
                     break;
             }
+            #endregion
         }
         else if (scenario == scenarioType.scenario2)
         {
+            #region
             switch (eventNum)
             {
                 case 8:
                     //アタマッコの新しい装備を手に入れる
                     Debug.Log("終了イベント8");
                     break;
-                case 10:
-                    var tile12 = GameObject.Find("tile (12)");
-                    tile12.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                    tile12.GetComponent<Button>().enabled = true;
-                    tile12.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().enabled = true;
-                    //新しい道の開拓
-                    break;
-                case 12:
-                    var tile13 = GameObject.Find("tile (13)");
-                    tile13.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                    tile13.GetComponent<Button>().enabled = true;
-                    tile13.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().enabled = true;
-                    //新しい道の開拓
-                    break;
                 case 13:
                     Scene[1].SetActive(true);
                     NovelCanvas.SetActive(true);
                     yield return new WaitForSeconds(4f);
                     Comment.ChangeBackGroundImage(0);
-                    var tile14 = GameObject.Find("tile (14)");
-                    var tile15 = GameObject.Find("tile (15)");
-                    var tile16 = GameObject.Find("tile (16)");
-                    var tile17 = GameObject.Find("tile (17)");
-                    var tile18 = GameObject.Find("tile (18)");
-                    var tile19 = GameObject.Find("tile (19)");
-                    tile14.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                    tile15.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                    tile16.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                    tile17.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                    tile18.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                    tile19.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                    tile14.GetComponent<Button>().enabled = true;
-                    tile15.GetComponent<Button>().enabled = true;
-                    tile16.GetComponent<Button>().enabled = true;
-                    tile17.GetComponent<Button>().enabled = true;
-                    tile18.GetComponent<Button>().enabled = true;
-                    tile19.GetComponent<Button>().enabled = true;
-                    tile14.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().enabled = true;
-                    tile15.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().enabled = true;
-                    tile16.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().enabled = true;
-                    tile17.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().enabled = true;
-                    tile18.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().enabled = true;
-                    tile19.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().enabled = true;
-                    //新しい道の開拓
                     NovelCanvas.SetActive(false);
                     break;
                 default:
                     Debug.Log("何も設定されていない終了イベントです");
                     break;
             }
+            #endregion
         }
         else if (scenario == scenarioType.scenarioBlue1)
         {
-
+            #region
             switch (eventNum)
             {
                 case 7:
@@ -593,6 +698,54 @@ public class StoryBoardEvent : MonoBehaviour
                 default:
                     break;
             }
+            #endregion
+        }
+        else if (scenario == scenarioType.scenarioBlue2)
+        {
+            #region
+            switch (eventNum)
+            {
+                case 7:
+                    Scene[0].SetActive(false);
+                    Scene[1].SetActive(true);
+                    Comment.currentChapter = 7;
+                    NovelCanvas.SetActive(true);
+                    Comment.ChangeBackGroundImage(1);
+                    Comment.nullText();
+                    Comment.onAnimation = true;
+                    yield return new WaitForSeconds(2f);
+                    Comment.ChangeBackGroundImage(2);
+                    yield return new WaitForSeconds(2f);
+                    Comment.nextText();
+                    Comment.onAnimation = false;
+                    Debug.Log("終了イベント7");
+                    break;
+                case 14:
+                    Scene[1].SetActive(false);
+                    Scene[2].SetActive(true);
+                    Comment.currentChapter = 14;
+                    NovelCanvas.SetActive(true);
+                    Comment.ChangeBackGroundImage(1);
+                    Comment.nullText();
+                    Comment.onAnimation = true;
+                    yield return new WaitForSeconds(2f);
+                    Comment.ChangeBackGroundImage(2);
+                    yield return new WaitForSeconds(2f);
+                    Comment.nextText();
+                    Comment.onAnimation = false;
+                    Debug.Log("終了イベント7");
+                    break;
+                case 15:
+                    //少年と戦闘
+                    break;
+                case 25:
+                    //ラスボス戦
+                    break;
+
+                default:
+                    break;
+            }
+            #endregion
         }
     }
 }
