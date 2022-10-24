@@ -7,7 +7,8 @@ namespace Card
     {
         private int _cardID = -1;
         private CardController _cardController;
-        
+        public CardController MyCard => _cardController;
+
         [SerializeField] private GameObject cardPrefab;
 
         public int MyCardID
