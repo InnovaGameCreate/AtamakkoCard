@@ -9,6 +9,7 @@ namespace Card
         [SerializeField] private TextMeshProUGUI nameText, iniText, expText;
         [SerializeField] private Image cardSprite;
         [SerializeField] private GameObject place;
+        public GameObject backCard;
 
         public void Show(CardModel cardModel)
         {
