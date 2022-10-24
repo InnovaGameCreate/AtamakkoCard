@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Card;
 using Cysharp.Threading.Tasks;
 using Field;
@@ -37,6 +38,7 @@ public class BattleManager : MonoBehaviourPunCallbacks
     [SerializeField] private Transform cardManager;
     [SerializeField] private DecisionButton decisionButton;
     [SerializeField] private CardSlot[] battleSlots;
+    [SerializeField] private CardSlot[] enemySlots;
     [SerializeField] private GameObject playerHand;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject enemy;
@@ -207,7 +209,16 @@ public class BattleManager : MonoBehaviourPunCallbacks
             _usedUltimate = true;
         }
 
+        var token = this.GetCancellationTokenOnDestroy();
         bSpecial.interactable = false;
+        for (int i = 0; i < battleSlots.Length; i++)
+        {
+            photonView.RPC(nameof(EnemyCard), RpcTarget.Others, i, battleSlots[i].MyCardID);
+            await UniTask.WaitUntil(
+                predicate:() => enemySlots[i].MyCardID >= 0,
+                timing:PlayerLoopTiming.Update,
+                cancellationToken: token);
+        }
         _gameState.Value = State.Battle;
     }
     
@@ -218,11 +229,12 @@ public class BattleManager : MonoBehaviourPunCallbacks
         {
             _playerStatus.MyHp.Value += 3;
         }
-        foreach (var slot in battleSlots)
+        for (int i = 0; i < battleSlots.Length; i++)
         {
-            // var token = new CancellationTokenSource();
-            await Battle(slot.MyCardID);
-            slot.CreateCard(-1);
+            enemySlots[i].FlipOver();
+            await Battle(battleSlots[i].MyCardID);
+            battleSlots[i].DeleteCard();
+            enemySlots[i].DeleteCard();
         }
 
         Ready();
@@ -262,6 +274,14 @@ public class BattleManager : MonoBehaviourPunCallbacks
         }
         
         await UniTask.Delay(10);
+    }
+
+    [PunRPC]
+    private void EnemyCard(int sID, int cID)
+    {
+        Debug.Log("EnemySlot" + cID);
+        enemySlots[sID].CreateCard(cID);
+        enemySlots[sID].FlipOver();
     }
 
     private List<int> ShuffleDeck(List<int> idList)

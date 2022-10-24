@@ -15,7 +15,8 @@ namespace Field
         {
             foreach (var cardSlot in displaySlots)
             {
-                cardSlot.CheckCardID
+                var cardMovement = cardSlot.gameObject.GetComponent<CardMovement>();
+                cardMovement.CheckCardID
                     .Subscribe(_ =>
                     {
                         if (displaySlots[0].MyCardID < 0 || displaySlots[1].MyCardID < 0 ||
