@@ -10,6 +10,7 @@ namespace Card
         [SerializeField] private Image cardSprite;
         [SerializeField] private GameObject place;
         public GameObject backCard;
+        public GameObject shadow;
 
         public void Show(CardModel cardModel)
         {

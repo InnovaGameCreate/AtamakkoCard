@@ -32,6 +32,7 @@ namespace Card
             _draggingCard.GetComponent<CardController>().Init(CardData.CardDataArrayList[_slot.MyCardID]);
             _draggingCard.transform.SetAsLastSibling();
             _hand.SetGrabbingCardID(_slot.MyCardID);
+            _slot.MyCard.view.shadow.SetActive(true);
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -57,6 +58,7 @@ namespace Card
         public void OnEndDrag(PointerEventData eventData)
         {
             if (BattleManager.Instance.MyGameState.Value != BattleManager.State.Select) return;
+            _slot.MyCard.view.shadow.SetActive(false);
             Destroy(_draggingCard);
 
             int gotCardID = _hand.GetGrabbingCardID();
