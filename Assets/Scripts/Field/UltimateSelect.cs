@@ -1,3 +1,4 @@
+using System;
 using Player;
 using UniRx;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Field
     public class UltimateSelect : MonoBehaviour
     {
         [SerializeField] private GameObject uiUltimate;
-        [SerializeField] private readonly AtamakkoStatus.Ultimate _ultimate;
+        [SerializeField] private  AtamakkoStatus.Ultimate ultimate;
         [SerializeField] private AtamakkoStatus playerStatus;
 
         private Button _bUltimate;
@@ -16,15 +17,19 @@ namespace Field
         private void Start()
         {
             _bUltimate = GetComponent<Button>();
-
+            _bUltimate.interactable = playerStatus.UState == ultimate;
             _bUltimate.OnClickAsObservable()
                 .Subscribe(_ =>
                 {
-                    playerStatus.UState = playerStatus.UState == _ultimate ? AtamakkoStatus.Ultimate.Normal : _ultimate;
-
+                    playerStatus.UState = ultimate;
                     uiUltimate.SetActive(false);
                 })
                 .AddTo(this);
+        }
+
+        private void Update()
+        {
+            _bUltimate.interactable = playerStatus.UState != ultimate;
         }
     }
 }
