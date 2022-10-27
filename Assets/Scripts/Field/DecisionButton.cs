@@ -1,4 +1,5 @@
 using System;
+using System.Audio;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +22,11 @@ namespace Field
         private void Start()
         {
             bDecision.OnClickAsObservable()
-                .Subscribe(_ => _decision.OnNext(true))
+                .Subscribe(_ =>
+                {
+                    SeManager.Instance.ShotSe(SeType.ButtonClick);
+                    _decision.OnNext(true);
+                })
                 .AddTo(this);
             
             _interactable

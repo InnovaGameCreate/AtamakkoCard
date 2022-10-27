@@ -15,7 +15,7 @@ public class NovelComment : MonoBehaviour
     [SerializeField]
     private string SHEET_NAME;
     List<string[]> characterDataArrayList;
-    private float textSpeed = 0.05f;//•¶š‘—‚è‘¬“x
+    private float textSpeed = 0.05f;//æ–‡å­—é€ã‚Šé€Ÿåº¦
     public int currentChapter;
     [SerializeField]
     private Image StillImage;
@@ -23,34 +23,34 @@ public class NovelComment : MonoBehaviour
     private Image BackGroundImage;
     StoryBoardEvent eventSystem;
 
-    //ƒeƒLƒXƒg
+    //ãƒ†ã‚­ã‚¹ãƒˆ
     [SerializeField]
     private TextMeshProUGUI CommentText;
     [SerializeField]
     private TextMeshProUGUI CharacterName;
-    private bool isWriting = false;                                 //‘‚¢‚Ä‚¢‚é‚©‚Ç‚¤‚©
+    private bool isWriting = false;                                 //æ›¸ã„ã¦ã„ã‚‹ã‹ã©ã†ã‹
     private bool autoWriting = false;
     private bool skipWriting = false;
 
     public bool onAnimation = false;
 
-    //ƒGƒNƒZƒ‹“àdata
+    //ã‚¨ã‚¯ã‚»ãƒ«å†…data
     private string capter;
     private string Type;
     private string lastCapter = null;
-    private string characterName;                                            //˜bÒ‚Ì–¼‘O
-    private string comment;                                         //‘‚©‚ê‚é“à—e
-    private string diff;                                            //•\î·•ª
-    private bool readEnd = false;                                   //“Ç‚İ‚İŠ®—¹‚µ‚Ä‚¢‚é‚©
+    private string characterName;                                            //è©±è€…ã®åå‰
+    private string comment;                                         //æ›¸ã‹ã‚Œã‚‹å†…å®¹
+    private string diff;                                            //è¡¨æƒ…å·®åˆ†
+    private bool readEnd = false;                                   //èª­ã¿è¾¼ã¿å®Œäº†ã—ã¦ã„ã‚‹ã‹
 
 
-    //‚«o‚µŒn
+    //å¹ãå‡ºã—ç³»
     [SerializeField]
     private Sprite[] Still;
     [SerializeField]
     private Sprite[] BackImage;
 
-    //ƒXƒ`ƒ‹‰æ‘œ
+    //ã‚¹ãƒãƒ«ç”»åƒ
 
     [System.Obsolete]
     private void Awake()
@@ -73,15 +73,15 @@ public class NovelComment : MonoBehaviour
     public void nextText()
     {
         if (isWriting) return;
-        lastCapter = capter;                                        //‘O‰ñ‚Ìchapter”‚ğ‹L˜^
-        convertData(characterDataArrayList[TextNum]);               //Šeƒf[ƒ^‚ğƒXƒvƒŒƒbƒgƒV[ƒg‚©‚ç“Ç‚İæ‚é
+        lastCapter = capter;                                        //å‰å›ã®chapteræ•°ã‚’è¨˜éŒ²
+        convertData(characterDataArrayList[TextNum]);               //å„ãƒ‡ãƒ¼ã‚¿ã‚’ã‚¹ãƒ—ãƒ¬ãƒƒãƒˆã‚·ãƒ¼ãƒˆã‹ã‚‰èª­ã¿å–ã‚‹
 
-        if (lastCapter != capter && lastCapter != null && lastCapter == currentChapter.ToString())//‰ï˜b‚ÌI—¹
+        if (lastCapter != capter && lastCapter != null && lastCapter == currentChapter.ToString())//ä¼šè©±ã®çµ‚äº†
         {
             endTalk();
             return;
         }
-        else if (capter != currentChapter.ToString())//–Ú•W‚Ìchapter‚Å‚Í‚È‚©‚Á‚½ê‡
+        else if (capter != currentChapter.ToString())//ç›®æ¨™ã®chapterã§ã¯ãªã‹ã£ãŸå ´åˆ
         {
             if (characterDataArrayList.Count - 1 > TextNum) TextNum++;
             else TextNum = 0;
@@ -89,10 +89,10 @@ public class NovelComment : MonoBehaviour
             return;
         }
 
-        StartCoroutine(textDisplay());                              //ƒeƒLƒXƒg‚Ì”½‰f
-        CharacterName.text = characterName;                                  //–¼‘O
+        StartCoroutine(textDisplay());                              //ãƒ†ã‚­ã‚¹ãƒˆã®åæ˜ 
+        CharacterName.text = characterName;                                  //åå‰
 
-        if (characterDataArrayList.Count - 1 > TextNum) TextNum++;    //“Ç‚İ‚ñ‚¾data‚Ìs”ˆÈã‚É‚Ís‚©‚È‚¢
+        if (characterDataArrayList.Count - 1 > TextNum) TextNum++;    //èª­ã¿è¾¼ã‚“ã dataã®è¡Œæ•°ä»¥ä¸Šã«ã¯è¡Œã‹ãªã„
     }
 
     public void startTalk()
@@ -102,7 +102,7 @@ public class NovelComment : MonoBehaviour
 
     private void endTalk()
     {
-        Debug.Log("chapter‚ª‘ã‚í‚è‚Ü‚µ‚½BlastCpater‚Í" + lastCapter + "Fcapter‚Í" + capter);
+        Debug.Log("chapterãŒä»£ã‚ã‚Šã¾ã—ãŸã€‚lastCpaterã¯" + lastCapter + "ï¼šcapterã¯" + capter);
         eventSystem.endEvent(int.Parse(capter));
         transform.parent.gameObject.SetActive(false);
     }
@@ -136,16 +136,16 @@ public class NovelComment : MonoBehaviour
     {
         List<string[]> characterDataArrayList = new List<string[]>();
         StringReader reader = new StringReader(_text);
-        reader.ReadLine();  // 1s–Ú‚Íƒ‰ƒxƒ‹‚È‚Ì‚ÅŠO‚·
+        reader.ReadLine();  // 1è¡Œç›®ã¯ãƒ©ãƒ™ãƒ«ãªã®ã§å¤–ã™
         while (reader.Peek() != -1)
         {
-            string line = reader.ReadLine();        // ˆês‚¸‚Â“Ç‚İ‚İ
-            string[] elements = line.Split(',');    // s‚ÌƒZƒ‹‚Í,‚Å‹æØ‚ç‚ê‚é
+            string line = reader.ReadLine();        // ä¸€è¡Œãšã¤èª­ã¿è¾¼ã¿
+            string[] elements = line.Split(',');    // è¡Œã®ã‚»ãƒ«ã¯,ã§åŒºåˆ‡ã‚‰ã‚Œã‚‹
             for (int i = 0; i < elements.Length; i++)
             {
                 if (elements[i] == "\"\"")
                 {
-                    continue;                       // ‹ó”’‚Íœ‹
+                    continue;                       // ç©ºç™½ã¯é™¤å»
                 }
                 elements[i] = elements[i].TrimStart('"').TrimEnd('"');
             }
@@ -154,9 +154,9 @@ public class NovelComment : MonoBehaviour
         return characterDataArrayList;
     }
 
-    IEnumerator textDisplay()//ƒeƒLƒXƒg‚ğˆê•¶š‚¸‚Â•\¦‚·‚é‚·‚é
+    IEnumerator textDisplay()//ãƒ†ã‚­ã‚¹ãƒˆã‚’ä¸€æ–‡å­—ãšã¤è¡¨ç¤ºã™ã‚‹ã™ã‚‹
     {
-        if(Type == "ƒeƒLƒXƒg")
+        if(Type == "ãƒ†ã‚­ã‚¹ãƒˆ")
         {
             isWriting = true;
             CommentText.text = "";
@@ -169,18 +169,18 @@ public class NovelComment : MonoBehaviour
             //SeManager.Instance.stopSe();
             isWriting = false;
 
-            if(autoWriting)                         //©“®‘—‚è‹@”\‚ªƒIƒ“‚Ì‚É•¶Í‚ªI‚í‚é‚ÆŸ‚Ì•¶Í‚ğ‘—‚é‚æ‚¤‚É‚·‚é
+            if(autoWriting)                         //è‡ªå‹•é€ã‚Šæ©Ÿèƒ½ãŒã‚ªãƒ³ã®æ™‚ã«æ–‡ç« ãŒçµ‚ã‚ã‚‹ã¨æ¬¡ã®æ–‡ç« ã‚’é€ã‚‹ã‚ˆã†ã«ã™ã‚‹
             {
                 yield return new WaitForSeconds(0.5f);
                 nextText();
             }
-            if (skipWriting)                         //ƒXƒLƒbƒv‹@”\‚ªƒIƒ“‚Ì‚É•¶Í‚ªI‚í‚é‚ÆŸ‚Ì•¶Í‚ğ‘—‚é‚æ‚¤‚É‚·‚é
+            if (skipWriting)                         //ã‚¹ã‚­ãƒƒãƒ—æ©Ÿèƒ½ãŒã‚ªãƒ³ã®æ™‚ã«æ–‡ç« ãŒçµ‚ã‚ã‚‹ã¨æ¬¡ã®æ–‡ç« ã‚’é€ã‚‹ã‚ˆã†ã«ã™ã‚‹
             {
                 yield return new WaitForSeconds(0.1f);
                 nextText();
             }
         }
-        else if(Type == "ƒXƒ`ƒ‹")
+        else if(Type == "ã‚¹ãƒãƒ«")
         {
             showSteel(int.Parse(comment));
             yield return new WaitForSeconds(0.1f);
@@ -188,7 +188,7 @@ public class NovelComment : MonoBehaviour
             StillImage.sprite = Still[0];
             nextText();
         }
-        else if (Type == "”wŒi")
+        else if (Type == "èƒŒæ™¯")
         {
             ChangeBackGroundImage(int.Parse(comment));
             yield return new WaitForSeconds(0.4f);
@@ -215,7 +215,7 @@ public class NovelComment : MonoBehaviour
     }
     public void ChangeBackGroundImage(int num)
     {
-        //Debug.Log("”wŒi‚ğ" + num + "‚É•ÏX‚µ‚Ü‚µ‚½");
+        //Debug.Log("èƒŒæ™¯ã‚’" + num + "ã«å¤‰æ›´ã—ã¾ã—ãŸ");
         BackGroundImage.sprite = BackImage[num];
     }
 
@@ -267,7 +267,7 @@ public class NovelComment : MonoBehaviour
         }
     }
 
-    public void nullText()//ƒeƒLƒXƒg“à‚ğÁ‚·
+    public void nullText()//ãƒ†ã‚­ã‚¹ãƒˆå†…ã‚’æ¶ˆã™
     {
         CommentText.text = "";
     }
