@@ -3,11 +3,11 @@ using UnityEngine.EventSystems;
 
 namespace Field
 {
-    public class CancelSelect : MonoBehaviour, IEndDragHandler
+    public class CancelSelect : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField] private GameObject uiUltimate;
 
-        public void OnEndDrag(PointerEventData eventData)
+        public void OnPointerClick(PointerEventData eventData)
         {
             uiUltimate.SetActive(false);
         }
