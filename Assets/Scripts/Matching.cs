@@ -51,6 +51,7 @@ public class Matching : MonoBehaviourPunCallbacks
             if (PhotonNetwork.CurrentRoom.MaxPlayers == PhotonNetwork.CurrentRoom.PlayerCount)
             {
                 _isMatching = true;
+                _inRoom = false;
                 SceneManager.LoadScene("Test");
             }
         }
