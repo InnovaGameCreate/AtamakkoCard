@@ -52,7 +52,7 @@ namespace Manager
         private AtamakkoStatus _playerStatus;
         private AtamakkoStatus _enemyStatus;
         private bool _usedUltimate;
-        [SerializeField] private AnimationManager animationManager;
+        private bool _youWin;
 
         public static BattleManager Instance;
 
@@ -107,6 +107,7 @@ namespace Manager
                 {
                     _gameState.Value = State.End;
                     Debug.Log("You Lose!");
+                    AnimationManager.Instance.ResultFadeIn(false);
                 })
                 .AddTo(this);
         
@@ -116,6 +117,7 @@ namespace Manager
                 {
                     _gameState.Value = State.End;
                     Debug.Log("You Win!");
+                    AnimationManager.Instance.ResultFadeIn(true);
                 })
                 .AddTo(this);
         }
@@ -230,7 +232,7 @@ namespace Manager
             Debug.Log("BattleFaze");
             if (_playerStatus.UState != AtamakkoStatus.Ultimate.Normal)
             {
-                await animationManager.MyUltimateCutIn();
+                await AnimationManager.Instance.MyUltimateCutIn();
                 photonView.RPC(nameof(EnemyUltimateCutIn), RpcTarget.Others);
             }
             
@@ -296,7 +298,7 @@ namespace Manager
         [PunRPC]
         private async UniTask EnemyUltimateCutIn()
         {
-            await animationManager.EnUltimateCutIn();
+            await AnimationManager.Instance.EnUltimateCutIn();
         }
 
         private List<int> ShuffleDeck(List<int> idList)
