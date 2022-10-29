@@ -1,14 +1,26 @@
 using Manager;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Card
 {
     public class CardSlot : MonoBehaviour
     {
+        private ReactiveProperty<bool> _select = new ReactiveProperty<bool>(false);
+
+        public ReactiveProperty<bool> MySelect
+        {
+            get => _select;
+            set => _select = value;
+        }
+
         private int _cardID = -1;
         private CardController _cardController;
         public CardController MyCard => _cardController;
+
+        private Image _selectImage;
+        private static readonly Color SelectColor = new Color(255, 0, 0);
 
         [SerializeField] private GameObject cardPrefab;
 
@@ -20,6 +32,8 @@ namespace Card
 
         void Start()
         {
+            _selectImage = gameObject.GetComponent<Image>();
+            
             BattleManager.Instance.MyGameState
                 .Where(s => s == BattleManager.State.Battle)
                 .Subscribe(_ =>
@@ -29,6 +43,16 @@ namespace Card
                         Destroy(gameObject);
                     }
                 })
+                .AddTo(this);
+
+            _select
+                .Where(b => b == true)
+                .Subscribe(_ => _selectImage.color = SelectColor)
+                .AddTo(this);
+
+            _select
+                .Where((b => b == false))
+                .Subscribe(_ => _selectImage.color = Color.clear)
                 .AddTo(this);
         }
 
