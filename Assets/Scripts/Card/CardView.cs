@@ -26,6 +26,13 @@ namespace Card
                 if(str == "〇") place.transform.GetChild(i).gameObject.SetActive(true);
                 i++;
             }
+
+            int j = 0;
+            foreach (var str in cardModel.Move)
+            {
+                if(str == "〇") place.transform.GetChild(j).gameObject.SetActive(true);
+                j++;
+            }
         }
     }
 }

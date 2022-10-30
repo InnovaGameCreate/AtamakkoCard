@@ -2,6 +2,7 @@ using System;
 using Card;
 using Cysharp.Threading.Tasks;
 using Field;
+using Manager;
 using Photon.Pun;
 using UniRx;
 using UnityEngine;
@@ -30,7 +31,7 @@ namespace Player
             _enemy = enemy.GetComponent<Enemy>();
         }
 
-        public async UniTask Attack(CardModel card, int initiative)
+        public async UniTask AttackSelect(CardModel card, int initiative)
         {
             if (card.Kind == "攻撃" && card.Initiative == initiative)
             {
@@ -55,14 +56,16 @@ namespace Player
             }
         }
 
-        public void Attack()
+        public void AttackDamage()
         {
             if (_attacked && _enemyStatus.MyPosition == AttackPlace)
             {
                 _enemy.AddDamage(_damage);
                 photonView.RPC(nameof(AddDamage), RpcTarget.Others, _damage);
+                
+                AttackAnimation(AttackPlace);
+                photonView.RPC(nameof(AttackAnimation), RpcTarget.Others, (AttackPlace + 3) % 6);
             }
-
             _attacked = false;
         }
 
@@ -70,6 +73,12 @@ namespace Player
         public void AddDamage(int damage)
         {
             _atamakkoStatus.MyHp.Value -= damage;
+        }
+        
+        [PunRPC]
+        private async void AttackAnimation(int pos)
+        {
+            await AnimationManager.Instance.AttackEffect(pos);
         }
     }
 }
