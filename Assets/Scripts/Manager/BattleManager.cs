@@ -1,5 +1,4 @@
 using System;
-using System.Audio;
 using System.Collections.Generic;
 using Card;
 using Cysharp.Threading.Tasks;
@@ -8,7 +7,6 @@ using Photon.Pun;
 using Player;
 using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Manager
 {
@@ -44,7 +42,7 @@ namespace Manager
         [SerializeField] private GameObject playerHand;
         [SerializeField] private GameObject player;
         [SerializeField] private GameObject enemy;
-        [SerializeField] private Button bSpecial;
+        [SerializeField] private UltimateButton ultimateButton;
         private PlayerMove _move;
         private PlayerAttack _attack;
         private Deck _deck1;
@@ -198,12 +196,12 @@ namespace Manager
         private async void SelectFaze()
         {
             Debug.Log("SelectFaze");
-            bSpecial.interactable = !_usedUltimate;
+            ultimateButton.MyInteractable = !_usedUltimate;
             decisionButton.Decision
                 .Subscribe(_ =>
                 {
                     decisionButton.MyInteractable = false;
-
+                    ultimateButton.MyInteractable = false;
                     Ready();
                 })
                 .AddTo(this);
@@ -215,7 +213,7 @@ namespace Manager
             }
 
             var token = this.GetCancellationTokenOnDestroy();
-            bSpecial.interactable = false;
+            ultimateButton.MyInteractable = false;
             for (int i = 0; i < battleSlots.Length; i++)
             {
                 photonView.RPC(nameof(EnemyCard), RpcTarget.Others, i, battleSlots[i].MyCardID);
@@ -239,11 +237,16 @@ namespace Manager
             if (_playerStatus.UState == AtamakkoStatus.Ultimate.Recover)
             {
                 _playerStatus.MyHp.Value += 3;
+                photonView.RPC(nameof(UltHealing), RpcTarget.Others);
             }
             for (int i = 0; i < battleSlots.Length; i++)
             {
                 enemySlots[i].FlipOver();
+                battleSlots[i].MySelect.Value = true;
+                enemySlots[i].MySelect.Value = true;
                 await Battle(battleSlots[i].MyCardID);
+                battleSlots[i].MySelect.Value = false;
+                enemySlots[i].MySelect.Value = false;
                 battleSlots[i].DeleteCard();
                 enemySlots[i].DeleteCard();
             }
@@ -253,6 +256,12 @@ namespace Manager
             Debug.Log("NextRound");
             _playerStatus.UState = AtamakkoStatus.Ultimate.Normal;
             _gameState.Value = State.Draw;
+        }
+
+        [PunRPC]
+        private void UltHealing()
+        {
+            _enemyStatus.MyHp.Value += 3;
         }
 
         private async UniTask Battle(int cardID)

@@ -1,4 +1,3 @@
-using System;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +9,7 @@ namespace Field
         private readonly ReactiveProperty<bool> _interactable = new ReactiveProperty<bool>(false);
 
         [SerializeField] private GameObject uiUltimate;
-    
+
         public bool MyInteractable
         {
             set => _interactable.Value = value;
