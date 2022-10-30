@@ -23,6 +23,11 @@ namespace Manager
         private PlayableDirector _loserIn;
         [SerializeField] private GameObject lobbyButton;
 
+        [SerializeField] private GameObject attackEffect;
+        private GameObject _aEffectPrefab;
+        private PlayableDirector _attackIn;
+        [SerializeField] private GameObject[] aSlots;
+
         private void Awake()
         {
             if (Instance == null)
@@ -68,7 +73,15 @@ namespace Manager
             backgroundPanel.SetActive(true);
             await UniTask.DelayFrame(1);
             _resultIn.Play();
-            Debug.Log("ResultStart : " + _winner);
+        }
+
+        public async UniTask AttackEffect(int num)
+        {
+            var token = this.GetCancellationTokenOnDestroy();
+            _aEffectPrefab = Instantiate(attackEffect, aSlots[num].transform.position, Quaternion.identity, transform);
+            _attackIn = _aEffectPrefab.GetComponent<PlayableDirector>();
+            await UniTask.DelayFrame(1, cancellationToken: token);
+            _attackIn.Play();
         }
 
         private async void Result_Started(PlayableDirector obj)

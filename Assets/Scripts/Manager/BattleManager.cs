@@ -278,15 +278,13 @@ namespace Manager
                 }
                 await UniTask.Delay(10);
             
-                await _attack.Attack(card, initiative);
-                Debug.Log("Attack" + initiative);
+                await _attack.AttackSelect(card, initiative);
                 await UniTask.Delay(10);
                 Ready();
                 await _next.ToUniTask(true);
-                _attack.Attack();
+                _attack.AttackDamage();
 
                 await _move.CanMove(card, initiative);
-                Debug.Log("Move" + initiative);
                 await UniTask.Delay(10);
                 Ready();
                 await _next.ToUniTask(true);
@@ -299,7 +297,6 @@ namespace Manager
         [PunRPC]
         private void EnemyCard(int sID, int cID)
         {
-            Debug.Log("EnemySlot" + cID);
             enemySlots[sID].CreateCard(cID);
             enemySlots[sID].FlipOver();
         }

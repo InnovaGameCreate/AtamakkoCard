@@ -3,15 +3,15 @@ namespace Card
     public class CardModel
 
     {
-        public int ID;
-        public string Name;
-        public int Initiative;
-        public int Damage;
-        public string Kind;
+        public readonly int ID;
+        public readonly string Name;
+        public readonly int Initiative;
+        public readonly int Damage;
+        public readonly string Kind;
         public int Rarity;
-        public string[] Move;
-        public string[] Attack;
-        public string Explanation;
+        public readonly string[] Move;
+        public readonly string[] Attack;
+        public readonly string Explanation;
         
         public CardModel(string[] dataList) {
             ID = int.Parse(dataList[0]);
