@@ -2,7 +2,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Field
+namespace UI
 {
     public class MoveButton : MonoBehaviour
     {

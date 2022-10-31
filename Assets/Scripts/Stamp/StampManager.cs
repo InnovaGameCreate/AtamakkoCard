@@ -29,7 +29,7 @@ namespace Stamp
             }
              */
             
-            _mStamp = (GameObject) Resources.Load("IStamp");
+            _mStamp = (GameObject) Resources.Load("Prefab/IStamp");
             foreach (var inputStamp in _listStamp)
                 inputStamp.OnClickStamp
                     .Subscribe(stampID =>

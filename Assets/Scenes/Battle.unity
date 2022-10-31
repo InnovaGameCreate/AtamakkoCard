@@ -6800,7 +6800,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiUltimate: {fileID: 483223089}
-  bUltimate: {fileID: 1802493114}
 --- !u!1 &1863361209
 GameObject:
   m_ObjectHideFlags: 0

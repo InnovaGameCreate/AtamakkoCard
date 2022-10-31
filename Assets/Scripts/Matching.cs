@@ -52,7 +52,7 @@ public class Matching : MonoBehaviourPunCallbacks
             {
                 _isMatching = true;
                 _inRoom = false;
-                SceneManager.LoadScene("Test");
+                SceneManager.LoadScene("Battle");
             }
         }
     }

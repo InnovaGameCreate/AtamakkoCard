@@ -10,13 +10,13 @@ namespace UI
         private readonly ReactiveProperty<bool> _interactable = new ReactiveProperty<bool>(true);
         private readonly Subject<bool> _pushed = new Subject<bool>();
         public IObservable<bool> Pushed => _pushed;
+        private Button _button;
 
         public bool MyInteractable
         {
             set => _interactable.Value = value;
         }
 
-        private Button _button;
 
         private void Start()
         {
