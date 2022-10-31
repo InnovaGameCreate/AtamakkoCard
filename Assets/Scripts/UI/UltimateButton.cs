@@ -2,29 +2,31 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Field
+namespace UI
 {
     public class UltimateButton : MonoBehaviour
     {
         private readonly ReactiveProperty<bool> _interactable = new ReactiveProperty<bool>(false);
 
         [SerializeField] private GameObject uiUltimate;
+        private Button _bUltimate;
 
         public bool MyInteractable
         {
             set => _interactable.Value = value;
         }
     
-        [SerializeField] private Button bUltimate;
 
         private void Start()
         {
-            bUltimate.OnClickAsObservable()
+            _bUltimate = gameObject.GetComponent<Button>();
+            
+            _bUltimate.OnClickAsObservable()
                 .Subscribe(_ => uiUltimate.SetActive(true))
                 .AddTo(this);
             
             _interactable
-                .Subscribe(b => bUltimate.interactable = b)
+                .Subscribe(b => _bUltimate.interactable = b)
                 .AddTo(this);
         }
     }

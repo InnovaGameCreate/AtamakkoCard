@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Card;
 using Cysharp.Threading.Tasks;
-using Field;
 using Photon.Pun;
 using Player;
 using UI;
@@ -196,7 +195,6 @@ namespace Manager
 
         private async void SelectFaze()
         {
-            Debug.Log("SelectFaze");
             ultimateButton.MyInteractable = !_usedUltimate;
             decisionButton.Decision
                 .Subscribe(_ =>
@@ -228,7 +226,6 @@ namespace Manager
     
         private async void BattleFaze()
         {
-            Debug.Log("BattleFaze");
             if (_playerStatus.UState != AtamakkoStatus.Ultimate.Normal)
             {
                 await AnimationManager.Instance.MyUltimateCutIn();
@@ -254,7 +251,6 @@ namespace Manager
 
             Ready();
             await _next.ToUniTask(true);
-            Debug.Log("NextRound");
             _playerStatus.UState = AtamakkoStatus.Ultimate.Normal;
             _gameState.Value = State.Draw;
         }

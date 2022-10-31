@@ -24,24 +24,20 @@ namespace UI
                         obj.SetActive(false);
                     }
                     slideRule[num].SetActive(true);
-                    switch (num)
+                    if (num <= 0)
                     {
-                        case 0:
-                            leftSlide.MyInteractable = false;
-                            rightSlide.MyInteractable = true;
-                            break;
-                        case 1:
-                            leftSlide.MyInteractable = true;
-                            rightSlide.MyInteractable = true;
-                            break;
-                        case 2:
-                            leftSlide.MyInteractable = true;
-                            rightSlide.MyInteractable = false;
-                            break;
-                        default:
-                            leftSlide.MyInteractable = false;
-                            rightSlide.MyInteractable = false;
-                            break;
+                        leftSlide.MyInteractable = false;
+                        rightSlide.MyInteractable = true;
+                    }
+                    else if (num >= slideRule.Length - 1)
+                    {
+                        leftSlide.MyInteractable = true;
+                        rightSlide.MyInteractable = false;
+                    }
+                    else
+                    {
+                        leftSlide.MyInteractable = true; 
+                        rightSlide.MyInteractable = true;
                     }
                 })
                 .AddTo(this);

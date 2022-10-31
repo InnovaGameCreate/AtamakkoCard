@@ -1,8 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-namespace Field
+namespace UI
 {
     public class SwitchButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {

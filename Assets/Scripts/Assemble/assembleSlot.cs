@@ -62,7 +62,7 @@ namespace Assemble
             gotItem = Hand.GetGrabbingItem();
             Hand.SetGtabbingItem(MyItem);
 
-            //ƒhƒƒbƒv‚µ‚½•¨‚ª•Ší‚¾‚Á‚½ê‡
+            //ãƒ‰ãƒ­ãƒƒãƒ—ã—ãŸç‰©ãŒæ­¦å™¨ã ã£ãŸå ´åˆ
             if (MySlotType == slotType.accessory)
             {
                 //weapon Weapon = gotItem as weapon;
