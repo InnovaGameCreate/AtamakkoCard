@@ -10,10 +10,18 @@ namespace UI
 
         private IConnectableObservable<int> _countDownObservable;
 
+        private int _countTime;
+
         public void SetTimer(int countTime)
         {
-            _countDownObservable = CreateCountDownObservable(countTime).Publish();
+            _countTime = countTime;
+            _countDownObservable = CreateCountDownObservable(_countTime).Publish();
             _countDownObservable.Connect();
+        }
+
+        public void EndTimer()
+        {
+            _countTime = 0;
         }
 
         private IObservable<int> CreateCountDownObservable(int countTime)
