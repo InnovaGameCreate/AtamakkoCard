@@ -7,8 +7,12 @@ public class Matching : MonoBehaviourPunCallbacks
 {
     private bool _inRoom;
     private bool _isMatching;
+
+    public void CPUButton()
+    {
+        SceneManager.LoadScene("BattleCPU");
+    }
     
-    // Start is called before the first frame update
     public void MatchingButton()
     {
         PhotonNetwork.ConnectUsingSettings();
