@@ -143,7 +143,7 @@ public class NovelComment : MonoBehaviour
             string[] elements = line.Split(',');    // s‚ÌƒZƒ‹‚Í,‚Å‹æØ‚ç‚ê‚é
             for (int i = 0; i < elements.Length; i++)
             {
-                if (elements[i] == "\"\"")
+                if (elements[i] == "\"\"" || string.IsNullOrEmpty(elements[i]))
                 {
                     continue;                       // ‹ó”’‚Íœ‹
                 }
