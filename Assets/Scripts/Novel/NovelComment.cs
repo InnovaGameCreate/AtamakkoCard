@@ -143,7 +143,7 @@ public class NovelComment : MonoBehaviour
             string[] elements = line.Split(',');    // 行のセルは,で区切られる
             for (int i = 0; i < elements.Length; i++)
             {
-                if (elements[i] == "\"\"")
+                if (elements[i] == "\"\"" || string.IsNullOrEmpty(elements[i]))
                 {
                     continue;                       // 空白は除去
                 }
