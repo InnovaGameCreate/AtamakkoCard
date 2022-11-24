@@ -31,8 +31,12 @@ public class StoryBoardEvent : MonoBehaviour
     private scenarioType scenario;
     [SerializeField]
     private GameObject[] Scene;
+    [SerializeField]
+    private GameObject NestStageCheckPanel;//次のステージへ進むか確認用パネル
     private void Start()
     {
+        NestStageCheckPanel = FindObjectOfType<NestStagePanel>().gameObject;
+        NestStageCheckPanel.SetActive(false);
         Comment.currentChapter = 0;
         Scene[1].SetActive(false);
     }
@@ -1180,6 +1184,9 @@ public class StoryBoardEvent : MonoBehaviour
                     Comment.ChangeBackGroundImage(0);
                     //戦闘開始の信号を送る
                     Debug.Log("終了イベント28");
+                    break;
+                case 39:
+                    NestStageCheckPanel.SetActive(true);
                     break;
                 default:
                     Debug.Log("何も設定されていない終了イベントです");

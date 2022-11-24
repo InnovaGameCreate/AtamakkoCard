@@ -81,6 +81,13 @@ namespace Assemble
                 if(Deck != null) Deck.RemoveRange(0, Deck.Count);//デッキにデータがあれば消す
                 Deck.Add(DeckDataList[i]);
             }
+            if (DeckDataList.Count == 12)
+            {
+                Debug.Log("カードを保存することができました");
+                PlayerPrefsUtility.SaveList<int>("MyDeck", Deck);
+                return;
+            }
         }
+
     }
 }
