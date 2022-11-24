@@ -84,5 +84,10 @@ namespace Card
         {
             _cardController.view.backCard.SetActive(!_cardController.view.backCard.activeSelf);
         }
+
+        public bool isVisualable(string[] cardData)
+        {
+            return true;
+        }
     }
 }
