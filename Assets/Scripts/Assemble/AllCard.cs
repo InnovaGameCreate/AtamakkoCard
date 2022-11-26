@@ -21,7 +21,7 @@ namespace Assemble
         private Image EquipmentButton;//表示しているのは装備かどうか
         [SerializeField]
         private Image CardButton;//表示しているのはカードかどうか
-        private bool isCard = true;//現在カードの一覧かどうか
+        private bool isCard = false;//現在カードの一覧かどうか
         [SerializeField]
         private GameObject Equipment;//装備のボタン
         [SerializeField]
@@ -33,14 +33,20 @@ namespace Assemble
         private Image[] CardButtons;
         private bool[] Cards = new bool[2];//どのタイプのカードが表示されるか（攻撃、移動）
 
+        private bool setUp = false;//セットアップ中かどうか
+
         [SerializeField]
-        private GameObject cardPrefab;
+        private GameObject cardPrefab;//生成するカードオブジェクトのプレファブ
         private CardController _cardController;
+        [SerializeField]
+        private GameObject equipmentPrefab;//生成するカードオブジェクトのプレファブ
+        private equipmentController _equipmentController;
         [SerializeField]
         private GameObject Content;//カードを表示するオブジェクト
         private void Awake()
         {
             StartCoroutine(CardData.GetData());
+            StartCoroutine(equipmentData.GetData());
         }
         void Start()
         {
@@ -55,9 +61,16 @@ namespace Assemble
                 Cards[i] = true;
             }
             colorChage();
+            StartCoroutine(SetUp());
             Equipment.SetActive(false);
         }
+        IEnumerator SetUp()
+        {
+            yield return new WaitForSeconds(0.5f);
+            setUp = true;
+            StartCoroutine(createCard());
 
+        }
         IEnumerator createCard()
         {
             yield return new WaitForSeconds(0.1f);
@@ -66,9 +79,19 @@ namespace Assemble
             {
                 Destroy(Content.transform.GetChild(i).gameObject);
             }
-            for (int i = 0; i < 10; i++)
+            if (isCard)
             {
-                createCard(i);
+                for (int i = 0; i < 22; i++)
+                {
+                    createCard(i);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 48; i++)
+                {
+                    createEquipment(i);
+                }
             }
 
         }
@@ -76,12 +99,22 @@ namespace Assemble
 
         private void createCard(int cardID)
         {
-            if(isVisualable(CardData.CardDataArrayList[cardID]))
+            if(isVisualable(CardData.CardDataArrayList[cardID],true))
             {
                 var card = Instantiate(cardPrefab, Content.transform);
                 card.transform.localScale = new Vector3(2, 2, 2);
                 _cardController = card.GetComponent<CardController>();
                 _cardController.Init(CardData.CardDataArrayList[cardID]);
+            }
+        }
+        private void createEquipment(int equipmentID)
+        {
+            if (isVisualable(equipmentData.CardDataArrayList[equipmentID],false))
+            {
+                var card = Instantiate(equipmentPrefab, Content.transform);
+                card.transform.localScale = new Vector3(2, 2, 2);
+                _equipmentController = card.GetComponent<equipmentController>();
+                _equipmentController.Init(equipmentData.CardDataArrayList[equipmentID]);
             }
         }
 
@@ -90,7 +123,7 @@ namespace Assemble
 
         private void colorChage()
         {
-            StartCoroutine(createCard());
+            if(setUp)StartCoroutine(createCard());
             if (isCard)
             {
                 EquipmentButton.color = Color.gray;
@@ -163,20 +196,34 @@ namespace Assemble
             Window.SetActive(false);
         }
 
-        public bool isVisualable(string[] cardData)
+        public bool isVisualable(string[] cardData,bool isSelectCard)
         {
-            Debug.Log(cardData[4]);
-            if(cardData[4] == "移動" && Cards[1] == true)
+            if (isCard && isSelectCard)
             {
-                Debug.Log(cardData[4] + "：" + Cards[1]) ;
-                return true;
-            }
-            else if(cardData[4] == "攻撃" && Cards[0] == true)
-            {
-                Debug.Log(cardData[4] + "：" + Cards[0]);
-                return true;
-            }
+                if ((haveCard[0] && PlayerConfig.unLockCard[int.Parse(cardData[0])]) || (haveCard[1] && !PlayerConfig.unLockCard[int.Parse(cardData[0])]))
+                {
+                    if (cardData[4] == "移動" && Cards[1] == true)
+                    {
+                        return true;
+                    }
+                    else if (cardData[4] == "攻撃" && Cards[0] == true)
+                    {
+                        return true;
+                    }
+                }
 
+            }
+            else if(!isCard && !isSelectCard)
+            {
+
+                if ((haveCard[0] && PlayerConfig.unLockEquipment[int.Parse(cardData[0])]) || (haveCard[1] && !PlayerConfig.unLockEquipment[int.Parse(cardData[0])]))
+                {
+                if (Equipments[0] && cardData[2] == "上部") return true;
+                    if (Equipments[1] && cardData[2] == "中央") return true;
+                    if (Equipments[2] && cardData[2] == "下部") return true;
+                    if (Equipments[3] && cardData[2] == "アクセサリ") return true;
+                }
+            }
             return false;
 
         }

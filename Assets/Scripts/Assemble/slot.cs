@@ -69,7 +69,6 @@ namespace Assemble
         {
             Destroy(draggingObj);
             Item gotItem = Hand.GetGrabbingItem();
-            Debug.Log(gotItem);
             setItem(gotItem);
         }
 

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 namespace Assemble
 {
@@ -9,14 +11,12 @@ namespace Assemble
     {
         [SerializeField]
         private List<int> DeckDataList;
-        public static List<int> Deck = new List<int>();
 
         private List<Item> item = new List<Item>();
 
 
         private void Start()
         {
-            StartCoroutine("finishAssemble");
         }
 
 
@@ -27,22 +27,6 @@ namespace Assemble
             {
                 DeckDataList.Add(item.MyCardNum1);
                 DeckDataList.Add(item.MyCardNum2);
-                /*
-                weapon Weapon = item as weapon;
-
-                if (Weapon != null) itemAtk += Weapon.MyTAtk;
-                if (Weapon.IsRightWeapon)
-                {
-                    RTAtk = itemAtk;
-                    RReloadTime = Weapon.MyReloadTime;
-                }
-
-                else
-                {
-                    LTAtk = itemAtk;
-                    LReloadTime = Weapon.MyReloadTime;
-                }
-                */
             }
         } 
         public List<Item> MyItems { get => item; set => item = value; }
@@ -55,17 +39,19 @@ namespace Assemble
         public void SetItem(Item item)
         {
             if (item != null) MyItems.Add(item);
-            Debug.Log("アイテムを装備");
         }
 
         IEnumerator finishAssemble()
         {
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Escape));
             createDeck();//デッキを作る
             saveData();
 
             yield return new WaitForSeconds(0.1f);
-            StartCoroutine("finishAssemble");
+            SceneManager.LoadScene("Title");//タイトルに戻る
+        }
+        public void finish()
+        {
+            StartCoroutine(finishAssemble());
         }
 
         private void saveData()
@@ -78,13 +64,13 @@ namespace Assemble
             }
             for (int i = 0; i < 11; i++)
             {
-                if(Deck != null) Deck.RemoveRange(0, Deck.Count);//デッキにデータがあれば消す
-                Deck.Add(DeckDataList[i]);
+                if(PlayerConfig.Deck != null) PlayerConfig.Deck.RemoveRange(0, PlayerConfig.Deck.Count);//デッキにデータがあれば消す
+                PlayerConfig.Deck.Add(DeckDataList[i]);
             }
             if (DeckDataList.Count == 12)
             {
                 Debug.Log("カードを保存することができました");
-                PlayerPrefsUtility.SaveList<int>("MyDeck", Deck);
+                PlayerConfig.SetData();
                 return;
             }
         }

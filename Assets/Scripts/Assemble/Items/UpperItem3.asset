@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: UpperItem3
   itemImage: {fileID: 21300000, guid: bdd77ae213832b54096a0c313eb62eca, type: 3}
+  CardNum1: 0
+  CardNum2: 0
   PartsType: 0
