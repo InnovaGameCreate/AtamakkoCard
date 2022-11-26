@@ -1,0 +1,120 @@
+using Assemble;
+using Card;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerConfig : MonoBehaviour
+{
+    public static List<bool> unLockCard = new List<bool>();//どのカードを取得しているか
+    public static List<bool> unLockEquipment = new List<bool>();//どの装備を取得しているか
+    public static string PlayerName;//プレイヤーの名前
+    public static List<int> Deck = new List<int>();
+    public static List<int> Equipmnet = new List<int>();//(上部、中央、下部、アクセサリ)
+    public static bool DevelopMode = true;//開発モードかどうか（常に初期化される)
+    private int DevelopModeCardNum;//cardの個数
+    private int DevelopModeEquipmentNum;//equipmentの個数
+    private static int isTutorial;//0の時はチュートリアルをまだ受けていない
+
+    public static void Init()
+    {
+        unLockCard = PlayerPrefsUtility.LoadList<bool>("unLockcard");//unLockcardから配列を読み込む
+        unLockEquipment = PlayerPrefsUtility.LoadList<bool>("unLockEquipment");//unLockEquipmentから配列を読み込む
+        PlayerName = PlayerPrefs.GetString("PlayerName", "Player");//名前を読み込む、
+        Deck = PlayerPrefsUtility.LoadList<int>("MyDeck");//自分のデッキを読み込む
+        Equipmnet = PlayerPrefsUtility.LoadList<int>("MyEquipmnet");//自分の装備を読み込む
+        isTutorial = PlayerPrefs.GetInt("Tutorial", 0);
+    }
+
+    public static void SetData()
+    {
+        PlayerPrefsUtility.SaveList("unLockcard", unLockCard);
+        PlayerPrefsUtility.SaveList("unLockEquipment", unLockEquipment);
+        PlayerPrefsUtility.SaveList<int>("MyDeck", Deck);
+        PlayerPrefsUtility.SaveList<int>("MyEquipmnet", Equipmnet);
+        PlayerPrefs.SetString("PlayerName", PlayerName);
+    }
+    void Start()
+    {
+
+        if (isTutorial == 0 || DevelopMode)
+        {
+            Init();
+            Debug.Log("チュートリアル処理を行いました。");
+            isTutorial = 1;
+            PlayerPrefs.SetInt("Tutorial", isTutorial);//チュートリアルを一度だけ行わせる
+            Equipmnet.Clear();
+            Deck.Clear();
+            unLockCard.Clear();
+            unLockEquipment.Clear();
+            for (int i = 0; i < 10; i++)
+            {
+                unLockCard.Add(false);
+            }
+            for (int i = 10; i < DevelopModeCardNum; i++)
+            {
+                unLockCard.Add(true);
+            }
+            for (int i = 0; i < 40; i++)
+            {
+                unLockEquipment.Add(false);
+            }
+            for (int i = 40; i < DevelopModeEquipmentNum; i++)
+            {
+                unLockEquipment.Add(true);
+            }
+            Equipmnet.Add(1);
+            Equipmnet.Add(0);
+            Equipmnet.Add(2);
+            Equipmnet.Add(48);
+            Equipmnet.Add(49);
+            Equipmnet.Add(50);
+            Deck.Add(1);
+            Deck.Add(1);
+            Deck.Add(0);
+            Deck.Add(0);
+            Deck.Add(2);
+            Deck.Add(2);
+            Deck.Add(5);
+            Deck.Add(5);
+            Deck.Add(6);
+            Deck.Add(6);
+            Deck.Add(7);
+            Deck.Add(8);
+            SetData();
+
+        }
+        for (int i = 0; i < Equipmnet.Count; i++)
+        {
+            Debug.Log(i+"番目に設定されている数は"+Equipmnet[i]);
+        }
+        if (DevelopMode)
+        {
+            Debug.Log("デバック処理を行いました。");
+            DevelopModeEquipmentNum = Resources.Load<equipmentIcon>("EquipmentIcon").equipmentIconList.Count;
+            DevelopModeCardNum = Resources.Load<CardIcon>("CardIcon").cardIconList.Count;
+
+            Debug.Log("unLockCardの要素数は" + unLockCard.Count + "です");
+            Debug.Log("unLockEquipmentの要素数は" + unLockEquipment.Count + "です");
+            unLockCard.Clear();
+            unLockEquipment.Clear();
+            for (int i = 0; i < 10; i++)
+            {
+                unLockCard.Add(false);
+            }
+            for (int i = 10; i < DevelopModeCardNum; i++)
+            {
+                unLockCard.Add(true);
+            }
+            for (int i = 0; i < 40; i++)
+            {
+                unLockEquipment.Add(false);
+            }
+            for (int i = 40; i < DevelopModeEquipmentNum; i++)
+            {
+                unLockEquipment.Add(true);
+            }
+            DevelopMode = false;
+        }
+    }
+}
