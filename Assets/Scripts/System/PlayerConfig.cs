@@ -1,3 +1,4 @@
+using Arena;
 using Assemble;
 using Card;
 using System.Collections;
@@ -36,7 +37,9 @@ public class PlayerConfig : MonoBehaviour
     }
     void Start()
     {
-
+        StartCoroutine(CardData.GetData());
+        StartCoroutine(enemyDeckData.GetData());
+        StartCoroutine(equipmentData.GetData());
         if (isTutorial == 0 || DevelopMode)
         {
             Init();

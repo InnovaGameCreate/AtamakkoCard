@@ -51,7 +51,7 @@ namespace Assemble
         }
         private void setUpItem()//データから初期の装備カードをセットする
         {
-            Debug.Log(PositionNum + "：" +PlayerConfig.Equipmnet[PositionNum]);
+            //Debug.Log(PositionNum + "：" +PlayerConfig.Equipmnet[PositionNum]);
             var quipmentNum = PlayerConfig.Equipmnet[PositionNum];
             var quipmentData = equipmentData.CardDataArrayList[quipmentNum];
 
@@ -61,7 +61,8 @@ namespace Assemble
             item.MyCardID = int.Parse(quipmentData[0]);
             item.MyItemImage = cardIcon.equipmentIconList[int.Parse(quipmentData[0])];
             item.MyCardNum1 = int.Parse(quipmentData[4]);
-            item.MyCardNum1 = int.Parse(quipmentData[5]);
+            item.MyCardNum2 = int.Parse(quipmentData[5]);
+            Debug.Log("item.MyCardIDの設定されているカードは" + item.MyCardNum1 + "と" + item.MyCardNum1 + "です");
             setItem(item);
         }
 
@@ -83,7 +84,7 @@ namespace Assemble
 
         public override void setItem(Item item)
         {
-            Debug.Log(MySlotType + "のEquipmnet[PositionNum]を" + item.MyCardID + "に変更しました");
+            //Debug.Log(MySlotType + "のEquipmnet[PositionNum]を" + item.MyCardID + "に変更しました");
             PlayerConfig.Equipmnet[PositionNum] = item.MyCardID;
 
 
