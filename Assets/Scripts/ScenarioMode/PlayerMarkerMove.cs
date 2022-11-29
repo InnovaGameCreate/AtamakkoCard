@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class PlayerMarkerMove : MonoBehaviour
+namespace storyMode
 {
-    void Start()
+    public class PlayerMarkerMove : MonoBehaviour
     {
-        transform.DOMoveY(-40, 1f).SetLoops(-1).SetEase(Ease.InOutSine).SetRelative();
-        transform.DOMoveZ(20, 1f).SetLoops(-1).SetEase(Ease.InOutSine).SetRelative();
+        void Start()
+        {
+            transform.DOMoveY(-40, 1f).SetLoops(-1).SetEase(Ease.InOutSine).SetRelative();
+            transform.DOMoveZ(20, 1f).SetLoops(-1).SetEase(Ease.InOutSine).SetRelative();
+        }
     }
 }

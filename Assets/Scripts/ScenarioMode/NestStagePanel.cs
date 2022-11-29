@@ -1,22 +1,25 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class NestStagePanel : MonoBehaviour
+namespace storyMode
 {
-    /// <summary>
-    /// シナリオで最後のマスに行った後次のステージへ進むかどうか
-    /// </summary>
-
-    [SerializeField]
-    private SceneObject nextScene;
-
-    public void goNestStage()
+    public class NestStagePanel : MonoBehaviour
     {
-        SceneManager.LoadScene(nextScene);
-    }
+        /// <summary>
+        /// シナリオで最後のマスに行った後次のステージへ進むかどうか
+        /// </summary>
 
-    public void BackToTitle()
-    {
-        SceneManager.LoadScene("Title");
+        [SerializeField]
+        private SceneObject nextScene;
+
+        public void goNestStage()
+        {
+            SceneManager.LoadScene(nextScene);
+        }
+
+        public void BackToTitle()
+        {
+            SceneManager.LoadScene("Title");
+        }
     }
 }

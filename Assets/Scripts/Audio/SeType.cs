@@ -1,6 +1,6 @@
 
 /// <summary>
-/// ‰¹Œ¹‚ÌŽí—Þ
+/// SE‰¹Œ¹‚ÌŽí—Þ
 /// </summary>
 
 namespace System.Audio
