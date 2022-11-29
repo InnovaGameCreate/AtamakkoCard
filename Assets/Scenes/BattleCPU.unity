@@ -2220,6 +2220,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 397918048}
+  - component: {fileID: 397918051}
   - component: {fileID: 397918049}
   - component: {fileID: 397918050}
   m_Layer: 0
@@ -2228,7 +2229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &397918048
 Transform:
   m_ObjectHideFlags: 0
@@ -2251,7 +2252,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 397918046}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 733e85cdb7bc4564b88a0a8e88130243, type: 3}
   m_Name: 
@@ -2293,6 +2294,34 @@ MonoBehaviour:
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &397918051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397918046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82d9b09068898c74c998b0bde5701b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotPrefab: {fileID: 5094284188052895845, guid: a2e259a45e1d9f34fbdf6e2a721eee9f, type: 3}
+  cardManager: {fileID: 1662660821}
+  decisionButton: {fileID: 1440085936}
+  battleSlots:
+  - {fileID: 1332649876}
+  - {fileID: 1441495766}
+  - {fileID: 1377712188}
+  enemySlots:
+  - {fileID: 1675475858}
+  - {fileID: 1758576551}
+  - {fileID: 56032025}
+  playerHand: {fileID: 1662660820}
+  player: {fileID: 719954264}
+  enemy: {fileID: 2005962705}
+  ultimateButton: {fileID: 1802493115}
+  timeCounter: {fileID: 1008853902}
 --- !u!1 &399115894
 GameObject:
   m_ObjectHideFlags: 0

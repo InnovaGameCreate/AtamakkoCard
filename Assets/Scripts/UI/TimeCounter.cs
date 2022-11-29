@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UniRx;
 using UnityEngine;
 
@@ -6,30 +7,41 @@ namespace UI
 {
     public class TimeCounter : MonoBehaviour
     {
-        public IObservable<int> CountDownObservable => _countDownObservable.AsObservable();
-
-        private IConnectableObservable<int> _countDownObservable;
-
         private int _countTime;
+        private int _nowTime;
+        
+        private readonly Subject<bool> _countNow = new Subject<bool>();
+        public IObservable<bool> CountNow => _countNow;
+
+        private readonly Subject<int> _timer = new Subject<int>();
+        public IObservable<int> Timer => _timer;
 
         public void SetTimer(int countTime)
         {
             _countTime = countTime;
-            _countDownObservable = CreateCountDownObservable(_countTime).Publish();
-            _countDownObservable.Connect();
+            //StartCoroutine(CountDown());
         }
 
         public void EndTimer()
         {
-            _countTime = 0;
+            _nowTime = _countTime;
         }
 
-        private IObservable<int> CreateCountDownObservable(int countTime)
+        public IEnumerator CountDown(int countTime)
         {
-            return Observable
-                .Interval(TimeSpan.FromSeconds(1))
-                .Select(x => (int) (countTime - x))
-                .TakeWhile(x => x > 0);
+            _nowTime = 0;
+            _countTime = countTime;
+            _countNow.OnNext(true);
+            while (_countTime > _nowTime)
+            {
+                var time = _countTime - _nowTime;
+                _nowTime++;
+                _timer.OnNext(time);
+
+                yield return new WaitForSecondsRealtime(1.0f);
+            }
+            _timer.OnCompleted();
+            _countNow.OnNext(false);
         }
     }
 }

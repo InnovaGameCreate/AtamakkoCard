@@ -39,13 +39,20 @@ namespace Manager
         [SerializeField] private GameObject player;
         [SerializeField] private GameObject enemy;
         [SerializeField] private UltimateButton ultimateButton;
+        [SerializeField] private TimeCounter timeCounter;
         private PlayerMove _move;
         private PlayerAttack _attack;
+
         private Deck _myDeck;
         public Deck MyDeck => _myDeck;
+        private List<int> _myCardList;
+        private List<int> _myUsedCard;
+        
         private Deck _cpuDeck;
         public Deck CPUDeck => _cpuDeck;
-        private List<int> _myCardList;
+        private List<int> _cpuCardList;
+        private List<int> _cpuUsedCard;
+        
         private AtamakkoStatus _playerStatus;
         private AtamakkoStatus _enemyStatus;
         private bool _usedUltimate;
@@ -74,28 +81,7 @@ namespace Manager
             _enemyStatus = enemy.GetComponent<AtamakkoStatus>();
         
             _gameState
-                .Where(x => x == State.Waiting)
-                .Subscribe(_ => WaitingGame())
-                .AddTo(this);
-        
-            _gameState
-                .Where(x => x == State.Init)
-                .Subscribe(_ => StartGame())
-                .AddTo(this);
-
-            _gameState
-                .Where(x => x == State.Draw)
-                .Subscribe(_ => DrawFaze())
-                .AddTo(this);
-
-            _gameState
-                .Where(x => x == State.Select)
-                .Subscribe(_ => SelectFaze())
-                .AddTo(this);
-
-            _gameState
-                .Where(x => x == State.Battle)
-                .Subscribe(_ => BattleFaze())
+                .Subscribe(OnStateChanged)
                 .AddTo(this);
 
             _playerStatus.MyHp
@@ -103,7 +89,6 @@ namespace Manager
                 .Subscribe(_ =>
                 {
                     _gameState.Value = State.End;
-                    Debug.Log("You Lose!");
                     AnimationManager.Instance.ResultFadeIn(false);
                 })
                 .AddTo(this);
@@ -113,13 +98,34 @@ namespace Manager
                 .Subscribe(_ =>
                 {
                     _gameState.Value = State.End;
-                    Debug.Log("You Win!");
                     AnimationManager.Instance.ResultFadeIn(true);
                 })
                 .AddTo(this);
         }
-        
-        
+
+        private void OnStateChanged(State nextState)
+        {
+            switch (nextState)
+            {
+                case State.Waiting:
+                    WaitingGame();
+                    break;
+                case State.Init:
+                    StartGame();
+                    break;
+                case State.Draw:
+                    DrawFaze();
+                    break;
+                case State.Select:
+                    SelectFaze();
+                    break;
+                case State.Battle:
+                    BattleFaze();
+                    break;
+                default:
+                    break;
+            }
+        }
 
         private void NextStart()
         {
@@ -128,34 +134,43 @@ namespace Manager
 
         private async void WaitingGame()
         {
-            await _next.ToUniTask(true);
+            Debug.Log("waiting");
+            await timeCounter.CountDown(7);
+            Debug.Log("start");
             _gameState.Value = State.Init;
         }
 
         private async void StartGame()
         {
-            await StartCoroutine(CardData.GetData());
-            _myDeck = Resources.Load<Deck>("Deck1");
-            _cpuDeck = Resources.Load<Deck>("Deck1");
+            await StartCoroutine(CardData.GetData());   // カードデータを取得
+            _myDeck = Resources.Load<Deck>("Deck1");    // 自デッキのインスタンス生成
+            _cpuDeck = Resources.Load<Deck>("Deck1");   // 敵デッキのインスタンス生成
 
-            _myCardList = new List<int>(_myDeck.cardIDList);
-            _myCardList = ShuffleDeck(_myCardList);
-
-            await _next.ToUniTask(true);
-            _gameState.Value = State.Draw;
+            _myCardList = new List<int>(_myDeck.cardIDList);    // 自デッキのリスト生成
+            _myCardList = ShuffleDeck(_myCardList); // 自デッキのシャッフル
+            
+            _cpuCardList = new List<int>(_cpuDeck.cardIDList);    // 敵デッキのリスト生成
+            _cpuCardList = ShuffleDeck(_cpuCardList); // 敵デッキのシャッフル
+            
+            _gameState.Value = State.Draw;  // ドローフェーズへ
         }
 
         private void DrawFaze()
         {
-            if (_myCardList.Count <= 0)
+            if (_myCardList.Count <= 0) // 自デッキにカードがないなら
             {
-                _myCardList = new List<int>(_myDeck.cardIDList);
-                _myCardList = ShuffleDeck(_myCardList);
+                _myCardList = new List<int>(_myDeck.cardIDList);    // 自デッキを補充
+                _myCardList = ShuffleDeck(_myCardList); // 自デッキをシャッフル
+            }
+            if (_cpuCardList.Count <= 0) // 敵デッキにカードがないなら
+            {
+                _cpuCardList = new List<int>(_cpuDeck.cardIDList);    // 敵デッキを補充
+                _cpuCardList = ShuffleDeck(_cpuCardList); // 敵デッキをシャッフル
             }
 
-            if (playerHand.transform.childCount <= 0)
+            if (playerHand.transform.childCount <= 0)   // 手持ちにカードがないなら
             {
-                DrawCard();
+                DrawCard(); // カードを引く
             }
 
             _gameState.Value = State.Select;
@@ -182,7 +197,6 @@ namespace Manager
             ultimateButton.MyInteractable = false;
             for (int i = 0; i < battleSlots.Length; i++)
             {
-                //photonView.RPC(nameof(EnemyCard), RpcTarget.Others, i, battleSlots[i].MyCardID);
                 await UniTask.WaitUntil(
                     predicate:() => enemySlots[i].MyCardID >= 0,
                     timing:PlayerLoopTiming.Update,
@@ -219,11 +233,6 @@ namespace Manager
             await _next.ToUniTask(true);
             _playerStatus.UState = AtamakkoStatus.Ultimate.Normal;
             _gameState.Value = State.Draw;
-        }
-
-        private void UltHealing()
-        {
-            _enemyStatus.MyHp.Value += 3;
         }
 
         private async UniTask Battle(int cardID)
@@ -267,7 +276,7 @@ namespace Manager
 
         private List<int> ShuffleDeck(List<int> idList)
         {
-            System.Random random = new System.Random((int) DateTime.Now.Ticks);
+            System.Random random = new System.Random((int) DateTime.Now.Ticks); // ランダムのインスタンス化
             for (int i = 0; i < idList.Count; i++)
             {
                 int index = i + (int) (random.NextDouble() * (idList.Count - i));
