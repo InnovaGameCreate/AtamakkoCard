@@ -1,1465 +1,961 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class StoryBoardEvent : MonoBehaviour
+namespace storyMode
 {
-    private enum scenarioType
+    public class StoryBoardEvent : MonoBehaviour
     {
-        scenario1,
-        scenario2,
-        scenarioBlue1,
-        scenarioBlue2,
-        scenarioBlue3,
-        scenarioRed1,
-        scenarioRed2,
-        scenarioRed3,
-        scenarioWhite1,
-        scenarioWhite2,
-        scenarioWhite3,
-        scenarioend1,
-        scenarioend2,
-        scenarioend3,
+        /// <summary>
+        /// 実装されているシナリオをscenarioTypeで用意する。用意されているもの以外はイベントが起こらない
+        /// </summary>
+        private enum scenarioType
+        {
+            scenario1,
+            scenario2,
+            scenarioBlue1,
+            scenarioBlue2,
+            scenarioBlue3,
+            scenarioRed1,
+            scenarioRed2,
+            scenarioRed3,
+            scenarioWhite1,
+            scenarioWhite2,
+            scenarioWhite3,
+            scenarioend1,
+            scenarioend2,
+            scenarioend3,
+        }
+        [SerializeField]
+        NovelComment Comment;
+        [SerializeField]
+        private GameObject NovelCanvas;
+        [SerializeField]
+        private scenarioType scenario;//どのscenarioに対応するか
+        [SerializeField]
+        private GameObject[] Scene;//シナリオに登場するステージ
+        [SerializeField]
+        private GameObject NestStageCheckPanel;//次のステージへ進むか確認用パネル
+        private void Start()
+        {
+            NestStageCheckPanel = FindObjectOfType<NestStagePanel>().gameObject;
+            NestStageCheckPanel.SetActive(false);
+            Comment.currentChapter = 0;
+            Scene[1].SetActive(false);
+        }
 
-    }
-    [SerializeField]
-    NovelComment Comment;
-    [SerializeField]
-    private GameObject NovelCanvas;
-    [SerializeField]
-    private scenarioType scenario;
-    [SerializeField]
-    private GameObject[] Scene;
-    [SerializeField]
-    private GameObject NestStageCheckPanel;//次のステージへ進むか確認用パネル
-    private void Start()
-    {
-        NestStageCheckPanel = FindObjectOfType<NestStagePanel>().gameObject;
-        NestStageCheckPanel.SetActive(false);
-        Comment.currentChapter = 0;
-        Scene[1].SetActive(false);
-    }
+        //タイルを選択したときにおこるイベント
+        public void startEvent(int eventNum)
+        {
+            if (scenario == scenarioType.scenario1)
+            {
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
+                    case 2:
+                        activeText(1);
+                        break;
+                    case 3:
+                        activeText(2);
+                        break;
+                    case 4:
+                        activeText(3);
+                        break;
+                    case 5:
+                        activeText(4);
+                        break;
+                    case 6:
+                        //5の終了時イベントに以降
+                        break;
+                    case 7:
+                        activeText(6);
+                        break;
+                    case 8:
+                        activeText(7);
+                        break;
+                    case 9:
+                        //戦闘
+                        activeText(8);
+                        break;
+                    case 10:
+                        activeText(9);
+                        break;
+                    case 11:
+                        activeText(10);
+                        break;
+                    case 12://ドラゴンとの戦闘
+                        Comment.currentChapter = 11;
+                        break;
+                    case 13:
+                        activeText(12);
+                        break;
+                    case 14:
+                        activeText(13);
+                        break;
+                    case 15:
+                        activeText(14);
+                        break;
+                    case 16:
+                        activeText(15);
+                        break;
+                    case 17://敵との戦闘
+                        activeText(16);
+                        break;
+                    case 18:
+                        activeText(17);
+                        break;
+                    case 19://ボス戦
+                        activeText(18);
+                        break;
+                    case 21:
+                        activeText(20);
+                        break;
+                    case 22:
+                        activeText(21);
+                        break;
+                    case 23:
+                        activeText(22);
+                        break;
+                    case 24://仲間と合流
+                        activeText(23);
+                        break;
+                    case 25://戦闘
 
-    //タイルを選択したときにおこるイベント
-    public void startEvent(int eventNum)
-    {
-        if (scenario == scenarioType.scenario1)
-        {
-            #region
-            switch (eventNum)
-            {
-                case 1:
-                    Comment.currentChapter = 0;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 2:
-                    Comment.currentChapter = 1;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 3:
-                    Comment.currentChapter = 2;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 4:
-                    Comment.currentChapter = 3;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 5:
-                    Comment.currentChapter = 4;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 6:
-                    //5の終了時イベントに以降
-                    break;
-                case 7:
-                    Comment.currentChapter = 6;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 8:
-                    Comment.currentChapter = 7;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 9:
-                    //戦闘
-                    Comment.currentChapter = 8;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 10:
-                    Comment.currentChapter = 9;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 11:
-                    Comment.currentChapter = 10;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 12://ドラゴンとの戦闘
-                    Comment.currentChapter = 11;
-                    break;
-                case 13:
-                    Comment.currentChapter = 12;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 14:
-                    Comment.currentChapter = 13;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 15:
-                    Comment.currentChapter = 14;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 16:
-                    Comment.currentChapter = 15;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 17://敵との戦闘
-                    Comment.currentChapter = 16;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 18:
-                    Comment.currentChapter = 17;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 19://ボス戦
-                    Comment.currentChapter = 18;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 21:
-                    Comment.currentChapter = 20;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 22:
-                    Comment.currentChapter = 21;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 23:
-                    Comment.currentChapter = 22;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 24://仲間と合流
-                    Comment.currentChapter = 23;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 25://戦闘
-
-                    break;
-                case 26:
-                    Comment.currentChapter = 25;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 27:
-                    Comment.currentChapter = 26;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 28://ボス戦
-                    Comment.currentChapter = 27;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 29:
-                    Comment.currentChapter = 28;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 30://戦闘
-                    Comment.currentChapter = 29;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 31:
-                    Comment.currentChapter = 30;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 32:
-                    Comment.currentChapter = 31;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 33:
-                    Comment.currentChapter = 32;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 34://戦闘
-                    Comment.currentChapter = 33;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 35:
-                    Comment.currentChapter = 34;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 36://戦闘
-                    break;
-                default:
-                    Debug.Log("何も設定されていない開始イベントです");
-                    break;
+                        break;
+                    case 26:
+                        activeText(25);
+                        break;
+                    case 27:
+                        activeText(26);
+                        break;
+                    case 28://ボス戦
+                        activeText(27);
+                        break;
+                    case 29:
+                        activeText(28);
+                        break;
+                    case 30://戦闘
+                        activeText(29);
+                        break;
+                    case 31:
+                        activeText(30);
+                        break;
+                    case 32:
+                        activeText(31);
+                        break;
+                    case 33:
+                        activeText(32);
+                        break;
+                    case 34://戦闘
+                        activeText(33);
+                        break;
+                    case 35:
+                        activeText(34);
+                        break;
+                    case 36://戦闘
+                        break;
+                    default:
+                        Debug.Log("何も設定されていない開始イベントです");
+                        break;
+                }
             }
-            #endregion
-        }
-        else if (scenario == scenarioType.scenario2)
-        {
-            #region
-            switch (eventNum)
+            else if (scenario == scenarioType.scenario2)
             {
-                case 1:
-                    Comment.currentChapter = 0;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 2:
-                    Comment.currentChapter = 1;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 3:
-                    Comment.currentChapter = 2;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 4:
-                    Comment.currentChapter = 3;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 5:
-                    Comment.currentChapter = 4;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 6:
-                    Comment.currentChapter = 5;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 7:
-                    Comment.currentChapter = 6;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 8:
-                    Comment.currentChapter = 7;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 9:
-                    Comment.currentChapter = 8;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 10:
-                    Comment.currentChapter = 9;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 11:
-                    Comment.currentChapter = 10;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 12:
-                    Comment.currentChapter = 11;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 13:
-                    Comment.currentChapter = 12;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 14:
-                    Comment.currentChapter = 13;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 15:
-                    //戦闘
-                    break;
-                case 16:
-                    Comment.currentChapter = 14;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 17:
-                    //戦闘
-                    break;
-                case 18:
-                    Comment.currentChapter = 15;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 19:
-                //ボス戦
-                default:
-                    break;
-            }
-            #endregion
-        }
-        else if (scenario == scenarioType.scenarioBlue1)
-        {
-            #region
-            switch (eventNum)
-            {
-                case 1:
-                    Comment.currentChapter = 0;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 2:
-                    Comment.currentChapter = 1;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 3:
-                    Comment.currentChapter = 2;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 4:
-                    Comment.currentChapter = 3;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 5:
-                    Comment.currentChapter = 4;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 6:
-                    Comment.currentChapter = 5;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 7:
-                    Comment.currentChapter = 6;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 8:
-                    Comment.currentChapter = 7;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 9:
-                    Comment.currentChapter = 8;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 10:
-                    Comment.currentChapter = 9;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 11:
-                    Comment.currentChapter = 10;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 12:
-                    Comment.currentChapter = 11;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 13:
-                    Comment.currentChapter = 12;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 14:
-                    Comment.currentChapter = 13;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 15:
-                    Comment.currentChapter = 14;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    //戦闘
-                    break;
-                case 16:
-                    Comment.currentChapter = 15;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 17:
-                    Comment.currentChapter = 16;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 18:
-                    Comment.currentChapter = 17;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 19:
-                    Comment.currentChapter = 18;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 20:
-                    Comment.currentChapter = 19;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 21:
-                    Comment.currentChapter = 20;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 22:
-                    Comment.currentChapter = 21;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 23:
-                    Comment.currentChapter = 22;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 24:
-                    break;
-                case 25:
-                    Comment.currentChapter = 23;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 26:
-                    Comment.currentChapter = 24;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 27:
-                    //戦闘
-                    break;
-                case 28:
-                    //戦闘
-                    break;
-                case 29:
-                    Comment.currentChapter = 25;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 30:
-                    Comment.currentChapter = 26;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                default:
-                    break;
-            }
-            #endregion
-        }
-        else if(scenario == scenarioType.scenarioBlue2)
-        {
-            #region
-            switch (eventNum)
-            {
-                case 1:
-                    Comment.currentChapter = 0;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 2:
-                    Comment.currentChapter = 1;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 3:
-                    Comment.currentChapter = 2;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 4:
-                    Comment.currentChapter = 3;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 5:
-                    Comment.currentChapter = 4;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 6:
-                    Comment.currentChapter = 5;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 7:
-                    Comment.currentChapter = 6;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 8:
-                    Comment.currentChapter = 7;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 9:
-                    Comment.currentChapter = 8;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 10:
-                    Comment.currentChapter = 9;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 11:
-                    Comment.currentChapter = 10;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 12:
-                    Comment.currentChapter = 11;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 13:
-                    Comment.currentChapter = 12;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 14:
-                    Comment.currentChapter = 13;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 15:
-                    Comment.currentChapter = 14;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 16:
-                    Comment.currentChapter = 15;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 17:
-                    Comment.currentChapter = 16;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 18:
-                    Comment.currentChapter = 17;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 19:
-                    Comment.currentChapter = 18;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 20:
-                    Comment.currentChapter = 19;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 21:
-                    //戦闘
-                    break;
-                case 22:
-                    Comment.currentChapter = 20;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 23:
-                    //戦闘
-                    break;
-                case 24:
-                    Comment.currentChapter = 21;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 25:
-                    Comment.currentChapter = 22;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                default:
-                    break;
-            }
-            #endregion
-        }
-        else if(scenario == scenarioType.scenarioBlue3)
-        {
-            #region
-            switch(eventNum)
-            {
-                case 1:
-                    Comment.currentChapter = 0;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 2:
-                    Comment.currentChapter = 1;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 3:
-                    Comment.currentChapter = 2;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 4:
-                    Comment.currentChapter = 3;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 5:
-                    //戦闘
-                    break;
-                case 6:
-                    Comment.currentChapter = 4;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 7:
-                    Comment.currentChapter = 5;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 8:
-                    Comment.currentChapter = 6;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 9:
-                    Comment.currentChapter = 7;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 10:
-                    Comment.currentChapter = 8;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 11:
-                    Comment.currentChapter = 9;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 12:
-                    Comment.currentChapter = 10;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 13:
-                    Comment.currentChapter = 11;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 14:
-                    Comment.currentChapter = 12;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 15:
-                    Comment.currentChapter = 13;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 16:
-                    //戦闘
-                    break;
-                case 17:
-                    Comment.currentChapter = 14;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 18:
-                    Comment.currentChapter = 15;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 19:
-                    Comment.currentChapter = 16;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 20:
-                    Comment.currentChapter = 17;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 21:
-                    Comment.currentChapter = 18;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 22:
-                    Comment.currentChapter = 19;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 23:
-                    Comment.currentChapter = 20;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-
-                default:
-                    break;
-            }
-            #endregion
-        }
-        else if (scenario == scenarioType.scenarioRed1)
-        {
-            #region
-            switch (eventNum)
-            {
-                case 1:
-                    Comment.currentChapter = 0;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 2:
-                    Comment.currentChapter = 1;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 3:
-                    Comment.currentChapter = 2;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 4:
-                    Comment.currentChapter = 3;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 5:
-                    //野生生物と戦闘
-                    break;
-                case 6:
-                    Comment.currentChapter = 4;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 7:
-                    Comment.currentChapter = 5;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 8:
-                    //魔物との戦闘
-                    break;
-                case 9:
-                    Comment.currentChapter = 6;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 10:
-                    Comment.currentChapter = 7;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 11:
-                    Comment.currentChapter = 8;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 12:
-                    Comment.currentChapter = 9;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 13:
-                    Comment.currentChapter = 10;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 14:
-                    Comment.currentChapter = 11;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 15:
-                    Comment.currentChapter = 12;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 16:
-                    Comment.currentChapter = 13;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 17:
-                    //魔物との戦闘
-                    break;
-                case 18:
-                    Comment.currentChapter = 14;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 19:
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
+                    case 2:
+                        activeText(1);
+                        break;
+                    case 3:
+                        activeText(2);
+                        break;
+                    case 4:
+                        activeText(3);
+                        break;
+                    case 5:
+                        activeText(4);
+                        break;
+                    case 6:
+                        activeText(5);
+                        break;
+                    case 7:
+                        activeText(6);
+                        break;
+                    case 8:
+                        activeText(7);
+                        break;
+                    case 9:
+                        activeText(8);
+                        break;
+                    case 10:
+                        activeText(9);
+                        break;
+                    case 11:
+                        activeText(10);
+                        break;
+                    case 12:
+                        activeText(11);
+                        break;
+                    case 13:
+                        activeText(12);
+                        break;
+                    case 14:
+                        activeText(13);
+                        break;
+                    case 15:
+                        //戦闘
+                        break;
+                    case 16:
+                        activeText(14);
+                        break;
+                    case 17:
+                        //戦闘
+                        break;
+                    case 18:
+                        activeText(15);
+                        break;
+                    case 19:
                     //ボス戦
-                    break;
-                case 20:
-                    Comment.currentChapter = 15;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 21:
-                    Comment.currentChapter = 16;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 22:
-                    Comment.currentChapter = 17;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 23:
-                    Comment.currentChapter = 18;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 24:
-                    //邪神の加護を受けた魔物との戦闘
-                    break;
-                case 25:
-                    Comment.currentChapter = 19;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
-            #endregion
-        }
-        else if (scenario == scenarioType.scenarioRed2)
-        {
-            #region
-            switch (eventNum)
+            else if (scenario == scenarioType.scenarioBlue1)
             {
-                case 1:
-                    Comment.currentChapter = 0;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 2:
-                    Comment.currentChapter = 1;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 3:
-                    Comment.currentChapter = 2;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 4:
-                    //魔物と戦闘
-                    break;
-                case 5:
-                    Comment.currentChapter = 3;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 6:
-                    Comment.currentChapter = 4;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 7:
-                    Comment.currentChapter = 5;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 8:
-                    Comment.currentChapter = 6;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 9:
-                    Comment.currentChapter = 7;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 10:
-                    Comment.currentChapter = 8;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 11:
-                    Comment.currentChapter = 9;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 12:
-                //魔物との戦闘
-                case 13:
-                    Comment.currentChapter = 10;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 14:
-                    Comment.currentChapter = 11;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 15:
-                    Comment.currentChapter = 12;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 16:
-                    //余った魔物との戦闘
-                    break;
-                case 17:
-                    Comment.currentChapter = 13;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 18:
-                    Comment.currentChapter = 14;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 19:
-                    Comment.currentChapter = 15;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 20:
-                    break;
-                case 21:
-                    Comment.currentChapter = 17;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 22:
-                    Comment.currentChapter = 18;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 23:
-                    //道を塞いでる魔物との戦闘
-                    break;
-                case 24:
-                    Comment.currentChapter = 19;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 25:
-                    Comment.currentChapter = 20;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 26:
-                    Comment.currentChapter = 21;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 27:
-                    //大きな魔物との戦闘
-                    break;
-                case 28:
-                    Comment.currentChapter = 22;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 29:
-                    //ローブの男との戦闘
-                    break;
-                case 30:
-                    //低級の邪神との戦闘
-                    break;
-
-                default:
-                    break;
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
+                    case 2:
+                        activeText(1);
+                        break;
+                    case 3:
+                        activeText(2);
+                        break;
+                    case 4:
+                        activeText(3);
+                        break;
+                    case 5:
+                        activeText(4);
+                        break;
+                    case 6:
+                        activeText(5);
+                        break;
+                    case 7:
+                        activeText(6);
+                        break;
+                    case 8:
+                        activeText(7);
+                        break;
+                    case 9:
+                        activeText(8);
+                        break;
+                    case 10:
+                        activeText(9);
+                        break;
+                    case 11:
+                        activeText(10);
+                        break;
+                    case 12:
+                        activeText(11);
+                        break;
+                    case 13:
+                        activeText(12);
+                        break;
+                    case 14:
+                        activeText(13);
+                        break;
+                    case 15:
+                        activeText(14);
+                        //戦闘
+                        break;
+                    case 16:
+                        activeText(15);
+                        break;
+                    case 17:
+                        activeText(16);
+                        break;
+                    case 18:
+                        activeText(17);
+                        break;
+                    case 19:
+                        activeText(18);
+                        break;
+                    case 20:
+                        activeText(19);
+                        break;
+                    case 21:
+                        activeText(20);
+                        break;
+                    case 22:
+                        activeText(21);
+                        break;
+                    case 23:
+                        activeText(22);
+                        break;
+                    case 24:
+                        break;
+                    case 25:
+                        activeText(23);
+                        break;
+                    case 26:
+                        activeText(24);
+                        break;
+                    case 27:
+                        //戦闘
+                        break;
+                    case 28:
+                        //戦闘
+                        break;
+                    case 29:
+                        activeText(25);
+                        break;
+                    case 30:
+                        activeText(26);
+                        break;
+                    default:
+                        break;
+                }
             }
-            #endregion
-        }
-        else if (scenario == scenarioType.scenarioRed3)
-        {
-            #region
-            switch (eventNum)
+            else if (scenario == scenarioType.scenarioBlue2)
             {
-                case 1:
-                    Comment.currentChapter = 0;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 2:
-                    Comment.currentChapter = 1;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 3:
-                    Comment.currentChapter = 2;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 4:
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
+                    case 2:
+                        activeText(1);
+                        break;
+                    case 3:
+                        activeText(2);
+                        break;
+                    case 4:
+                        activeText(3);
+                        break;
+                    case 5:
+                        activeText(4);
+                        break;
+                    case 6:
+                        activeText(5);
+                        break;
+                    case 7:
+                        activeText(6);
+                        break;
+                    case 8:
+                        activeText(7);
+                        break;
+                    case 9:
+                        activeText(8);
+                        break;
+                    case 10:
+                        activeText(9);
+                        break;
+                    case 11:
+                        activeText(10);
+                        break;
+                    case 12:
+                        activeText(11);
+                        break;
+                    case 13:
+                        activeText(12);
+                        break;
+                    case 14:
+                        activeText(13);
+                        break;
+                    case 15:
+                        activeText(14);
+                        break;
+                    case 16:
+                        activeText(15);
+                        break;
+                    case 17:
+                        activeText(16);
+                        break;
+                    case 18:
+                        activeText(17);
+                        break;
+                    case 19:
+                        activeText(18);
+                        break;
+                    case 20:
+                        activeText(19);
+                        break;
+                    case 21:
+                        //戦闘
+                        break;
+                    case 22:
+                        activeText(20);
+                        break;
+                    case 23:
+                        //戦闘
+                        break;
+                    case 24:
+                        activeText(21);
+                        break;
+                    case 25:
+                        activeText(22);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioBlue3)
+            {
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
+                    case 2:
+                        activeText(1);
+                        break;
+                    case 3:
+                        activeText(2);
+                        break;
+                    case 4:
+                        activeText(3);
+                        break;
+                    case 5:
+                        //戦闘
+                        break;
+                    case 6:
+                        activeText(4);
+                        break;
+                    case 7:
+                        activeText(5);
+                        break;
+                    case 8:
+                        activeText(6);
+                        break;
+                    case 9:
+                        activeText(7);
+                        break;
+                    case 10:
+                        activeText(8);
+                        break;
+                    case 11:
+                        activeText(9);
+                        break;
+                    case 12:
+                        activeText(10);
+                        break;
+                    case 13:
+                        activeText(11);
+                        break;
+                    case 14:
+                        activeText(12);
+                        break;
+                    case 15:
+                        activeText(13);
+                        break;
+                    case 16:
+                        //戦闘
+                        break;
+                    case 17:
+                        activeText(14);
+                        break;
+                    case 18:
+                        activeText(15);
+                        break;
+                    case 19:
+                        activeText(16);
+                        break;
+                    case 20:
+                        activeText(17);
+                        break;
+                    case 21:
+                        activeText(18);
+                        break;
+                    case 22:
+                        activeText(19);
+                        break;
+                    case 23:
+                        activeText(20);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioRed1)
+            {
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
+                    case 2:
+                        activeText(1);
+                        break;
+                    case 3:
+                        activeText(2);
+                        break;
+                    case 4:
+                        activeText(3);
+                        break;
+                    case 5:
+                        //野生生物と戦闘
+                        break;
+                    case 6:
+                        activeText(4);
+                        break;
+                    case 7:
+                        activeText(5);
+                        break;
+                    case 8:
+                        //魔物との戦闘
+                        break;
+                    case 9:
+                        activeText(6);
+                        break;
+                    case 10:
+                        activeText(7);
+                        break;
+                    case 11:
+                        activeText(8);
+                        break;
+                    case 12:
+                        activeText(9);
+                        break;
+                    case 13:
+                        activeText(10);
+                        break;
+                    case 14:
+                        activeText(11);
+                        break;
+                    case 15:
+                        activeText(12);
+                        break;
+                    case 16:
+                        activeText(13);
+                        break;
+                    case 17:
+                        //魔物との戦闘
+                        break;
+                    case 18:
+                        activeText(14);
+                        break;
+                    case 19:
+                        //ボス戦
+                        break;
+                    case 20:
+                        activeText(15);
+                        break;
+                    case 21:
+                        activeText(16);
+                        break;
+                    case 22:
+                        activeText(17);
+                        break;
+                    case 23:
+                        activeText(18);
+                        break;
+                    case 24:
+                        //邪神の加護を受けた魔物との戦闘
+                        break;
+                    case 25:
+                        activeText(19);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioRed2)
+            {
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
+                    case 2:
+                        activeText(1);
+                        break;
+                    case 3:
+                        activeText(2);
+                        break;
+                    case 4:
+                        //魔物と戦闘
+                        break;
+                    case 5:
+                        activeText(3);
+                        break;
+                    case 6:
+                        activeText(4);
+                        break;
+                    case 7:
+                        activeText(5);
+                        break;
+                    case 8:
+                        activeText(6);
+                        break;
+                    case 9:
+                        activeText(7);
+                        break;
+                    case 10:
+                        activeText(8);
+                        break;
+                    case 11:
+                        activeText(9);
+                        break;
+                    case 12:
                     //魔物との戦闘
-                    break;
-                case 5:
-                    Comment.currentChapter = 3;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 6:
-                    Comment.currentChapter = 4;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 7:
-                    Comment.currentChapter = 5;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 8:
-                    Comment.currentChapter = 6;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 9:
-                    //煌々の使徒と模擬戦
-                    break;
-                case 10:
-                    Comment.currentChapter = 7;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 11:
-                    Comment.currentChapter = 8;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 12:
-                    Comment.currentChapter = 9;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 13:
-                    //湖の魔物との戦闘
-                    break;
-                case 14:
-                    Comment.currentChapter = 10;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 15:
-                    Comment.currentChapter = 11;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 16:
-                    Comment.currentChapter = 12;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 17:
-                    break;
-                case 18:
-                    Comment.currentChapter = 14;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 19:
-                    Comment.currentChapter = 15;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 20:
-                    Comment.currentChapter = 16;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 21:
-                    //魔物との戦闘
-                    break;
-                case 22:
-                    Comment.currentChapter = 17;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 23:
-                    Comment.currentChapter = 18;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 24:
-                    //魔物との戦闘
-                    break;
-                case 25:
-                    Comment.currentChapter = 19;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 26:
-                    Comment.currentChapter = 20;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 27:
-                    Comment.currentChapter = 21;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 28:
-                    //邪神との戦闘
-                    break;
-                case 29:
-                    Comment.currentChapter = 22;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-                case 30:
-                    //完全体煌々の使徒との戦闘
-                    break;
+                    case 13:
+                        activeText(10);
+                        break;
+                    case 14:
+                        activeText(11);
+                        break;
+                    case 15:
+                        activeText(12);
+                        break;
+                    case 16:
+                        //余った魔物との戦闘
+                        break;
+                    case 17:
+                        activeText(13);
+                        break;
+                    case 18:
+                        activeText(14);
+                        break;
+                    case 19:
+                        activeText(15);
+                        break;
+                    case 20:
+                        break;
+                    case 21:
+                        activeText(17);
+                        break;
+                    case 22:
+                        activeText(18);
+                        break;
+                    case 23:
+                        //道を塞いでる魔物との戦闘
+                        break;
+                    case 24:
+                        activeText(19);
+                        break;
+                    case 25:
+                        activeText(20);
+                        break;
+                    case 26:
+                        activeText(21);
+                        break;
+                    case 27:
+                        //大きな魔物との戦闘
+                        break;
+                    case 28:
+                        activeText(22);
+                        break;
+                    case 29:
+                        //ローブの男との戦闘
+                        break;
+                    case 30:
+                        //低級の邪神との戦闘
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
-            #endregion
-        }
-    }
-    //会話終了時に起こるイベント
-    public void endEvent(int eventNum)
-    {
-        StartCoroutine(talkEndEvent(eventNum));
-    }
-
-    IEnumerator talkEndEvent(int eventNum)
-    {
-        yield return new WaitForFixedUpdate();
-        if (scenario == scenarioType.scenario1)
-        {
-            #region
-            switch (eventNum)
+            else if (scenario == scenarioType.scenarioRed3)
             {
-                case 5:
-                    Scene[0].SetActive(false);
-                    Scene[1].SetActive(true);
-                    Comment.currentChapter = 5;
-                    NovelCanvas.SetActive(true);
-                    Comment.ChangeBackGroundImage(1);
-                    Comment.nullText();
-                    Comment.onAnimation = true;
-                    yield return new WaitForSeconds(2f);
-                    Comment.ChangeBackGroundImage(2);
-                    yield return new WaitForSeconds(2f);
-                    Comment.nextText();
-                    Comment.onAnimation = false;
-                    Debug.Log("終了イベント5");
-                    break;
-                case 17:
-                    Comment.ChangeBackGroundImage(0);
-                    //戦闘開始の信号を送る
-                    Debug.Log("終了イベント17");
-                    break;
-                case 19:
-                    Comment.ChangeBackGroundImage(0);
-                    //戦闘開始の信号を送る
-                    Debug.Log("終了イベント19");
-                    break;
-                case 28:
-                    Comment.ChangeBackGroundImage(0);
-                    //戦闘開始の信号を送る
-                    Debug.Log("終了イベント28");
-                    break;
-                case 39:
-                    NestStageCheckPanel.SetActive(true);
-                    break;
-                default:
-                    Debug.Log("何も設定されていない終了イベントです");
-                    break;
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
+                    case 2:
+                        activeText(1);
+                        break;
+                    case 3:
+                        activeText(2);
+                        break;
+                    case 4:
+                        //魔物との戦闘
+                        break;
+                    case 5:
+                        activeText(3);
+                        break;
+                    case 6:
+                        activeText(4);
+                        break;
+                    case 7:
+                        activeText(5);
+                        break;
+                    case 8:
+                        activeText(6);
+                        break;
+                    case 9:
+                        //煌々の使徒と模擬戦
+                        break;
+                    case 10:
+                        activeText(7);
+                        break;
+                    case 11:
+                        activeText(8);
+                        break;
+                    case 12:
+                        activeText(9);
+                        break;
+                    case 13:
+                        //湖の魔物との戦闘
+                        break;
+                    case 14:
+                        activeText(10);
+                        break;
+                    case 15:
+                        activeText(11);
+                        break;
+                    case 16:
+                        activeText(12);
+                        break;
+                    case 17:
+                        break;
+                    case 18:
+                        activeText(14);
+                        break;
+                    case 19:
+                        activeText(15);
+                        break;
+                    case 20:
+                        activeText(16);
+                        break;
+                    case 21:
+                        //魔物との戦闘
+                        break;
+                    case 22:
+                        activeText(17);
+                        break;
+                    case 23:
+                        activeText(18);
+                        break;
+                    case 24:
+                        //魔物との戦闘
+                        break;
+                    case 25:
+                        activeText(19);
+                        break;
+                    case 26:
+                        activeText(20);
+                        break;
+                    case 27:
+                        activeText(21);
+                        break;
+                    case 28:
+                        //邪神との戦闘
+                        break;
+                    case 29:
+                        activeText(22);
+                        break;
+                    case 30:
+                        //完全体煌々の使徒との戦闘
+                        break;
+
+                    default:
+                        break;
+                }
             }
-            #endregion
         }
-        else if (scenario == scenarioType.scenario2)
+
+        /// <summary>
+        /// イベントの対応する番号を引数に持ってきて、会話用テキストに設定した後
+        /// 会話用のcanvasを表示して会話を始める。
+        /// </summary>
+        private void activeText(int eventTextNumber)
         {
-            #region
-            switch (eventNum)
-            {
-                case 8:
-                    //アタマッコの新しい装備を手に入れる
-                    Debug.Log("終了イベント8");
-                    break;
-                case 13:
-                    Scene[1].SetActive(true);
-                    NovelCanvas.SetActive(true);
-                    yield return new WaitForSeconds(4f);
-                    Comment.ChangeBackGroundImage(0);
-                    NovelCanvas.SetActive(false);
-                    break;
-                default:
-                    Debug.Log("何も設定されていない終了イベントです");
-                    break;
-            }
-            #endregion
+            Comment.currentChapter = eventTextNumber;
+            NovelCanvas.SetActive(true);
+            Comment.nextText();
         }
-        else if (scenario == scenarioType.scenarioBlue1)
+        //会話終了時に起こるイベント
+        public void endEvent(int eventNum)
         {
-            #region
-            switch (eventNum)
-            {
-                case 7:
-                    Scene[0].SetActive(false);
-                    Scene[1].SetActive(true);
-                    Comment.currentChapter = 7;
-                    NovelCanvas.SetActive(true);
-                    Comment.ChangeBackGroundImage(1);
-                    Comment.nullText();
-                    Comment.onAnimation = true;
-                    yield return new WaitForSeconds(2f);
-                    Comment.ChangeBackGroundImage(2);
-                    yield return new WaitForSeconds(2f);
-                    Comment.nextText();
-                    Comment.onAnimation = false;
-                    Debug.Log("終了イベント7");
-                    break;
-                case 14:
-                    //教導の使徒と戦闘
-                    break;
-                case 30:
-                    //ボス戦闘
-                    break;
-
-                default:
-                    break;
-            }
-            #endregion
+            StartCoroutine(talkEndEvent(eventNum));
         }
-        else if (scenario == scenarioType.scenarioBlue2)
+        /// <summary>
+        /// eventNumの会話が終わった後に動作する。
+        /// </summary>
+        /// <param name="eventNum"></param>
+        /// <returns></returns>
+        /// 
+        IEnumerator changeStage(int currentStageNum, int currentChapter)
         {
-            #region
-            switch (eventNum)
-            {
-                case 7:
-                    Scene[0].SetActive(false);
-                    Scene[1].SetActive(true);
-                    Comment.currentChapter = 7;
-                    NovelCanvas.SetActive(true);
-                    Comment.ChangeBackGroundImage(1);
-                    Comment.nullText();
-                    Comment.onAnimation = true;
-                    yield return new WaitForSeconds(2f);
-                    Comment.ChangeBackGroundImage(2);
-                    yield return new WaitForSeconds(2f);
-                    Comment.nextText();
-                    Comment.onAnimation = false;
-                    Debug.Log("終了イベント7");
-                    break;
-                case 14:
-                    Scene[1].SetActive(false);
-                    Scene[2].SetActive(true);
-                    Comment.currentChapter = 14;
-                    NovelCanvas.SetActive(true);
-                    Comment.ChangeBackGroundImage(1);
-                    Comment.nullText();
-                    Comment.onAnimation = true;
-                    yield return new WaitForSeconds(2f);
-                    Comment.ChangeBackGroundImage(2);
-                    yield return new WaitForSeconds(2f);
-                    Comment.nextText();
-                    Comment.onAnimation = false;
-                    Debug.Log("終了イベント14");
-                    break;
-                case 15:
-                    //少年と戦闘
-                    break;
-                case 25:
-                    //ラスボス戦
-                    break;
-
-                default:
-                    break;
-            }
-            #endregion
+            Scene[currentStageNum].SetActive(false);
+            Scene[currentStageNum + 1].SetActive(true);
+            Comment.currentChapter = currentChapter;
+            NovelCanvas.SetActive(true);
+            Comment.ChangeBackGroundImage(1);
+            Comment.nullText();
+            Comment.onAnimation = true;
+            yield return new WaitForSeconds(2f);
+            Comment.ChangeBackGroundImage(2);
+            yield return new WaitForSeconds(2f);
+            Comment.nextText();
+            Comment.onAnimation = false;
+            Debug.Log("終了イベント：" + currentStageNum);
         }
-        else if (scenario == scenarioType.scenarioBlue3)
+        IEnumerator talkEndEvent(int eventNum)
         {
-            #region
-            switch (eventNum)
+            yield return new WaitForFixedUpdate();
+            if (scenario == scenarioType.scenario1)
             {
-                case 12:
-                    Scene[0].SetActive(false);
-                    Scene[1].SetActive(true);
-                    Comment.currentChapter = 12;
-                    NovelCanvas.SetActive(true);
-                    Comment.ChangeBackGroundImage(1);
-                    Comment.nullText();
-                    Comment.onAnimation = true;
-                    yield return new WaitForSeconds(2f);
-                    Comment.ChangeBackGroundImage(2);
-                    yield return new WaitForSeconds(2f);
-                    Comment.nextText();
-                    Comment.onAnimation = false;
-                    Debug.Log("終了イベント7");
-                    break;
-                case 20:
-                    //ボス戦
-                    break;
-                case 22:
-                    //ボス戦
-                    break;
-                case 23:
-                    Comment.currentChapter = 21;
-                    NovelCanvas.SetActive(true);
-                    Comment.nextText();
-                    break;
-
-                default:
-                    break;
+                switch (eventNum)
+                {
+                    case 5:
+                        StartCoroutine(changeStage(0, 5));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 17:
+                        Comment.ChangeBackGroundImage(0);
+                        //戦闘開始の信号を送る
+                        Debug.Log("終了イベント17");
+                        break;
+                    case 19:
+                        Comment.ChangeBackGroundImage(0);
+                        //戦闘開始の信号を送る、戦闘後次のステージへ
+                        Debug.Log("終了イベント19");
+                        break;
+                    case 28:
+                        Comment.ChangeBackGroundImage(0);
+                        //戦闘開始の信号を送る
+                        Debug.Log("終了イベント28");
+                        break;
+                    case 39:
+                        NestStageCheckPanel.SetActive(true);
+                        break;
+                    default:
+                        Debug.Log("何も設定されていない終了イベントです");
+                        break;
+                }
             }
-            #endregion
-        }
-        else if (scenario == scenarioType.scenarioRed1)
-        {
-            #region
-            switch (eventNum)
+            else if (scenario == scenarioType.scenario2)
             {
-                case 8:
-                    Scene[0].SetActive(false);
-                    Scene[1].SetActive(true);
-                    Comment.currentChapter = 8;
-                    NovelCanvas.SetActive(true);
-                    Comment.ChangeBackGroundImage(1);
-                    Comment.nullText();
-                    Comment.onAnimation = true;
-                    yield return new WaitForSeconds(2f);
-                    Comment.ChangeBackGroundImage(2);
-                    yield return new WaitForSeconds(2f);
-                    Comment.nextText();
-                    Comment.onAnimation = false;
-                    Debug.Log("終了イベント9");
-                    break;
-                case 14:
-                    //小鹿を襲う魔物と戦闘
-                    break;
-                case 19:
-                    Scene[1].SetActive(false);
-                    Scene[2].SetActive(true);
-                    Comment.currentChapter = 19;
-                    NovelCanvas.SetActive(true);
-                    Comment.ChangeBackGroundImage(1);
-                    Comment.nullText();
-                    Comment.onAnimation = true;
-                    yield return new WaitForSeconds(2f);
-                    Comment.ChangeBackGroundImage(2);
-                    yield return new WaitForSeconds(2f);
-                    Comment.nextText();
-                    Comment.onAnimation = false;
-                    Debug.Log("終了イベント9");
-                    break;
-
-
-                default:
-                    break;
+                switch (eventNum)
+                {
+                    case 8:
+                        //アタマッコの新しい装備を手に入れる
+                        Debug.Log("終了イベント8");
+                        break;
+                    case 13:
+                        Scene[1].SetActive(true);
+                        NovelCanvas.SetActive(true);
+                        yield return new WaitForSeconds(4f);
+                        Comment.ChangeBackGroundImage(0);
+                        NovelCanvas.SetActive(false);
+                        break;
+                    default:
+                        Debug.Log("何も設定されていない終了イベントです");
+                        break;
+                }
             }
-            #endregion
-        }
-        else if (scenario == scenarioType.scenarioRed2)
-        {
-            #region
-            switch (eventNum)
+            else if (scenario == scenarioType.scenarioBlue1)
             {
-                case 6:
-                    Scene[0].SetActive(false);
-                    Scene[1].SetActive(true);
-                    Comment.currentChapter = 6;
-                    NovelCanvas.SetActive(true);
-                    Comment.ChangeBackGroundImage(2);
-                    Comment.nullText();
-                    Comment.onAnimation = true;
-                    yield return new WaitForSeconds(2f);
-                    Comment.ChangeBackGroundImage(2);
-                    yield return new WaitForSeconds(2f);
-                    Comment.nextText();
-                    Comment.onAnimation = false;
-                    Debug.Log("終了イベント5");
-                    break;
-                case 16:
-                    Scene[1].SetActive(false);
-                    Scene[2].SetActive(true);
-                    Comment.currentChapter = 16;
-                    NovelCanvas.SetActive(true);
-                    Comment.ChangeBackGroundImage(3);
-                    Comment.nullText();
-                    Comment.onAnimation = true;
-                    yield return new WaitForSeconds(2f);
-                    Comment.ChangeBackGroundImage(2);
-                    yield return new WaitForSeconds(2f);
-                    Comment.nextText();
-                    Comment.onAnimation = false;
-                    Debug.Log("終了イベント19");
-                    break;
+                switch (eventNum)
+                {
+                    case 7:
+                        StartCoroutine(changeStage(0, 7));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 14:
+                        //教導の使徒と戦闘
+                        break;
+                    case 30:
+                        //ボス戦闘
+                        break;
 
-
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
-            #endregion
-        }
-        else if (scenario == scenarioType.scenarioRed3)
-        {
-            #region
-            switch (eventNum)
+            else if (scenario == scenarioType.scenarioBlue2)
             {
-                case 7:
-                    Scene[0].SetActive(false);
-                    Scene[1].SetActive(true);
-                    Comment.currentChapter = 7;
-                    NovelCanvas.SetActive(true);
-                    Comment.ChangeBackGroundImage(1);
-                    Comment.nullText();
-                    Comment.onAnimation = true;
-                    yield return new WaitForSeconds(2f);
-                    Comment.ChangeBackGroundImage(2);
-                    yield return new WaitForSeconds(2f);
-                    Comment.nextText();
-                    Comment.onAnimation = false;
-                    Debug.Log("終了イベント8");
-                    break;
-                case 13:
-                    Scene[1].SetActive(false);
-                    Scene[2].SetActive(true);
-                    Comment.currentChapter = 13;
-                    NovelCanvas.SetActive(true);
-                    Comment.ChangeBackGroundImage(1);
-                    Comment.nullText();
-                    Comment.onAnimation = true;
-                    yield return new WaitForSeconds(2f);
-                    Comment.ChangeBackGroundImage(2);
-                    yield return new WaitForSeconds(2f);
-                    Comment.nextText();
-                    Comment.onAnimation = false;
-                    Debug.Log("終了イベント16");
-                    break;
+                switch (eventNum)
+                {
+                    case 7:
+                        StartCoroutine(changeStage(0, 7));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 14:
+                        StartCoroutine(changeStage(1, 14));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 15:
+                        //少年と戦闘
+                        break;
+                    case 25:
+                        //ラスボス戦
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
-            #endregion
+            else if (scenario == scenarioType.scenarioBlue3)
+            {
+                switch (eventNum)
+                {
+                    case 12:
+                        StartCoroutine(changeStage(0, 12));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 20:
+                        //ボス戦
+                        break;
+                    case 22:
+                        //ボス戦
+                        break;
+                    case 23:
+                        activeText(21);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioRed1)
+            {
+                switch (eventNum)
+                {
+                    case 8:
+                        StartCoroutine(changeStage(0, 8));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 14:
+                        //小鹿を襲う魔物と戦闘
+                        break;
+                    case 19:
+                        StartCoroutine(changeStage(1, 19));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioRed2)
+            {
+                switch (eventNum)
+                {
+                    case 6:
+                        StartCoroutine(changeStage(0, 6));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 16:
+                        StartCoroutine(changeStage(1, 16));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioRed3)
+            {
+                switch (eventNum)
+                {
+                    case 7:
+                        StartCoroutine(changeStage(0, 7));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 13:
+                        StartCoroutine(changeStage(1, 13));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
-
     }
 }

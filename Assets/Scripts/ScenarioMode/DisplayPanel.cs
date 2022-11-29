@@ -1,15 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class DisplayPanel : MonoBehaviour
+namespace storyMode
 {
-
-    [SerializeField]
-    private GameObject TargetObject;
-
-    public void OnClick(bool _bool)
+    public class DisplayPanel : MonoBehaviour
     {
-        TargetObject.SetActive(_bool);
+        /// <summary>
+        /// 非表示のオブジェクトを特定の条件で表示する
+        /// </summary>
+        [SerializeField]
+        private GameObject TargetObject;
+
+        public void OnClick(bool _bool)
+        {
+            TargetObject.SetActive(_bool);
+        }
     }
 }
