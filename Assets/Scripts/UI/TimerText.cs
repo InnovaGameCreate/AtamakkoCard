@@ -1,33 +1,35 @@
 using System;
+using TMPro;
 using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UI
 {
     public class TimerText : MonoBehaviour
     {
         [SerializeField] private TimeCounter timeCounter;
-        private Text _text;
+        private TextMeshProUGUI _text;
         void Start()
         {
-            _text = GetComponent<Text>();
+            _text = GetComponent<TextMeshProUGUI>();
             _text.text = String.Empty;
 
-            timeCounter
-                .CountDownObservable
+            timeCounter.Timer
                 .Subscribe(time =>
                 {
+                    Debug.Log(time);
                     _text.text = $"{time}";
                 }, () =>
                 {
                     _text.text = string.Empty;
-                });
+                    _text.color = Color.white;
+                })
+                .AddTo(this);
 
-            timeCounter
-                .CountDownObservable
-                .First(timer => timer <= 5)
-                .Subscribe(_ => _text.color = Color.red);
+            timeCounter.Timer
+                .Where(timer => timer <= 5)
+                .Subscribe(_ => _text.color = Color.red)
+                .AddTo(this);
         }
     }
 }
