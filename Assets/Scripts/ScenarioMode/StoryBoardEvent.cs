@@ -542,6 +542,7 @@ namespace storyMode
                         break;
                     case 19:
                         //ボス戦
+                        StartCoroutine(changeStage(1, 19));//戦闘が終わると表示する
                         break;
                     case 20:
                         activeText(15);
@@ -656,6 +657,8 @@ namespace storyMode
                         break;
                     case 30:
                         //低級の邪神との戦闘
+
+                        NestStageCheckPanel.SetActive(true);//戦闘が終わると表示する
                         break;
 
                     default:
@@ -754,6 +757,96 @@ namespace storyMode
                         break;
                     case 30:
                         //完全体煌々の使徒との戦闘
+                        NestStageCheckPanel.SetActive(true);//戦闘が終わると表示する
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioWhite1)
+            {
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
+                    case 2:
+                        //魔物との戦闘
+                        break;
+                    case 3:
+                        activeText(1);
+                        break;
+                    case 4:
+                        activeText(2);
+                        break;
+                    case 5:
+                        //魔物との戦闘
+                        break;
+                    case 6:
+                        activeText(3);
+                        break;
+                    case 7:
+                        activeText(4);
+                        break;
+                    case 8:
+                        activeText(5);
+                        break;
+                    case 10:
+                        activeText(7);
+                        break;
+                    case 11:
+                        activeText(8);
+                        break;
+                    case 12:
+                        activeText(9);
+                        break;
+                    case 13:
+                        activeText(10);
+                        break;
+                    case 14:
+                        //盗賊との戦闘
+                        break;
+                    case 15:
+                        activeText(11);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioWhite2)
+            {
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
+                    case 2:
+                        activeText(1);
+                        break;
+                    case 3:
+                        //魔物との戦闘
+                        break;
+                    case 4:
+                        activeText(2);
+                        break;
+                    case 5:
+                        activeText(3);
+                        break;
+                    case 6:
+                        //魔物との戦闘
+                        break;
+                    case 7:
+                        activeText(4);
+                        break;
+                    case 8:
+                        activeText(5);
+                        break;
+                    case 9:
+                        activeText(6);
+                        break;
+                    case 10:
+                        activeText(7);
                         break;
 
                     default:
@@ -781,8 +874,6 @@ namespace storyMode
         /// eventNumの会話が終わった後に動作する。
         /// </summary>
         /// <param name="eventNum"></param>
-        /// <returns></returns>
-        /// 
         IEnumerator changeStage(int currentStageNum, int currentChapter)
         {
             Scene[currentStageNum].SetActive(false);
@@ -862,8 +953,9 @@ namespace storyMode
                     case 14:
                         //教導の使徒と戦闘
                         break;
-                    case 30:
+                    case 26:
                         //ボス戦闘
+                        NestStageCheckPanel.SetActive(true);
                         break;
 
                     default:
@@ -883,8 +975,9 @@ namespace storyMode
                     case 15:
                         //少年と戦闘
                         break;
-                    case 25:
+                    case 22:
                         //ラスボス戦
+                        NestStageCheckPanel.SetActive(true);
                         break;
 
                     default:
@@ -898,14 +991,15 @@ namespace storyMode
                     case 12:
                         StartCoroutine(changeStage(0, 12));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
+                    case 17:
+                        //ボス戦
+                        break;
+                    case 19:
+                        //ボス戦
+                        break;
                     case 20:
-                        //ボス戦
-                        break;
-                    case 22:
-                        //ボス戦
-                        break;
-                    case 23:
                         activeText(21);
+                        NestStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;
@@ -922,7 +1016,7 @@ namespace storyMode
                         //小鹿を襲う魔物と戦闘
                         break;
                     case 19:
-                        StartCoroutine(changeStage(1, 19));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        NestStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;
@@ -935,8 +1029,8 @@ namespace storyMode
                     case 6:
                         StartCoroutine(changeStage(0, 6));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
-                    case 16:
-                        StartCoroutine(changeStage(1, 16));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                    case 15:
+                        StartCoroutine(changeStage(1, 15));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     default:
                         break;
@@ -951,6 +1045,32 @@ namespace storyMode
                         break;
                     case 13:
                         StartCoroutine(changeStage(1, 13));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioWhite1)
+            {
+                switch (eventNum)
+                {
+                    case 8:
+                        //水生の魔物との戦闘
+                        StartCoroutine(changeStage(0, 8));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 11:
+                        NestStageCheckPanel.SetActive(true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioWhite2)
+            {
+                switch (eventNum)
+                {
+                    case 7:
+                        StartCoroutine(changeStage(0, 7));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     default:
                         break;
