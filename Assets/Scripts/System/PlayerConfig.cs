@@ -52,19 +52,19 @@ public class PlayerConfig : MonoBehaviour
             unLockEquipment.Clear();
             for (int i = 0; i < 10; i++)
             {
-                unLockCard.Add(false);
-            }
-            for (int i = 10; i < DevelopModeCardNum; i++)
-            {
                 unLockCard.Add(true);
+            }
+            for (int i = 20; i < DevelopModeCardNum; i++)
+            {
+                unLockCard.Add(false);
             }
             for (int i = 0; i < 40; i++)
             {
-                unLockEquipment.Add(false);
+                unLockEquipment.Add(true);
             }
             for (int i = 40; i < DevelopModeEquipmentNum; i++)
             {
-                unLockEquipment.Add(true);
+                unLockEquipment.Add(false);
             }
             Equipmnet.Add(1);
             Equipmnet.Add(0);
