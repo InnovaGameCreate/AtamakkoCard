@@ -46,7 +46,6 @@ namespace Assemble
         IEnumerator SetUp()//スプレットシートからデータを読み取る時間停止
         {
             yield return new WaitForSeconds(0.5f);
-
             setUpItem();
         }
         private void setUpItem()//データから初期の装備カードをセットする
@@ -62,7 +61,9 @@ namespace Assemble
             item.MyItemImage = cardIcon.equipmentIconList[int.Parse(quipmentData[0])];
             item.MyCardNum1 = int.Parse(quipmentData[4]);
             item.MyCardNum2 = int.Parse(quipmentData[5]);
-            Debug.Log("item.MyCardIDの設定されているカードは" + item.MyCardNum1 + "と" + item.MyCardNum1 + "です");
+            Debug.Log("装備"+ PositionNum + "に設置されている装備のIDは："+ item.MyCardID +"です\n" +
+                "アイテムのイメージ画像は"+ item.MyItemImage+ "です\n" + 
+                "item.MyCardIDの設定されているカードは" + item.MyCardNum1 + "と" + item.MyCardNum2 + "です");
             setItem(item);
         }
 
@@ -70,7 +71,6 @@ namespace Assemble
         {
             if (card1 != null) Destroy(card1);
             if (card2 != null) Destroy(card2);
-
             card1 = Instantiate(cardPrefab, CardView.transform);
             card2 = Instantiate(cardPrefab, CardView.transform);
             card1.transform.localScale = new Vector3(2, 2, 2);
@@ -79,12 +79,11 @@ namespace Assemble
             var _cardController2 = card2.GetComponent<CardController>();
             _cardController1.Init(CardData.CardDataArrayList[item.MyCardNum1]);
             _cardController2.Init(CardData.CardDataArrayList[item.MyCardNum2]);
-
         }
 
         public override void setItem(Item item)
         {
-            //Debug.Log(MySlotType + "のEquipmnet[PositionNum]を" + item.MyCardID + "に変更しました");
+            
             PlayerConfig.Equipmnet[PositionNum] = item.MyCardID;
 
 
@@ -114,17 +113,16 @@ namespace Assemble
             if (MySlotType.ToString() != gotItem.MyPartsType.ToString()) return;
             gotItem = Hand.GetGrabbingItem();
             Hand.SetGtabbingItem(MyItem);
-
-            /*
-            //ドロップした物が武器だった場合
-            if (MySlotType == slotType.accessory)
-            {
-                //weapon Weapon = gotItem as weapon;
-                //Weapon.IsRightWeapon = isRightWeapon;
-            }
-            */
             setItem(gotItem);
         }
-
+        private void dataTest()
+        {
+            for (int i = 0; i < 40; i++)
+            {
+                Debug.Log("生成したカードID：" + CardData.CardDataArrayList[i][0] 
+                    + "\n名前：" + CardData.CardDataArrayList[i][1]
+                    + "\n種類：" + CardData.CardDataArrayList[i][4]);
+            }
+        }
     }
 }

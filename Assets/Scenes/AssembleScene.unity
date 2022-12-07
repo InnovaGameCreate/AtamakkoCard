@@ -2413,7 +2413,7 @@ GameObject:
   m_Component:
   - component: {fileID: 553870403}
   m_Layer: 5
-  m_Name: Caed
+  m_Name: Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7356,7 +7356,7 @@ GameObject:
   - component: {fileID: 1663308165}
   - component: {fileID: 1663308166}
   m_Layer: 5
-  m_Name: Upper
+  m_Name: cardView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

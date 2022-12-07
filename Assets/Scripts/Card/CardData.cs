@@ -47,6 +47,7 @@ namespace Card
                         }
 
                         elements[i] = elements[i].TrimStart('"').TrimEnd('"');
+                        Debug.Log(elements[0]);
                     }
                     cardDataStringsList.Add(elements);
                 }
