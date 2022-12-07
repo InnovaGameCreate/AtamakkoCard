@@ -848,6 +848,72 @@ namespace storyMode
                     case 10:
                         activeText(7);
                         break;
+                    case 12:
+                        activeText(9);
+                        break;
+                    case 13:
+                        activeText(10);
+                        break;
+                    case 14:
+                        activeText(11);
+                        break;
+                    case 15:
+                        activeText(12);
+                        break;
+                    case 16:
+                        activeText(13);
+                        break;
+                    case 17:
+                        activeText(14);
+                        break;
+                    case 18:
+                        //大男との戦闘、勝利すると報酬
+                        break;
+                    case 19:
+                        activeText(15);
+                        break;
+                    case 21:
+                        activeText(17);
+                        break;
+                    case 22:
+                        //魔物との戦闘
+                        break;
+                    case 23:
+                        activeText(18);
+                        break;
+                    case 24:
+                        activeText(19);
+                        break;
+                    case 25:
+                        activeText(20);
+                        break;
+                    case 26:
+                        activeText(21);
+                        break;
+                    case 27:
+                        activeText(22);
+                        break;
+                    case 28:
+                        activeText(23);
+                        break;
+                    case 29:
+                        activeText(24);
+                        break;
+                    case 30:
+                        //兵士と戦闘
+                        break;
+                    case 31:
+                        activeText(25);
+                        break;
+                    case 32:
+                        activeText(26);
+                        break;
+                    case 33:
+                        //下水の魔物と戦闘
+                        break;
+                    case 34:
+                        activeText(27);
+                        break;
 
                     default:
                         break;
@@ -1069,8 +1135,11 @@ namespace storyMode
             {
                 switch (eventNum)
                 {
-                    case 7:
-                        StartCoroutine(changeStage(0, 7));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                    case 8:
+                        StartCoroutine(changeStage(0, 8));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 16:
+                        StartCoroutine(changeStage(1, 16));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     default:
                         break;

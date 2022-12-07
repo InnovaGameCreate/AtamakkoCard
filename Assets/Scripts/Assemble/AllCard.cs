@@ -45,6 +45,7 @@ namespace Assemble
         private GameObject Content;//カードを表示するオブジェクト
         private void Awake()
         {
+            Debug.Log("カードと装備データの読み込み");
             StartCoroutine(CardData.GetData());
             StartCoroutine(equipmentData.GetData());
         }
