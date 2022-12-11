@@ -919,6 +919,36 @@ namespace storyMode
                         break;
                 }
             }
+            else if (scenario == scenarioType.scenarioWhite2)
+            {
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
+                    case 2:
+                        activeText(1);
+                        break;
+                    case 3:
+                        activeText(2);
+                        break;
+                    case 4:
+                        activeText(3);
+                        break;
+                    case 5:
+                        activeText(4);
+                        break;
+                    case 6:
+                        activeText(5);
+                        break;
+                    case 7:
+                        activeText(6);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
 
         /// <summary>

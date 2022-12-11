@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.EventSystems;
 
 namespace Assemble
@@ -13,6 +14,8 @@ namespace Assemble
         private GameObject draggingObj;
         [SerializeField]
         private GameObject itemImageObj;
+        [SerializeField]
+        private TextMeshProUGUI textMesh;
         private Transform canvasTransform;
         public Item MyItem { get => item; protected set => item = value; }
 
@@ -50,6 +53,7 @@ namespace Assemble
             {
                 itemImage.color = new Color(1, 1, 1, 1);
                 itemImage.sprite = item.MyItemImage;
+                textMesh.text = MyItem.MyItemName;
             }
             else
             {

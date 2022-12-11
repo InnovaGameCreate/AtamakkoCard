@@ -50,19 +50,19 @@ public class PlayerConfig : MonoBehaviour
             Deck.Clear();
             unLockCard.Clear();
             unLockEquipment.Clear();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < DevelopModeCardNum; i++)
             {
                 unLockCard.Add(true);
             }
-            for (int i = 20; i < DevelopModeCardNum; i++)
-            {
-                unLockCard.Add(false);
-            }
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 16; i++)
             {
                 unLockEquipment.Add(true);
             }
-            for (int i = 40; i < DevelopModeEquipmentNum; i++)
+            for (int i = 16; i < 48; i++)
+            {
+                unLockEquipment.Add(false);
+            }
+            for (int i = 48; i < DevelopModeEquipmentNum; i++)
             {
                 unLockEquipment.Add(false);
             }
