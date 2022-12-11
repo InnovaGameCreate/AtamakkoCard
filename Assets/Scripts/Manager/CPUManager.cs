@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Card;
 using Cysharp.Threading.Tasks;
 using Player;
@@ -122,8 +123,6 @@ namespace Manager
                 case State.Battle:
                     BattleFaze();
                     break;
-                default:
-                    break;
             }
         }
 
@@ -178,68 +177,85 @@ namespace Manager
 
         private async void SelectFaze()
         {
-            ultimateButton.MyInteractable = !_usedUltimate;
-            decisionButton.Decision
+            ultimateButton.MyInteractable = !_usedUltimate; // 必殺技を使っているかどうかを判断
+            decisionButton.Decision // 決定ボタンが押されたとき
                 .Subscribe(_ =>
                 {
-                    decisionButton.MyInteractable = false;
-                    ultimateButton.MyInteractable = false;
+                    timeCounter.EndTimer(); // タイマーを0にする
                 })
                 .AddTo(this);
-        
-            await _next.ToUniTask(true);
-            if (_playerStatus.UState != AtamakkoStatus.Ultimate.Normal)
+
+            await timeCounter.CountDown(120);    // カウントタイマー起動（120s）
+            ultimateButton.MyInteractable = false;  // 必殺技ボタンのOFF
+            if (_playerStatus.UState != AtamakkoStatus.Ultimate.Normal) // 必殺技を指定していたら
             {
-                _usedUltimate = true;
+                _usedUltimate = true;   // 必殺技を使用済みに
             }
 
-            var token = this.GetCancellationTokenOnDestroy();
-            ultimateButton.MyInteractable = false;
-            for (int i = 0; i < battleSlots.Length; i++)
-            {
-                await UniTask.WaitUntil(
-                    predicate:() => enemySlots[i].MyCardID >= 0,
-                    timing:PlayerLoopTiming.Update,
-                    cancellationToken: token);
-            }
+            await ReceiveEnemyCard();   // 敵の行動情報を受け取る
+
             _gameState.Value = State.Battle;
         }
-    
+
+        private async UniTask ReceiveEnemyCard()
+        {
+            throw new NotImplementedException();
+        }
+
         private async void BattleFaze()
         {
+            // 必殺技を選択している
             if (_playerStatus.UState != AtamakkoStatus.Ultimate.Normal)
             {
                 await AnimationManager.Instance.MyUltimateCutIn();
-                //photonView.RPC(nameof(EnemyUltimateCutIn), RpcTarget.Others);
             }
             
             if (_playerStatus.UState == AtamakkoStatus.Ultimate.Recover)
             {
                 _playerStatus.MyHp.Value += 3;
-                //photonView.RPC(nameof(UltHealing), RpcTarget.Others);
             }
             for (int i = 0; i < battleSlots.Length; i++)
             {
                 enemySlots[i].FlipOver();
                 battleSlots[i].MySelect.Value = true;
                 enemySlots[i].MySelect.Value = true;
-                await Battle(battleSlots[i].MyCardID);
+                await Battle(i);
                 battleSlots[i].MySelect.Value = false;
                 enemySlots[i].MySelect.Value = false;
                 battleSlots[i].DeleteCard();
                 enemySlots[i].DeleteCard();
             }
-
-            await _next.ToUniTask(true);
+            
             _playerStatus.UState = AtamakkoStatus.Ultimate.Normal;
             _gameState.Value = State.Draw;
         }
 
-        private async UniTask Battle(int cardID)
+        private async UniTask Battle(int slotID)
         {
+            var myCard = new CardModel(CardData.CardDataArrayList[battleSlots[slotID].MyCardID]);
+            var enemyCard = new CardModel(CardData.CardDataArrayList[enemySlots[slotID].MyCardID]);
+            int myInitiative = myCard.Initiative;
+            int enemyInitiative = enemyCard.Initiative;
+            if (_playerStatus.UState == AtamakkoStatus.Ultimate.Speed)
+            {
+                myInitiative += 1;
+            }
+            if (_enemyStatus.UState == AtamakkoStatus.Ultimate.Speed)
+            {
+                enemyInitiative += 1;
+            }
             await UniTask.Delay(10);
-            var card = new CardModel(CardData.CardDataArrayList[cardID]);
-        
+
+            if (myInitiative > enemyInitiative)
+            {
+                if(myCard.Kind == "攻撃") await _attack.AttackSelect(myCard, myInitiative);
+                if(myCard.Kind == "移動") await _move.CanMove(myCard, myInitiative);
+                await timeCounter.CountDown(100);
+                
+                
+            }
+            
+            /* 
             for (int i = 6; i > 0; i--)
             {
                 int initiative = i;
@@ -259,9 +275,12 @@ namespace Manager
                 await _next.ToUniTask(true);
                 _move.MovePart();
             }
+             */
         
             await UniTask.Delay(10);
         }
+        
+        //private async UniTask Enemy
 
         private void EnemyCard(int sID, int cID)
         {
