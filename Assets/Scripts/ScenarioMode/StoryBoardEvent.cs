@@ -919,7 +919,7 @@ namespace storyMode
                         break;
                 }
             }
-            else if (scenario == scenarioType.scenarioWhite2)
+            else if (scenario == scenarioType.scenarioWhite3)
             {
                 switch (eventNum)
                 {
@@ -943,6 +943,92 @@ namespace storyMode
                         break;
                     case 7:
                         activeText(6);
+                        break;
+                    case 8:
+                        activeText(7);
+                        break;
+                    case 9:
+                        activeText(8);//次の章へ
+                        break;
+                    case 10:
+                        activeText(9);
+                        break;
+                    case 11:
+                        activeText(10);//アタマッコの装備を手に入れる。
+                        break;
+                    case 13:
+                        activeText(12);
+                        break;
+                    case 14:
+                        //ゴーレムとの戦闘
+                        break;
+                    case 15:
+                        activeText(13);
+                        break;
+                    case 16:
+                        activeText(14);
+                        break;
+                    case 17:
+                        //ゴーレムとの戦闘
+                        break;
+                    case 18:
+                        activeText(15);
+                        break;
+                    case 19:
+                        activeText(16);
+                        break;
+                    case 20:
+                        activeText(17);
+                        break;
+                    case 21:
+                        //敵に襲われる
+                        break;
+                    case 22:
+                        activeText(18);
+                        break;
+                    case 23:
+                        activeText(19);
+                        break;
+                    case 24:
+                        //化け物との戦闘
+                        break;
+                    case 25:
+                        activeText(20);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioend1)
+            {
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
+                    case 2:
+                        activeText(1);
+                        break;
+                    case 3:
+                        activeText(2);
+                        break;
+                    case 4:
+                        activeText(3);
+                        break;
+                    case 5:
+                        activeText(4);
+                        break;
+                    case 6:
+                        //敵との戦闘
+                        break;
+                    case 7:
+                        //敵との戦闘
+                        break;
+                    case 8:
+                        activeText(5);
+                        break;
+                    case 9:
+                        //敵との戦闘
                         break;
 
                     default:
@@ -1170,6 +1256,23 @@ namespace storyMode
                         break;
                     case 16:
                         StartCoroutine(changeStage(1, 16));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 28:
+                        NestStageCheckPanel.SetActive(true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioWhite3)
+            {
+                switch (eventNum)
+                {
+                    case 9:
+                        StartCoroutine(changeStage(0, 9));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 21:
+                        NestStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;

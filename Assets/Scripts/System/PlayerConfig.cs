@@ -54,17 +54,17 @@ public class PlayerConfig : MonoBehaviour
             {
                 unLockCard.Add(true);
             }
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 26; i++)
             {
                 unLockEquipment.Add(true);
             }
-            for (int i = 16; i < 48; i++)
+            for (int i = 26; i < 48; i++)
             {
                 unLockEquipment.Add(false);
             }
             for (int i = 48; i < DevelopModeEquipmentNum; i++)
             {
-                unLockEquipment.Add(false);
+                unLockEquipment.Add(true);
             }
             Equipmnet.Add(1);
             Equipmnet.Add(0);
@@ -115,7 +115,7 @@ public class PlayerConfig : MonoBehaviour
             }
             for (int i = 40; i < DevelopModeEquipmentNum; i++)
             {
-                unLockEquipment.Add(false);
+                unLockEquipment.Add(true);
             }
             DevelopMode = false;
         }
