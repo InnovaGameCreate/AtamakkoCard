@@ -62,4 +62,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/StoryScenario/StoryBoardWhite3.unity
     guid: a2b24a45dca1d5643bcc34ff00c3ac7b
+  - enabled: 1
+    path: Assets/Scenes/StoryScenario/StoryBoardEnd1.unity
+    guid: d9c6b9fd92bbc1d4b8fade82ea7780a1
+  - enabled: 1
+    path: Assets/Scenes/StoryScenario/StoryBoardEnd2.unity
+    guid: 2b05d39a34cc994498694129c5947278
   m_configObjects: {}
