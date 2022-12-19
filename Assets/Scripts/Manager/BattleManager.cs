@@ -47,8 +47,8 @@ namespace Manager
         private PlayerAttack _attack;
         private Deck _deck1;
         private List<int> _cardList;
-        private AtamakkoStatus _playerStatus;
-        private AtamakkoStatus _enemyStatus;
+        private AtamakkoData _playerData;
+        private AtamakkoData _enemyData;
         private bool _usedUltimate;
         private bool _youWin;
 
@@ -70,9 +70,9 @@ namespace Manager
         {
             _move = player.GetComponent<PlayerMove>();
             _attack = player.GetComponent<PlayerAttack>();
-            _playerStatus = player.GetComponent<AtamakkoStatus>();
+            _playerData = player.GetComponent<AtamakkoData>();
 
-            _enemyStatus = enemy.GetComponent<AtamakkoStatus>();
+            _enemyData = enemy.GetComponent<AtamakkoData>();
         
             _gameState
                 .Where(x => x == State.Waiting)
@@ -99,7 +99,7 @@ namespace Manager
                 .Subscribe(_ => BattleFaze())
                 .AddTo(this);
 
-            _playerStatus.MyHp
+            _playerData.MyHp
                 .Where(hp => hp == 0)
                 .Subscribe(_ =>
                 {
@@ -109,7 +109,7 @@ namespace Manager
                 })
                 .AddTo(this);
         
-            _enemyStatus.MyHp
+            _enemyData.MyHp
                 .Where(hp => hp == 0)
                 .Subscribe(_ =>
                 {
@@ -206,7 +206,7 @@ namespace Manager
                 .AddTo(this);
         
             await _next.ToUniTask(true);
-            if (_playerStatus.UState != AtamakkoStatus.Ultimate.Normal)
+            if (_playerData.UltimateState != UltimateState.Normal)
             {
                 _usedUltimate = true;
             }
@@ -226,15 +226,15 @@ namespace Manager
     
         private async void BattleFaze()
         {
-            if (_playerStatus.UState != AtamakkoStatus.Ultimate.Normal)
+            if (_playerData.UltimateState != UltimateState.Normal)
             {
                 await AnimationManager.Instance.MyUltimateCutIn();
                 photonView.RPC(nameof(EnemyUltimateCutIn), RpcTarget.Others);
             }
             
-            if (_playerStatus.UState == AtamakkoStatus.Ultimate.Recover)
+            if (_playerData.UltimateState == UltimateState.Recover)
             {
-                _playerStatus.MyHp.Value += 3;
+                _playerData.MyHp.Value += 3;
                 photonView.RPC(nameof(UltHealing), RpcTarget.Others);
             }
             for (int i = 0; i < battleSlots.Length; i++)
@@ -251,14 +251,14 @@ namespace Manager
 
             Ready();
             await _next.ToUniTask(true);
-            _playerStatus.UState = AtamakkoStatus.Ultimate.Normal;
+            _playerData.UltimateState = UltimateState.Normal;
             _gameState.Value = State.Draw;
         }
 
         [PunRPC]
         private void UltHealing()
         {
-            _enemyStatus.MyHp.Value += 3;
+            _enemyData.MyHp.Value += 3;
         }
 
         private async UniTask Battle(int cardID)
@@ -269,7 +269,7 @@ namespace Manager
             for (int i = 6; i > 0; i--)
             {
                 int initiative = i;
-                if (_playerStatus.UState == AtamakkoStatus.Ultimate.Speed)
+                if (_playerData.UltimateState == UltimateState.Speed)
                 {
                     initiative -= 1;
                 }

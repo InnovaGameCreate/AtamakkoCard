@@ -25,17 +25,17 @@ namespace System.Effect
             }
         }
 
-        public void InstatiateEffect(EffectType effectType, Transform InstantiatePosition)//外部からのアクセス場所
+        public void InstantiateEffect(EffectType effectType, Transform instantiatePosition)//外部からのアクセス場所
         {
             GameObject tempObject = null;
             tempObject = effectLists.FirstOrDefault(effect => effect.name.Equals(effectType.ToString()));
 
             if (tempObject != null)
             {
-                var Object = Instantiate(tempObject, InstantiatePosition.position,Quaternion.identity);
+                var Object = Instantiate(tempObject, instantiatePosition.position,Quaternion.identity);
                 Destroy(Object, 1f);//エフェクトを1秒後の消えるようにする
             }
         }
-        //EffectManager.Instance.InstatiateEffect(EffectType.magicAttackEffet);と入力すると音が出る­
+        //EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffect, position);と入力すると音が出る­
     }
 }

@@ -3,21 +3,11 @@ using UnityEngine;
 
 namespace Player
 {
-    public class AtamakkoStatus : MonoBehaviour
+    public class AtamakkoData : MonoBehaviour
     {
-        public enum Ultimate
-        {
-            Normal,
-            Recover,
-            Attack,
-            Speed
-        }
-        private Ultimate _ultState = Ultimate.Normal;
-        public Ultimate UState
-        {
-            get => _ultState;
-            set => _ultState = value;
-        }
+        public UltimateState UltimateState { get; set; } = UltimateState.Normal;
+        public int SpeedCorrection { get; set; } = 0;
+        public int DamageCorrection { get; set; } = 0;
 
         private ReactiveProperty<int> _hp = new ReactiveProperty<int>(6);
         public ReactiveProperty<int> MyHp
@@ -33,7 +23,7 @@ namespace Player
             get => position;
             set => position = value;
         }
-        
+
         // Start is called before the first frame update
         void Start()
         {

@@ -7,7 +7,7 @@ namespace UI
 {
     public class UiHp : MonoBehaviour
     {
-        [SerializeField] private AtamakkoStatus atamakko;
+        [SerializeField] private AtamakkoData atamakko;
         private Slider _hpGauge;
         
         void Start()

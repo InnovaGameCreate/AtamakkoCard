@@ -27,15 +27,15 @@ namespace Card
         public int MyCardID
         {
             get => _cardID;
-            set => _cardID = value;
+            private set => _cardID = value;
         }
 
         void Start()
         {
             _selectImage = gameObject.GetComponent<Image>();
             
-            BattleManager.Instance.MyGameState
-                .Where(s => s == BattleManager.State.Battle)
+            CPUManager.Instance.CurrentState
+                .Where(s => s == GameState.Battle)
                 .Subscribe(_ =>
                 {
                     if (MyCardID < 0)
@@ -46,7 +46,7 @@ namespace Card
                 .AddTo(this);
 
             _select
-                .Where(b => b == true)
+                .Where(b => b)
                 .Subscribe(_ => _selectImage.color = SelectColor)
                 .AddTo(this);
 
@@ -85,7 +85,7 @@ namespace Card
             _cardController.view.backCard.SetActive(!_cardController.view.backCard.activeSelf);
         }
 
-        public bool isVisualable(string[] cardData)
+        public bool IsVisualable(string[] cardData)
         {
             return true;
         }

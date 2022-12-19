@@ -16,6 +16,20 @@ namespace UI
         private readonly Subject<int> _timer = new Subject<int>();
         public IObservable<int> Timer => _timer;
 
+        public static TimeCounter Instance;
+
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+        
         public void SetTimer(int countTime)
         {
             _countTime = countTime;
