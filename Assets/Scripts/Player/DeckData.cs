@@ -8,9 +8,9 @@ namespace Player
     {
         public Deck MyDeck { get; set; }
 
-        public List<int> DeckCards { get; set; }
-        public List<int> HandCards { get; set; }
-        public List<int> SettingCards { get; set; }
-        public List<int> UsedCards { get; set; }
+        public List<int> DeckCards { get; set; } = new List<int>();
+        public List<int> HandCards { get; set; } = new List<int>();
+        public List<int> SettingCards { get; set; } = new List<int>();
+        public List<int> UsedCards { get; set; } = new List<int>();
     }
 }

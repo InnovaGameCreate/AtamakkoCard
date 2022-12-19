@@ -28,7 +28,7 @@ namespace Card
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (BattleManager.Instance.MyGameState.Value != BattleManager.State.Select) return;
+            if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
             _draggingCard = Instantiate(cardPrefab, _canvasTransform);
             _draggingCard.GetComponent<CardController>().Init(CardData.CardDataArrayList[_slot.MyCardID]);
             _draggingCard.transform.SetAsLastSibling();
@@ -39,14 +39,14 @@ namespace Card
         public void OnDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (BattleManager.Instance.MyGameState.Value != BattleManager.State.Select) return;
+            if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
             _draggingCard.transform.position = _hand.transform.position;
         }
         
         public void OnDrop(PointerEventData eventData)
         {
             if (!_hand.IsHavaintCardID()) return;
-            if (BattleManager.Instance.MyGameState.Value != BattleManager.State.Select) return;
+            if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
             
             int gotCardID = _hand.GetGrabbingCardID();
             
@@ -58,13 +58,12 @@ namespace Card
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (BattleManager.Instance.MyGameState.Value != BattleManager.State.Select) return;
+            if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
             _slot.MyCard.view.shadow.SetActive(false);
             Destroy(_draggingCard);
 
             int gotCardID = _hand.GetGrabbingCardID();
             _slot.CreateCard(gotCardID);
-            Debug.Log(gotCardID);
             
             _settingCard.OnNext(_slot.MyCardID);
         }

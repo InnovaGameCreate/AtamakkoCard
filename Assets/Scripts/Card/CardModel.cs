@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Card
 {
     public class CardModel
@@ -23,7 +25,8 @@ namespace Card
             Kind = dataList[4];
             Additional = dataList[5];
             Effect = dataList[6];
-            Rarity = int.Parse(dataList[7]);
+            Debug.Log(dataList[7]);
+            //Rarity = int.Parse(dataList[7]);
             Move = new []{dataList[8], dataList[9], dataList[10], dataList[11], dataList[12], dataList[13]};
             Attack = new []{dataList[14], dataList[15], dataList[16], dataList[17], dataList[18], dataList[19]};
             Explanation = dataList[20];
