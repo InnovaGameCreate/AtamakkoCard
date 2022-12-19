@@ -10,5 +10,7 @@ namespace System.Effect
         specialHeal,
         specialDamageUp,
         specialSpeedUp,
+        RedEffect,
+        BlueEffect,
     }
 }
