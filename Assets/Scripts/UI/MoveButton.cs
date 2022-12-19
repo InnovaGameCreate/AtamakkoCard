@@ -1,3 +1,4 @@
+using System;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,16 +7,11 @@ namespace UI
 {
     public class MoveButton : MonoBehaviour
     {
-        private int _place;
+        public int MovePlace { set; get; }
+        private readonly Subject<int> _selected = new Subject<int>();
+        public IObservable<int> Selected => _selected;
 
         private Button _myButton;
-
-        public Player.PlayerMove playerMove;
-
-        public int MyPlace
-        {
-            set => _place = value;
-        }
 
         void Start()
         {
@@ -24,12 +20,12 @@ namespace UI
             _myButton.OnClickAsObservable()
                 .Subscribe(_ =>
                 {
-                    playerMove.Position = _place;
-                    playerMove.MSelected.OnNext(true);
+                    _selected.OnNext(MovePlace);
                 })
                 .AddTo(this);
 
-            playerMove.MoveSelected
+            TimeCounter.Instance.CountNow
+                .Where(b => !b)
                 .Subscribe(_ => Destroy(gameObject))
                 .AddTo(this);
         }

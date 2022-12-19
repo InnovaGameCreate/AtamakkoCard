@@ -11,7 +11,7 @@ namespace Player
 {
     public class PlayerMove : MonoBehaviourPunCallbacks, IMobile
     {
-        private AtamakkoStatus _atamakkoStatus;
+        private AtamakkoData _atamakkoData;
         [NonSerialized] public int Position;
         
         [SerializeField] private GameObject[] sSlot;
@@ -25,28 +25,24 @@ namespace Player
 
         private void Start()
         {
-            _atamakkoStatus = gameObject.GetComponent<AtamakkoStatus>();
+            _atamakkoData = gameObject.GetComponent<AtamakkoData>();
         }
 
         public async UniTask CanMove(CardModel card, int initiative)
         {
-            Position = _atamakkoStatus.MyPosition;
-            
-            if (card.Kind == "移動" && card.Initiative == initiative)
+            Position = _atamakkoData.MyPosition;
+            for(int i = 0; i < card.Move.Length; i++)
             {
-                for(int i = 0; i < card.Move.Length; i++)
+                if (card.Move[i] == "〇")
                 {
-                    if (card.Move[i] == "〇")
-                    {
-                        var toPosition = (i + Position) % 6;
-                        var toPlayer = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[toPosition].transform);
-                        toPlayer.MyPlace = toPosition;
-                        toPlayer.playerMove = this;
-                    }
+                    var toPosition = (i + Position) % 6;
+                    var toPlayer = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[toPosition].transform);
+                    //toPlayer.MyPlace = toPosition;
+                    //toPlayer.playerMove = this;
                 }
-                await MSelected.ToUniTask(true);
-                _moved = true;
             }
+            await MSelected.ToUniTask(true);
+            _moved = true;
         }
 
         public void MovePart()
@@ -64,7 +60,7 @@ namespace Player
         {
             gameObject.transform.SetParent(sSlot[slotNum].transform);
             Position = slotNum;
-            _atamakkoStatus.MyPosition = Position;
+            _atamakkoData.MyPosition = Position;
         }
 
         [PunRPC]

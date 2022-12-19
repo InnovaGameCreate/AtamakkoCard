@@ -4,24 +4,24 @@ namespace Player
 {
     public class Enemy : MonoBehaviour, IDamagable, IMobile
     {
-        private AtamakkoStatus _enemyStatus;
+        private AtamakkoData _enemyData;
         [SerializeField] private GameObject[] sSlot;
 
         private void Start()
         {
-            _enemyStatus = gameObject.GetComponent<AtamakkoStatus>();
+            _enemyData = gameObject.GetComponent<AtamakkoData>();
         }
 
-        public void AddDamage(int damage)
+        public void AddDamage(int damage, int a)
         {
-            _enemyStatus.MyHp.Value -= damage;
+            _enemyData.MyHp.Value -= damage;
         }
 
         public void Move(int slotNum)
         {
             var position = (slotNum + 3) % 6;
             gameObject.transform.SetParent(sSlot[position].transform);
-            _enemyStatus.MyPosition = position;
+            _enemyData.MyPosition = position;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace System.Effect
 
         public void Onclick()
         {
-            EffectManager.Instance.InstatiateEffect(type, _transform);
+            EffectManager.Instance.InstantiateEffect(type, _transform);
         }
     }
 }

@@ -1,11 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace System.Effect
 {
     /// <summary>
-    /// EffectManager‚ÅŽg‚¤‘S‚Ä‚ÌEffect‚ðEffectType‚É—pˆÓ‚·‚é
+    /// EffectManagerï¿½ÅŽgï¿½ï¿½ï¿½Sï¿½Ä‚ï¿½Effectï¿½ï¿½EffectTypeï¿½É—pï¿½Ó‚ï¿½ï¿½ï¿½
     /// </summary>
     public enum EffectType
     {

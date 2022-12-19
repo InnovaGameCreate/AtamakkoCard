@@ -1,7 +1,6 @@
 using System;
+using System.Collections;
 using Card;
-using Cysharp.Threading.Tasks;
-using Field;
 using Manager;
 using Photon.Pun;
 using UI;
@@ -12,8 +11,8 @@ namespace Player
 {
     public class PlayerAttack : MonoBehaviourPunCallbacks, IDamagable
     {
-        private AtamakkoStatus _atamakkoStatus;
-        private AtamakkoStatus _enemyStatus;
+        private AtamakkoData _atamakkoData;
+        private AtamakkoData _enemyData;
         private Enemy _enemy;
         private bool _attacked;
         private int _damage;
@@ -27,41 +26,38 @@ namespace Player
 
         void Start()
         {
-            _atamakkoStatus = gameObject.GetComponent<AtamakkoStatus>();
-            _enemyStatus = enemy.GetComponent<AtamakkoStatus>();
+            _atamakkoData = gameObject.GetComponent<AtamakkoData>();
+            _enemyData = enemy.GetComponent<AtamakkoData>();
             _enemy = enemy.GetComponent<Enemy>();
         }
 
-        public async UniTask AttackSelect(CardModel card, int initiative)
+        public IEnumerator AttackSelect(CardModel card, int initiative)
         {
-            if (card.Kind == "攻撃" && card.Initiative == initiative)
+            for (int i = 0; i < card.Attack.Length; i++)
             {
-                for (int i = 0; i < card.Attack.Length; i++)
+                if (card.Attack[i] == "〇")
                 {
-                    if (card.Attack[i] == "〇")
-                    {
-                        var toPlace = (i + _atamakkoStatus.MyPosition) % 6;
-                        var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
-                        attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * toPlace);
-                        attackArea.AttackPlace = toPlace;
-                        attackArea.PlayerAttack = this;
-                    }
+                    var toPlace = (i + _atamakkoData.MyPosition) % 6;
+                    var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
+                    attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * toPlace);
+                    attackArea.AttackPlace = toPlace;
                 }
-                await ASelected.ToUniTask(true);
-                _attacked = true;
-                _damage = card.Damage;
-                if (_atamakkoStatus.UState == AtamakkoStatus.Ultimate.Attack)
-                {
-                    _damage += 1;
-                }
+            }
+
+            yield return TimeCounter.Instance.Timer.ToYieldInstruction();
+            _attacked = true;
+            _damage = card.Damage;
+            if (_atamakkoData.UltimateState == UltimateState.Attack)
+            {
+                _damage += 1;
             }
         }
 
         public void AttackDamage()
         {
-            if (_attacked && _enemyStatus.MyPosition == AttackPlace)
+            if (_attacked && _enemyData.MyPosition == AttackPlace)
             {
-                _enemy.AddDamage(_damage);
+                _enemy.AddDamage(_damage, _damage);
                 photonView.RPC(nameof(AddDamage), RpcTarget.Others, _damage);
                 
                 AttackAnimation(AttackPlace);
@@ -71,9 +67,9 @@ namespace Player
         }
 
         [PunRPC]
-        public void AddDamage(int damage)
+        public void AddDamage(int damage, int position)
         {
-            _atamakkoStatus.MyHp.Value -= damage;
+            _atamakkoData.MyHp.Value -= damage;
         }
         
         [PunRPC]

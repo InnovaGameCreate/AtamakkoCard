@@ -1,5 +1,4 @@
 using System;
-using Player;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,11 +7,11 @@ namespace UI
 {
     public class AttackButton : MonoBehaviour
     {
-        [NonSerialized] public int AttackPlace = 0;
+        public int AttackPlace { set; get; }
+        private readonly Subject<int> _selected = new Subject<int>();
+        public IObservable<int> Selected => _selected;
         private Button _myButton;
 
-        [NonSerialized] public PlayerAttack PlayerAttack;
-        
         void Start()
         {
             _myButton = transform.GetChild(0).gameObject.GetComponent<Button>();
@@ -20,13 +19,12 @@ namespace UI
             _myButton.OnClickAsObservable()
                 .Subscribe(_ =>
                 {
-                    PlayerAttack.AttackPlace = AttackPlace;
-                    Debug.Log(AttackPlace);
-                    PlayerAttack.ASelected.OnNext(true);
+                    _selected.OnNext(AttackPlace);
                 })
                 .AddTo(this);
 
-            PlayerAttack.AttackSelected
+            TimeCounter.Instance.CountNow
+                .Where(b => !b)
                 .Subscribe(_ => Destroy(gameObject))
                 .AddTo(this);
         }
