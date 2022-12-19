@@ -2,6 +2,6 @@ namespace Player
 {
     public interface IDamagable
     {
-        void AddDamage(int damage, int position);
+        void AddDamage(int damage);
     }
 }

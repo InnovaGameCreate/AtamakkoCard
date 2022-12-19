@@ -8,7 +8,7 @@ namespace Player
     {
         public void SetSettingCard(int slotNum, int cardID)
         {
-            DeckData.SettingCards[slotNum] = cardID;
+            DeckData.SettingCards.Add(cardID);
             int num = DeckData.HandCards.IndexOf(cardID);
             if (num >= 0)
             {
@@ -44,8 +44,10 @@ namespace Player
                 {
                     var toPosition = (i + AtamakkoData.MyPosition) % 6;
                     canMove.Add(toPosition);
+                    Debug.Log("CanMove：" + i);
                 }
             }
+            
             return canMove;
         }
     }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Player
 {
-    public class Enemy : MonoBehaviour, IDamagable, IMobile
+    public class Enemy : MonoBehaviour, IMobile
     {
         private AtamakkoData _enemyData;
         [SerializeField] private GameObject[] sSlot;

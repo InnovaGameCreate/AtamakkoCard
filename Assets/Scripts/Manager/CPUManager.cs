@@ -26,6 +26,7 @@ namespace Manager
         [SerializeField] private GameObject stage;
         [SerializeField] private AttackButton attackButton;
         [SerializeField] private MoveButton moveButton;
+        [SerializeField] private GameObject[] sSlot;
         private PlayerCore _player;
         private EnemyCore _enemy;
 
@@ -181,15 +182,16 @@ namespace Manager
             {
                 _player.UsedUltimate = true;   // 必殺技を使用済みに
             }
-
-            for (int i = 0; i < battleSlots.Length; i++)
-            {
-                _player.SetSettingCard(i, battleSlots[i].MyCardID);
-            }
             
             // 敵の行動情報を受け取る
             _enemy.CardSelect(); // CPUがカードを選択する
             _enemy.UltimateSelect();
+
+            for (int i = 0; i < battleSlots.Length; i++)
+            {
+                _player.SetSettingCard(i, battleSlots[i].MyCardID);
+                EnemyCard(i, _enemy.GetNowCardID(i));
+            }
             
             _currentState.Value = GameState.Battle;
         }
@@ -251,6 +253,8 @@ namespace Manager
             int myInitiative = _player.GetInitiative(myCard.Initiative);
             int enemyInitiative = _enemy.GetInitiative(enemyCard.Initiative);
             await UniTask.Delay(10);
+            Debug.Log("自分のポジション：" + _player.AtamakkoData.MyPosition);
+            Debug.Log("相手のポジション：" + _enemy.AtamakkoData.MyPosition);
 
             if (myInitiative == enemyInitiative && myCard.Kind == enemyCard.Kind)
             {
@@ -261,9 +265,9 @@ namespace Manager
                     foreach (var t in canAttack)
                     {
                         var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
-                        attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * t);
-                        attackArea.AttackPlace = t;
                         playerAttack = t;
+                        attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * playerAttack);
+                        attackArea.AttackPlace = playerAttack;
 
                         attackArea.Selected
                             .Subscribe(i =>
@@ -279,9 +283,15 @@ namespace Manager
                     int myDamage = _player.GetDamage(myCard.Damage);
                     int enemyDamage = _enemy.GetDamage(enemyCard.Damage);
                     int enemyAttack = _enemy.AttackSelect(_player.AtamakkoData.MyPosition, enemyCard);
-                    
-                    _player.AddDamage(enemyDamage, playerAttack);
-                    _enemy.AddDamage(myDamage, enemyAttack);
+
+                    if (_enemy.AtamakkoData.MyPosition == playerAttack)
+                    {
+                        _enemy.AddDamage(myDamage);
+                    }
+                    if (_player.AtamakkoData.MyPosition == enemyAttack)
+                    {
+                        _player.AddDamage(enemyDamage);
+                    }
                 }
 
                 if (myCard.Kind == "移動")
@@ -290,10 +300,9 @@ namespace Manager
                     int playerMove = 0;
                     foreach (var t in canMove)
                     {
-                        var moveArea = Instantiate(moveButton, stage.transform.position, Quaternion.identity, stage.transform);
-                        moveArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * t);
-                        moveArea.MovePlace = t;
                         playerMove = t;
+                        var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[playerMove].transform);
+                        moveArea.MovePlace = playerMove;
 
                         moveArea.Selected
                             .Subscribe(i =>
@@ -334,9 +343,9 @@ namespace Manager
                 foreach (var t in canAttack)
                 {
                     var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
-                    attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * t);
-                    attackArea.AttackPlace = t;
                     attackPosition = t;
+                    attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * attackPosition);
+                    attackArea.AttackPlace = attackPosition;
 
                     attackArea.Selected
                         .Subscribe(i =>
@@ -349,7 +358,10 @@ namespace Manager
 
                 await TimeCounter.Instance.CountDown(30);
                 int myDamage = _player.GetDamage(card.Damage);
-                _enemy.AddDamage(myDamage, attackPosition);
+                if (_enemy.AtamakkoData.MyPosition == attackPosition)
+                {
+                    _enemy.AddDamage(myDamage);
+                }
             }
 
             if (card.Kind == "移動")
@@ -358,10 +370,9 @@ namespace Manager
                 int movePosition = 0;
                 foreach (var t in canMove)
                 {
-                    var moveArea = Instantiate(moveButton, stage.transform.position, Quaternion.identity, stage.transform);
-                    moveArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * t);
-                    moveArea.MovePlace = t;
                     movePosition = t;
+                    var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[movePosition].transform);
+                    moveArea.MovePlace = movePosition;
 
                     moveArea.Selected
                         .Subscribe(i =>
@@ -384,14 +395,17 @@ namespace Manager
                 int enemyDamage = _enemy.GetDamage(card.Damage);
                 int attackPosition = _enemy.AttackSelect(_player.AtamakkoData.MyPosition, card);
                 await UniTask.Delay(10);
-                _player.AddDamage(enemyDamage, attackPosition);
+                if (_player.AtamakkoData.MyPosition == attackPosition)
+                {
+                    _player.AddDamage(enemyDamage);
+                }
             }
 
             if (card.Kind == "移動")
             {
                 int movePosition = _enemy.MoveSelect(_player.AtamakkoData.MyPosition, card);
                 await UniTask.Delay(10);
-                _player.Move(movePosition);
+                _enemy.Move(movePosition);
             }
         }
 

@@ -18,9 +18,9 @@ namespace Player
         {
             AtamakkoData = GetComponent<AtamakkoData>();
             DeckData = GetComponent<DeckData>();
-            
             DeckData.MyDeck = deck;
-            RefillDeck();
+            DeckData.DeckCards = new List<int>(DeckData.MyDeck.cardIDList);
+            ShuffleDeck();
         }
 
         private void ShuffleDeck()
@@ -97,14 +97,12 @@ namespace Player
         {
             gameObject.transform.SetParent(sSlot[slotNum].transform);
             AtamakkoData.MyPosition = slotNum;
+            Debug.Log("移動先：" + slotNum);
         }
         
-        public void AddDamage(int damage, int position)
+        public void AddDamage(int damage)
         {
-            if (AtamakkoData.MyPosition == position)
-            {
-                AtamakkoData.MyHp.Value -= damage;
-            }
+            AtamakkoData.MyHp.Value -= damage;
         }
     }
 }

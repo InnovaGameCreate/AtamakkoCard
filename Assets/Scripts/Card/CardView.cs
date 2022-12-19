@@ -23,14 +23,24 @@ namespace Card
             int i = 0;
             foreach (var str in cardModel.Attack)
             {
-                if(str == "〇") place.transform.GetChild(i).gameObject.SetActive(true);
+                if (str == "〇")
+                {
+                    var attackPlace = place.transform.GetChild(i).gameObject;
+                    attackPlace.SetActive(true);
+                    attackPlace.GetComponent<Image>().color = Color.red;
+                }
                 i++;
             }
 
             int j = 0;
             foreach (var str in cardModel.Move)
             {
-                if(str == "〇") place.transform.GetChild(j).gameObject.SetActive(true);
+                if (str == "〇")
+                {
+                    var movePlace = place.transform.GetChild(j).gameObject;
+                    movePlace.SetActive(true);
+                    movePlace.GetComponent<Image>().color = Color.green;
+                }
                 j++;
             }
         }

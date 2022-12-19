@@ -67,7 +67,7 @@ namespace Player
                 }
             }
             
-            return (int) (random.NextDouble() * (canSelect.Count - 1));
+            return (enemy + canSelect[(int) (random.NextDouble() * (canSelect.Count - 1))]) % 6;
         }
     }
 }

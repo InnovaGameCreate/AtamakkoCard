@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Player
 {
-    public class PlayerAttack : MonoBehaviourPunCallbacks, IDamagable
+    public class PlayerAttack : MonoBehaviourPunCallbacks
     {
         private AtamakkoData _atamakkoData;
         private AtamakkoData _enemyData;

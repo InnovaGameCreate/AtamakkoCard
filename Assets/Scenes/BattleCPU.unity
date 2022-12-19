@@ -2296,6 +2296,13 @@ MonoBehaviour:
   stage: {fileID: 399115894}
   attackButton: {fileID: 7036546511688966486, guid: 9b1a366252da8b84eb05d49a08f7606a, type: 3}
   moveButton: {fileID: 2187454101119206122, guid: 5ac8ac5be5fccf14f95fe26bca3e5776, type: 3}
+  sSlot:
+  - {fileID: 1207025366}
+  - {fileID: 1716097152}
+  - {fileID: 2065121039}
+  - {fileID: 1154257007}
+  - {fileID: 624991012}
+  - {fileID: 1642038174}
 --- !u!1 &399115894
 GameObject:
   m_ObjectHideFlags: 0
@@ -3553,6 +3560,7 @@ GameObject:
   - component: {fileID: 719954266}
   - component: {fileID: 719954272}
   - component: {fileID: 719954269}
+  - component: {fileID: 719954273}
   - component: {fileID: 719954271}
   m_Layer: 0
   m_Name: Player
@@ -3673,6 +3681,18 @@ MonoBehaviour:
   - {fileID: 1154257007}
   - {fileID: 624991012}
   - {fileID: 1642038174}
+--- !u!114 &719954273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719954264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb58e793fde42b4489c0aaf9cfac37d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &720274129
 GameObject:
   m_ObjectHideFlags: 0
@@ -4707,8 +4727,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -60, y: -60}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -75, y: -60}
+  m_SizeDelta: {x: 130, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1008853901
 MonoBehaviour:
@@ -4755,7 +4775,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 60
+  m_text: 120
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 13f777f8d3e8a2548a2c04bf16ab08db, type: 2}
   m_sharedMaterial: {fileID: 3593318242743413944, guid: 13f777f8d3e8a2548a2c04bf16ab08db, type: 2}
@@ -4785,7 +4805,7 @@ MonoBehaviour:
   m_fontSize: 72
   m_fontSizeBase: 72
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
@@ -7752,6 +7772,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6871594119888177423, guid: 3288ed2f629801a4aa4191bb2336a959, type: 3}
+      propertyPath: atamakko
+      value: 
+      objectReference: {fileID: 2005962709}
     - target: {fileID: 7149027142560608892, guid: 3288ed2f629801a4aa4191bb2336a959, type: 3}
       propertyPath: m_Color.a
       value: 0.48235294
@@ -9854,6 +9878,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6871594119888177423, guid: 3288ed2f629801a4aa4191bb2336a959, type: 3}
+      propertyPath: atamakko
+      value: 
+      objectReference: {fileID: 719954269}
     - target: {fileID: 7414232323521202709, guid: 3288ed2f629801a4aa4191bb2336a959, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

@@ -54,7 +54,7 @@ namespace UI
 
                 yield return new WaitForSecondsRealtime(1.0f);
             }
-            _timer.OnCompleted();
+            //_timer.OnCompleted();
             _countNow.OnNext(false);
         }
     }
