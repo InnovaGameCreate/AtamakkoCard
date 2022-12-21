@@ -207,7 +207,7 @@ namespace storyMode
         IEnumerator startText()
         {
             yield return new WaitUntil(() => readEnd);
-            yield return new WaitForSeconds(0.5f);
+            //yield return new WaitForSeconds(0.1f);
             startTalk();
         }
 

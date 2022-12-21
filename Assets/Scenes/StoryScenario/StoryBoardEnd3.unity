@@ -575,7 +575,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Comment: {fileID: 1192624337}
   NovelCanvas: {fileID: 1978721720}
-  scenario: 12
+  scenario: 13
   Scene:
   - {fileID: 316170888}
   - {fileID: 1894872067}
@@ -5875,7 +5875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d752e07928bd42d48910ecde2e71adcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SHEET_NAME: "\u7D42\u4E8C\u7AE0"
+  SHEET_NAME: "\u7D42\u4E09\u7AE0"
   currentChapter: 0
   StillImage: {fileID: 1867549925}
   BackGroundImage: {fileID: 218660034}

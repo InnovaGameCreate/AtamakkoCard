@@ -1126,7 +1126,64 @@ namespace storyMode
                     case 15:
                         activeText(11);
                         break;
-                    
+                    case 16:
+                        activeText(12);
+                        break;
+                    case 17:
+                        activeText(13);
+                        break;
+                    case 18:
+                        activeText(14);
+                        break;
+                    case 19:
+                        activeText(15);
+                        break;
+                    case 20:
+                        activeText(16);
+                        break;
+                    case 21:
+                        //魔物との戦闘
+                        break;
+                    case 22:
+                        activeText(17);
+                        break;
+                    case 23:
+                        //魔物との戦闘
+                        break;
+                    case 24:
+                        //魔物との戦闘
+                        break;
+                    case 25:
+                        activeText(18);
+                        break;
+                    case 27:
+                        //時の門番との戦闘
+                        break;
+                    case 28:
+                        activeText(20);
+                        break;
+
+
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioend3)
+            {
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
+                    case 2:
+                        activeText(1);
+                        break;
+                    case 3:
+                        activeText(2);
+                        break;
+                    case 4:
+                        activeText(3);
+                        break;
 
                     default:
                         break;
@@ -1400,6 +1457,26 @@ namespace storyMode
                         StartCoroutine(changeStage(0, 10));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 19:
+                        StartCoroutine(changeStage(1, 19));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 21:
+                        NestStageCheckPanel.SetActive(true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioend3)
+            {
+                switch (eventNum)
+                {
+                    case 10:
+                        StartCoroutine(changeStage(0, 10));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 19:
+                        StartCoroutine(changeStage(1, 19));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 21:
                         NestStageCheckPanel.SetActive(true);
                         break;
                     default:
