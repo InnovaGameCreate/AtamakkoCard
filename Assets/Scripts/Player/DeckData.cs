@@ -6,7 +6,7 @@ namespace Player
 {
     public class DeckData : MonoBehaviour
     {
-        public Deck MyDeck { get; set; }
+        public List<int> MyDeck { get; set; }
 
         public List<int> DeckCards { get; set; } = new List<int>();
         public List<int> HandCards { get; set; } = new List<int>();

@@ -36,7 +36,7 @@ namespace Card
                 foreach (var cardData in deck1.cardIDList)
                 {
                     var card = Instantiate(cardPrefab, cardManager);
-                    card.Init(cardDataArrayList[cardData]);
+                    card.Init(cardData);
                 }
             }
         }

@@ -14,38 +14,38 @@ namespace Assemble
         [SerializeField]
         private GameObject Window;
 
-        private bool[] haveCard = new bool[2];//‚Ç‚ÌƒJ[ƒh‚ª•\¦‚³‚ê‚é‚©iŠA–¢Šj
+        private bool[] haveCard = new bool[2];//ã©ã®ã‚«ãƒ¼ãƒ‰ãŒè¡¨ç¤ºã•ã‚Œã‚‹ã‹ï¼ˆæ‰€æŒã€æœªæ‰€æŒï¼‰
         [SerializeField]
-        private Image[] haveButton;//ƒJ[ƒh‚ğŠ‚µ‚Ä‚¢‚é‚©–¢Š‚©iŠA–¢Šj
+        private Image[] haveButton;//ã‚«ãƒ¼ãƒ‰ã‚’æ‰€æŒã—ã¦ã„ã‚‹ã‹æœªæ‰€æŒã‹ï¼ˆæ‰€æŒã€æœªæ‰€æŒï¼‰
         [SerializeField]
-        private Image EquipmentButton;//•\¦‚µ‚Ä‚¢‚é‚Ì‚Í‘•”õ‚©‚Ç‚¤‚©
+        private Image EquipmentButton;//è¡¨ç¤ºã—ã¦ã„ã‚‹ã®ã¯è£…å‚™ã‹ã©ã†ã‹
         [SerializeField]
-        private Image CardButton;//•\¦‚µ‚Ä‚¢‚é‚Ì‚ÍƒJ[ƒh‚©‚Ç‚¤‚©
-        private bool isCard = false;//Œ»İƒJ[ƒh‚Ìˆê——‚©‚Ç‚¤‚©
+        private Image CardButton;//è¡¨ç¤ºã—ã¦ã„ã‚‹ã®ã¯ã‚«ãƒ¼ãƒ‰ã‹ã©ã†ã‹
+        private bool isCard = false;//ç¾åœ¨ã‚«ãƒ¼ãƒ‰ã®ä¸€è¦§ã‹ã©ã†ã‹
         [SerializeField]
-        private GameObject Equipment;//‘•”õ‚Ìƒ{ƒ^ƒ“
+        private GameObject Equipment;//è£…å‚™ã®ãƒœã‚¿ãƒ³
         [SerializeField]
         private Image[] EquipmentButtons;
-        private bool[] Equipments = new bool[4];//‚Ç‚Ìƒ^ƒCƒv‚Ì‘•”õ‚ª•\¦‚³‚ê‚é‚©iã•”A’†‰›A‰º•”AƒAƒNƒZƒTƒŠj
+        private bool[] Equipments = new bool[4];//ã©ã®ã‚¿ã‚¤ãƒ—ã®è£…å‚™ãŒè¡¨ç¤ºã•ã‚Œã‚‹ã‹ï¼ˆä¸Šéƒ¨ã€ä¸­å¤®ã€ä¸‹éƒ¨ã€ã‚¢ã‚¯ã‚»ã‚µãƒªï¼‰
         [SerializeField]
-        private GameObject Card;//ƒJ[ƒh‚Ìƒ{ƒ^ƒ“
+        private GameObject Card;//ã‚«ãƒ¼ãƒ‰ã®ãƒœã‚¿ãƒ³
         [SerializeField]
         private Image[] CardButtons;
-        private bool[] Cards = new bool[2];//‚Ç‚Ìƒ^ƒCƒv‚ÌƒJ[ƒh‚ª•\¦‚³‚ê‚é‚©iUŒ‚AˆÚ“®j
+        private bool[] Cards = new bool[2];//ã©ã®ã‚¿ã‚¤ãƒ—ã®ã‚«ãƒ¼ãƒ‰ãŒè¡¨ç¤ºã•ã‚Œã‚‹ã‹ï¼ˆæ”»æ’ƒã€ç§»å‹•ï¼‰
 
-        private bool setUp = false;//ƒZƒbƒgƒAƒbƒv’†‚©‚Ç‚¤‚©
+        private bool setUp = false;//ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ä¸­ã‹ã©ã†ã‹
 
         [SerializeField]
-        private GameObject cardPrefab;//¶¬‚·‚éƒJ[ƒhƒIƒuƒWƒFƒNƒg‚ÌƒvƒŒƒtƒ@ƒu
+        private GameObject cardPrefab;//ç”Ÿæˆã™ã‚‹ã‚«ãƒ¼ãƒ‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ—ãƒ¬ãƒ•ã‚¡ãƒ–
         private CardController _cardController;
         [SerializeField]
-        private GameObject equipmentPrefab;//¶¬‚·‚éƒJ[ƒhƒIƒuƒWƒFƒNƒg‚ÌƒvƒŒƒtƒ@ƒu
+        private GameObject equipmentPrefab;//ç”Ÿæˆã™ã‚‹ã‚«ãƒ¼ãƒ‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ—ãƒ¬ãƒ•ã‚¡ãƒ–
         private equipmentController _equipmentController;
         [SerializeField]
-        private GameObject Content;//ƒJ[ƒh‚ğ•\¦‚·‚éƒIƒuƒWƒFƒNƒg
+        private GameObject Content;//ã‚«ãƒ¼ãƒ‰ã‚’è¡¨ç¤ºã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
         private void Awake()
         {
-            Debug.Log("ƒJ[ƒh‚Æ‘•”õƒf[ƒ^‚Ì“Ç‚İ‚İ");
+            Debug.Log("ã‚«ãƒ¼ãƒ‰ã¨è£…å‚™ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿");
             StartCoroutine(CardData.GetData());
             StartCoroutine(equipmentData.GetData());
         }
@@ -105,7 +105,7 @@ namespace Assemble
                 var card = Instantiate(cardPrefab, Content.transform);
                 card.transform.localScale = new Vector3(2, 2, 2);
                 _cardController = card.GetComponent<CardController>();
-                _cardController.Init(CardData.CardDataArrayList[cardID]);
+                _cardController.Init(cardID);
             }
         }
         private void createEquipment(int equipmentID)
@@ -203,11 +203,11 @@ namespace Assemble
             {
                 if ((haveCard[0] && PlayerConfig.unLockCard[int.Parse(cardData[0])]) || (haveCard[1] && !PlayerConfig.unLockCard[int.Parse(cardData[0])]))
                 {
-                    if (cardData[4] == "ˆÚ“®" && Cards[1] == true)
+                    if (cardData[4] == "ç§»å‹•" && Cards[1] == true)
                     {
                         return true;
                     }
-                    else if (cardData[4] == "UŒ‚" && Cards[0] == true)
+                    else if (cardData[4] == "æ”»æ’ƒ" && Cards[0] == true)
                     {
                         return true;
                     }
@@ -219,10 +219,10 @@ namespace Assemble
 
                 if ((haveCard[0] && PlayerConfig.unLockEquipment[int.Parse(cardData[0])]) || (haveCard[1] && !PlayerConfig.unLockEquipment[int.Parse(cardData[0])]))
                 {
-                if (Equipments[0] && cardData[2] == "ã•”") return true;
-                    if (Equipments[1] && cardData[2] == "’†‰›") return true;
-                    if (Equipments[2] && cardData[2] == "‰º•”") return true;
-                    if (Equipments[3] && cardData[2] == "ƒAƒNƒZƒTƒŠ") return true;
+                if (Equipments[0] && cardData[2] == "ä¸Šéƒ¨") return true;
+                    if (Equipments[1] && cardData[2] == "ä¸­å¤®") return true;
+                    if (Equipments[2] && cardData[2] == "ä¸‹éƒ¨") return true;
+                    if (Equipments[3] && cardData[2] == "ã‚¢ã‚¯ã‚»ã‚µãƒª") return true;
                 }
             }
             return false;

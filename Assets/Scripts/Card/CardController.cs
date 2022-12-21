@@ -1,22 +1,38 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Card
 {
-    public class CardController : MonoBehaviour
+    public class CardController : MonoBehaviour, IPointerClickHandler
     {
+        public int CardID { get; set; }
+        
         public CardView view;
-        public CardModel Model;
+        private CardModel _model;
+
+        private CardMovement _cardMovement;
 
         private void Awake()
         {
             view = GetComponent<CardView>();
+            _cardMovement = GetComponent<CardMovement>();
         }
 
-        // Update is called once per frame
-        public void Init(string[] datalist)
+        public void Init(int id)
         {
-            Model = new CardModel(datalist);
-            view.Show(Model);
+            CardID = id;
+            _model = new CardModel(CardData.CardDataArrayList[CardID]);
+            view.Show(_model);
+        }
+
+        public void FlipOver()
+        {
+            view.backCard.SetActive(!view.backCard.activeSelf);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            Debug.Log("クリックされました" + CardID);
         }
     }
 }

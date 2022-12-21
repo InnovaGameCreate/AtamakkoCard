@@ -19,29 +19,37 @@ namespace Card
             expText.text = cardModel.Explanation;
             CardIcon cardIcon = Resources.Load<CardIcon>("CardIcon");
             cardSprite.sprite = cardIcon.cardIconList[cardModel.ID];
-            
-            int i = 0;
-            foreach (var str in cardModel.Attack)
+
+            if (cardModel.Kind == "攻撃")
             {
-                if (str == "〇")
+                int i = 0;
+                foreach (var str in cardModel.Attack)
                 {
-                    var attackPlace = place.transform.GetChild(i).gameObject;
-                    attackPlace.SetActive(true);
-                    attackPlace.GetComponent<Image>().color = Color.red;
+                    if (str == "〇")
+                    {
+                        var attackPlace = place.transform.GetChild(i).gameObject;
+                        attackPlace.SetActive(true);
+                        attackPlace.GetComponent<Image>().color = Color.red;
+                    }
+
+                    i++;
                 }
-                i++;
             }
 
-            int j = 0;
-            foreach (var str in cardModel.Move)
+            if (cardModel.Kind == "移動")
             {
-                if (str == "〇")
+                int j = 0;
+                foreach (var str in cardModel.Move)
                 {
-                    var movePlace = place.transform.GetChild(j).gameObject;
-                    movePlace.SetActive(true);
-                    movePlace.GetComponent<Image>().color = Color.green;
+                    if (str == "〇")
+                    {
+                        var movePlace = place.transform.GetChild(j).gameObject;
+                        movePlace.SetActive(true);
+                        movePlace.GetComponent<Image>().color = new Color(0f, 1f, 0f);
+                    }
+
+                    j++;
                 }
-                j++;
             }
         }
     }

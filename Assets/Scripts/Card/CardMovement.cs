@@ -30,7 +30,7 @@ namespace Card
             if (_slot.MyCardID == -1) return;
             if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
             _draggingCard = Instantiate(cardPrefab, _canvasTransform);
-            _draggingCard.GetComponent<CardController>().Init(CardData.CardDataArrayList[_slot.MyCardID]);
+            _draggingCard.GetComponent<CardController>().Init(_slot.MyCardID);
             _draggingCard.transform.SetAsLastSibling();
             _hand.SetGrabbingCardID(_slot.MyCardID);
             _slot.MyCard.view.shadow.SetActive(true);
