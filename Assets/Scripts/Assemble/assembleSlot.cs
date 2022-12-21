@@ -67,7 +67,7 @@ namespace Assemble
             setItem(item);
         }
 
-        private void InstatiateCard(Item item)
+        private void InstantiateCard(Item item)
         {
             if (card1 != null) Destroy(card1);
             if (card2 != null) Destroy(card2);
@@ -77,8 +77,8 @@ namespace Assemble
             card2.transform.localScale = new Vector3(2, 2, 2);
             var _cardController1 = card1.GetComponent<CardController>();
             var _cardController2 = card2.GetComponent<CardController>();
-            _cardController1.Init(CardData.CardDataArrayList[item.MyCardNum1]);
-            _cardController2.Init(CardData.CardDataArrayList[item.MyCardNum2]);
+            _cardController1.Init(item.MyCardNum1);
+            _cardController2.Init(item.MyCardNum2);
         }
 
         public override void setItem(Item item)
@@ -87,7 +87,7 @@ namespace Assemble
             PlayerConfig.Equipmnet[PositionNum] = item.MyCardID;
 
 
-            InstatiateCard(item);
+            InstantiateCard(item);
             Myassemble.RemoveItem(MyItem);
             Myassemble.SetItem(item);
 

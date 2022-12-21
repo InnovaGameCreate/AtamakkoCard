@@ -18,6 +18,7 @@ namespace Card
         public readonly string Explanation;
         
         public CardModel(string[] dataList) {
+            Debug.Log(dataList[0]);
             ID = int.Parse(dataList[0]);
             Name = dataList[1];
             Initiative = int.Parse(dataList[2]);

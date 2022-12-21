@@ -23,6 +23,9 @@ namespace UI
             if (Instance == null)
             {
                 Instance = this;
+                _timer.RepeatUntilDestroy(gameObject)
+                    .Subscribe()
+                    .AddTo(this);
             }
             else
             {
@@ -46,7 +49,7 @@ namespace UI
             _nowTime = 0;
             _countTime = countTime;
             _countNow.OnNext(true);
-            while (_countTime > _nowTime)
+            while (_countTime >= _nowTime)
             {
                 var time = _countTime - _nowTime;
                 _nowTime++;
@@ -54,7 +57,6 @@ namespace UI
 
                 yield return new WaitForSecondsRealtime(1.0f);
             }
-            //_timer.OnCompleted();
             _countNow.OnNext(false);
         }
     }

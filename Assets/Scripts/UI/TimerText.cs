@@ -9,27 +9,27 @@ namespace UI
     {
         [SerializeField] private TimeCounter timeCounter;
         private TextMeshProUGUI _text;
+
         void Start()
         {
             _text = GetComponent<TextMeshProUGUI>();
             _text.text = String.Empty;
 
-            timeCounter.Timer
-                .Subscribe(time =>
-                {
-                    Debug.Log(time);
-                    _text.text = $"{time}";
-                }, () =>
+            timeCounter.Timer.Subscribe(ShowTimer).AddTo(this);
+
+            timeCounter.CountNow
+                .Where(b => !b)
+                .Subscribe(_ =>
                 {
                     _text.text = string.Empty;
-                    _text.color = Color.white;
                 })
                 .AddTo(this);
+        }
 
-            timeCounter.Timer
-                .Where(timer => timer <= 5)
-                .Subscribe(_ => _text.color = Color.red)
-                .AddTo(this);
+        private void ShowTimer(int time)
+        {
+            _text.text = $"{time}";
+            _text.color = time > 5 ? Color.white : Color.red;
         }
     }
 }

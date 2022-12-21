@@ -63,7 +63,7 @@ namespace Card
             {
                 var card = Instantiate(cardPrefab, transform);
                 _cardController = card.GetComponent<CardController>();
-                _cardController.Init(CardData.CardDataArrayList[_cardID]);
+                _cardController.Init(_cardID);
             }
             else
             {
@@ -85,7 +85,7 @@ namespace Card
             _cardController.view.backCard.SetActive(!_cardController.view.backCard.activeSelf);
         }
 
-        public bool IsVisualable(string[] cardData)
+        public bool IsVisible(string[] cardData)
         {
             return true;
         }

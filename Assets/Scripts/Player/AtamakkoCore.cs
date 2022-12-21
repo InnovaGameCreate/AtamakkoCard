@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Card;
 using UnityEngine;
 
 namespace Player
@@ -14,12 +13,12 @@ namespace Player
         public bool UsedUltimate { get; set; }
         public UltimateState UltimateState { get; set; }
 
-        public void Initialize(Deck deck)
+        public void Initialize(List<int> deck)
         {
             AtamakkoData = GetComponent<AtamakkoData>();
             DeckData = GetComponent<DeckData>();
             DeckData.MyDeck = deck;
-            DeckData.DeckCards = new List<int>(DeckData.MyDeck.cardIDList);
+            DeckData.DeckCards = new List<int>(DeckData.MyDeck);
             ShuffleDeck();
         }
 
@@ -36,7 +35,7 @@ namespace Player
         public void RefillDeck()
         {
             DeckData.UsedCards.Clear();
-            DeckData.DeckCards = new List<int>(DeckData.MyDeck.cardIDList);
+            DeckData.DeckCards = new List<int>(DeckData.MyDeck);
             ShuffleDeck();
         }
 

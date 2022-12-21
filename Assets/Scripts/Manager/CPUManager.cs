@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Card;
 using Cysharp.Threading.Tasks;
 using Player;
@@ -27,8 +28,10 @@ namespace Manager
         [SerializeField] private AttackButton attackButton;
         [SerializeField] private MoveButton moveButton;
         [SerializeField] private GameObject[] sSlot;
+        [SerializeField] private GameObject cardPrefab;
         private PlayerCore _player;
         private EnemyCore _enemy;
+        private CardController _cardController;
 
         private bool _youWin;
 
@@ -57,9 +60,7 @@ namespace Manager
             _currentState
                 .Subscribe(OnStateChanged)
                 .AddTo(this);
-
             
-
             _currentState.AddTo(this);
         }
 
@@ -106,7 +107,8 @@ namespace Manager
         {
             await StartCoroutine(CardData.GetData());   // カードデータを取得
             
-            var deck = Resources.Load<Deck>("Deck1");    // デッキのインスタンス生成
+            var deck = Resources.Load<Deck>("Deck1").cardIDList;    // デッキのインスタンス生成
+            var playerDeck = PlayerConfig.Deck;
 
             await UniTask.Delay(10);
             
@@ -417,8 +419,13 @@ namespace Manager
 
         void CreateSlot(int cData)
         {
+            var card = Instantiate(cardPrefab, cardManager.transform);
+            _cardController = card.GetComponent<CardController>();
+            _cardController.Init(cData);
+            /*
             var slot = Instantiate(slotPrefab, cardManager);
             slot.CreateCard(cData);
+            */
         }
     }
 }
