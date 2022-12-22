@@ -16,6 +16,7 @@ namespace Assemble
             Name = dataList[1];
             Position = dataList[2];
             Rarity = int.Parse(dataList[3]);
+            Debug.Log(dataList[4] +"ÅF"+ dataList[5]);
             card = new[] { int.Parse(dataList[4]), int.Parse(dataList[5]) };
         }
     }

@@ -43,6 +43,8 @@ namespace Assemble
         private equipmentController _equipmentController;
         [SerializeField]
         private GameObject Content;//カードを表示するオブジェクト
+        int DevelopModeEquipmentNum;
+        int DevelopModeCardNum;
         private void Awake()
         {
             Debug.Log("カードと装備データの読み込み");
@@ -51,6 +53,9 @@ namespace Assemble
         }
         void Start()
         {
+            DevelopModeEquipmentNum = Resources.Load<equipmentIcon>("EquipmentIcon").equipmentIconList.Count;
+            DevelopModeCardNum = Resources.Load<CardIcon>("CardIcon").cardIconList.Count;
+
             haveCard[0] = true;
             haveCard[1] = false;
             for (int i = 0; i < 4; i++)
@@ -82,14 +87,14 @@ namespace Assemble
             }
             if (isCard)
             {
-                for (int i = 0; i < 22; i++)
+                for (int i = 0; i < DevelopModeCardNum; i++)
                 {
                     createCard(i);
                 }
             }
             else
             {
-                for (int i = 0; i < 48; i++)
+                for (int i = 0; i < DevelopModeEquipmentNum; i++)
                 {
                     createEquipment(i);
                 }
