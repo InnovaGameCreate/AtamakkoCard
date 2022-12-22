@@ -8,6 +8,7 @@ namespace Card
     {
         [SerializeField] private TextMeshProUGUI nameText, iniText, expText;
         [SerializeField] private Image cardSprite;
+        [SerializeField] private CardTypeIcon cardTypeIcon;
         [SerializeField] private GameObject place;
         public GameObject backCard;
         public GameObject shadow;
@@ -19,6 +20,7 @@ namespace Card
             expText.text = cardModel.Explanation;
             CardIcon cardIcon = Resources.Load<CardIcon>("CardIcon");
             cardSprite.sprite = cardIcon.cardIconList[cardModel.ID];
+            cardTypeIcon.setImage(cardModel.Kind);
 
             if (cardModel.Kind == "攻撃")
             {
