@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2458079998399177237}
   - component: {fileID: 205953895919851897}
+  - component: {fileID: 4889005375562107707}
   - component: {fileID: 2458079998399177243}
   m_Layer: 0
   m_Name: BGMManager
@@ -45,7 +46,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b4481f43c36a0d4cac8273e9c71c127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seLists: []
+  seLists:
+  - {fileID: 8300000, guid: 0a899280f3db1e94ab71586783ab2d17, type: 3}
+  - {fileID: 8300000, guid: 38292509121c7f34c97fd3f635b47af2, type: 3}
+--- !u!114 &4889005375562107707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2458079998399177238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3510c926195b0fd4b9e5c08a443dcdbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!82 &2458079998399177243
 AudioSource:
   m_ObjectHideFlags: 0
@@ -58,7 +73,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
