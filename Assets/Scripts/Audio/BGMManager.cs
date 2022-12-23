@@ -38,6 +38,11 @@ namespace System.Audio
                 AudioSource.PlayOneShot(clip);
             }
         }
+
+        public void StopSound()
+        {
+            AudioSource.Stop();
+        }
         //BGMManager.Instance.ShotSe(BGMType.Battle1);と入力するとBattle1のBGMが流れる­
     }
 }
