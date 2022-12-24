@@ -17,6 +17,8 @@ public class PlayerConfig : MonoBehaviour
     private int DevelopModeEquipmentNum;//equipmentの個数
     private static int isTutorial;//0の時はチュートリアルをまだ受けていない
 
+    public static int IsTutorial { get => isTutorial; set => isTutorial = value; }
+
     public static void Init()
     {
         unLockCard = PlayerPrefsUtility.LoadList<bool>("unLockcard");//unLockcardから配列を読み込む
@@ -24,7 +26,7 @@ public class PlayerConfig : MonoBehaviour
         PlayerName = PlayerPrefs.GetString("PlayerName", "Player");//名前を読み込む、
         Deck = PlayerPrefsUtility.LoadList<int>("MyDeck");//自分のデッキを読み込む
         Equipmnet = PlayerPrefsUtility.LoadList<int>("MyEquipmnet");//自分の装備を読み込む
-        isTutorial = PlayerPrefs.GetInt("Tutorial", 0);
+        IsTutorial = PlayerPrefs.GetInt("Tutorial", 0);
     }
 
     public static void SetData()
@@ -40,12 +42,12 @@ public class PlayerConfig : MonoBehaviour
         StartCoroutine(CardData.GetData());
         StartCoroutine(enemyDeckData.GetData());
         StartCoroutine(equipmentData.GetData());
-        if (isTutorial == 0 || DevelopMode)
+        if (IsTutorial == 0 || DevelopMode)
         {
             Init();
             Debug.Log("チュートリアル処理を行いました。");
-            isTutorial = 1;
-            PlayerPrefs.SetInt("Tutorial", isTutorial);//チュートリアルを一度だけ行わせる
+            IsTutorial = 1;
+            PlayerPrefs.SetInt("Tutorial", IsTutorial);//チュートリアルを一度だけ行わせる
             Equipmnet.Clear();
             Deck.Clear();
             unLockCard.Clear();
