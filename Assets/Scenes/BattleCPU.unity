@@ -1921,7 +1921,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiUltimate: {fileID: 483223089}
   ultimate: 0
-  playerData: {fileID: 0}
+  playerData: {fileID: 719954269}
 --- !u!114 &367618023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2305,6 +2305,8 @@ MonoBehaviour:
   - {fileID: 1758576551}
   - {fileID: 56032025}
   playerHand: {fileID: 1662660820}
+  playerContent: {fileID: 1194963144}
+  enemyContent: {fileID: 631565044}
   playerObject: {fileID: 719954264}
   enemyObject: {fileID: 2005962705}
   stage: {fileID: 399115894}
@@ -2386,7 +2388,7 @@ Canvas:
   m_GameObject: {fileID: 399115894}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 267582178}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -3036,6 +3038,7 @@ GameObject:
   m_Component:
   - component: {fileID: 631565045}
   - component: {fileID: 631565046}
+  - component: {fileID: 631565047}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -3087,6 +3090,20 @@ MonoBehaviour:
   m_Spacing: {x: 5, y: 5}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &631565047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631565044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 1
 --- !u!1 &653089453
 GameObject:
   m_ObjectHideFlags: 0
@@ -3954,7 +3971,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiUltimate: {fileID: 483223089}
   ultimate: 1
-  playerData: {fileID: 0}
+  playerData: {fileID: 719954269}
 --- !u!1 &756290052
 GameObject:
   m_ObjectHideFlags: 0
@@ -5534,6 +5551,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1194963145}
   - component: {fileID: 1194963146}
+  - component: {fileID: 1194963147}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -5585,6 +5603,20 @@ MonoBehaviour:
   m_Spacing: {x: 5, y: 5}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &1194963147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194963144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 1
 --- !u!1 &1207025366 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8012198435451152487, guid: 1fbc41d6f58ccb54aabc38c3e8f61621, type: 3}
@@ -6366,7 +6398,7 @@ Canvas:
   m_GameObject: {fileID: 1393071163}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 267582178}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -6535,9 +6567,11 @@ GameObject:
   - component: {fileID: 1406844684}
   - component: {fileID: 1406844686}
   - component: {fileID: 1406844685}
+  - component: {fileID: 1406844687}
+  - component: {fileID: 1406844688}
   m_Layer: 0
   m_Name: CardException
-  m_TagString: Untagged
+  m_TagString: Explanation
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6579,7 +6613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.392}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -6603,6 +6637,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1406844683}
   m_CullTransparentMesh: 1
+--- !u!114 &1406844687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406844683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8dc634a51ddc164798044ea45903e57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1406844688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406844683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dda4cb66cfd41064fa095b8e3720f2ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 926190543}
+  iniText: {fileID: 0}
+  expText: {fileID: 0}
+  cardSprite: {fileID: 1236035668}
+  cardTypeIcon: {fileID: 0}
+  place: {fileID: 0}
+  backCard: {fileID: 0}
+  shadow: {fileID: 0}
 --- !u!1 &1419309912
 GameObject:
   m_ObjectHideFlags: 0
@@ -7639,7 +7705,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiUltimate: {fileID: 483223089}
   ultimate: 3
-  playerData: {fileID: 0}
+  playerData: {fileID: 719954269}
 --- !u!1001 &1657947238
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8045,7 +8111,6 @@ GameObject:
   - component: {fileID: 1662660822}
   - component: {fileID: 1662660824}
   - component: {fileID: 1662660823}
-  - component: {fileID: 1662660825}
   m_Layer: 0
   m_Name: PlayerHand
   m_TagString: Untagged
@@ -8119,18 +8184,6 @@ MonoBehaviour:
   m_Spacing: {x: 5, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 6
---- !u!114 &1662660825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1662660820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 539b41ad320ce294db7de924a8b5d6a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1668139603
 GameObject:
   m_ObjectHideFlags: 0
@@ -8268,7 +8321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiUltimate: {fileID: 483223089}
   ultimate: 2
-  playerData: {fileID: 0}
+  playerData: {fileID: 719954269}
 --- !u!1001 &1675475856
 PrefabInstance:
   m_ObjectHideFlags: 0

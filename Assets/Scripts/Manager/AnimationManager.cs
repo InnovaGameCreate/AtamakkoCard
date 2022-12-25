@@ -1,4 +1,5 @@
 using System;
+using System.Effect;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -57,6 +58,7 @@ namespace Manager
         {
             var token = this.GetCancellationTokenOnDestroy();
             _pUltimateDirector.Play();
+            EffectManager.Instance.InstantiateEffect(EffectType.specialDamageUp, transform);
             await UniTask.Delay(TimeSpan.FromSeconds(_pUltimateDirector.duration), cancellationToken:token);
         }
         

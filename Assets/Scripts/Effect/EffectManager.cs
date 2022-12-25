@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 namespace System.Effect
@@ -27,13 +26,13 @@ namespace System.Effect
 
         public void InstantiateEffect(EffectType effectType, Transform instantiatePosition)//外部からのアクセス場所
         {
-            GameObject tempObject = null;
-            tempObject = effectLists.FirstOrDefault(effect => effect.name.Equals(effectType.ToString()));
+            var tempObject = effectLists.FirstOrDefault(effect => effect.name.Equals(effectType.ToString()));
 
             if (tempObject != null)
             {
-                var Object = Instantiate(tempObject, instantiatePosition.position,Quaternion.identity);
-                Destroy(Object, 1f);//エフェクトを1秒後の消えるようにする
+                var Object = Instantiate(tempObject, instantiatePosition.position, Quaternion.identity);
+                Debug.Log(instantiatePosition);
+                Destroy(Object, 3f);//エフェクトを1秒後の消えるようにする
             }
         }
         //EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffect, position);と入力すると音が出る­

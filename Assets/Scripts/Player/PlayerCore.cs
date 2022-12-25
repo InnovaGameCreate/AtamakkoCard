@@ -6,6 +6,13 @@ namespace Player
 {
     public class PlayerCore : AtamakkoCore
     {
+        public override List<int> GetDeck()
+        {
+            var list = new List<int>(DeckData.DeckCards);
+            list.Sort();
+            return list;
+        }
+
         public void SetSettingCard(int slotNum, int cardID)
         {
             DeckData.SettingCards.Add(cardID);

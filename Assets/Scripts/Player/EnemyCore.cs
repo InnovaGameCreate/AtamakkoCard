@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Card;
 
 namespace Player
@@ -9,6 +11,15 @@ namespace Player
         private void Start()
         {
             enemy = gameObject.AddComponent<EasyCPU>();
+        }
+
+        public override List<int> GetDeck()
+        {
+            var list = new List<int>(DeckData.DeckCards);
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            list.AddRange(DeckData.HandCards);
+            list.Sort();
+            return list;
         }
 
         public void CardSelect()
