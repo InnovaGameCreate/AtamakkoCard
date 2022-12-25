@@ -10047,6 +10047,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6082172408367007900, guid: 967b286d6e8d9b44482024234a1ac13d, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6082172408367007907, guid: 967b286d6e8d9b44482024234a1ac13d, type: 3}
       propertyPath: sSlot.Array.data[0]
       value: 
