@@ -44,6 +44,11 @@ namespace Player
             return DeckData.DeckCards;
         }
 
+        public void SetDeck(List<int> list)
+        {
+            DeckData.DeckCards = new List<int>(list);
+        }
+
         public bool CheckDeck()
         {
             return DeckData.DeckCards.Count <= 0;

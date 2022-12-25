@@ -13,6 +13,11 @@ namespace Player
             return list;
         }
 
+        public List<int> GetSettingCards()
+        {
+            return DeckData.SettingCards;
+        }
+
         public void SetSettingCard(int slotNum, int cardID)
         {
             DeckData.SettingCards.Add(cardID);

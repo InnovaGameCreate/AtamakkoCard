@@ -56,7 +56,7 @@ public class Matching : MonoBehaviourPunCallbacks
             {
                 _isMatching = true;
                 _inRoom = false;
-                SceneManager.LoadScene("Battle");
+                SceneManager.LoadScene("BattleOnline");
             }
         }
     }
