@@ -5,12 +5,14 @@ namespace Card
 {
     public class DropPlace : MonoBehaviour, IDropHandler
     {
+        [SerializeField] private Hand hand;
+        [SerializeField] private CardSlot slotPrefab;
         public void OnDrop(PointerEventData eventData)
         {
-            CardMove card = eventData.pointerDrag.GetComponent<CardMove>();
-            if (card != null)
+            if (hand.GetGrabbingCardID() >= 0)
             {
-                card.cardParent = transform;
+                var cardSlot = Instantiate(slotPrefab);
+                cardSlot.CreateCard(hand.GetGrabbingCardID());
             }
         }
     }

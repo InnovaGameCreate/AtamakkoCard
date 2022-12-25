@@ -1,5 +1,4 @@
 using System;
-using Field;
 using Manager;
 using UniRx;
 using UnityEngine;
@@ -29,9 +28,14 @@ namespace Card
         {
             if (_slot.MyCardID == -1) return;
             if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
+            
+            // ドラッグ時のカード生成
             _draggingCard = Instantiate(cardPrefab, _canvasTransform);
             _draggingCard.GetComponent<CardController>().Init(_slot.MyCardID);
             _draggingCard.transform.SetAsLastSibling();
+            _draggingCard.GetComponent<CanvasGroup>().blocksRaycasts = false;
+            
+            // Handに持っているカードの情報を渡す
             _hand.SetGrabbingCardID(_slot.MyCardID);
             _slot.MyCard.view.shadow.SetActive(true);
         }
@@ -40,17 +44,18 @@ namespace Card
         {
             if (_slot.MyCardID == -1) return;
             if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
-            _draggingCard.transform.position = _hand.transform.position;
+            _draggingCard.transform.position = eventData.position;
         }
         
         public void OnDrop(PointerEventData eventData)
         {
-            if (!_hand.IsHavaintCardID()) return;
+            if (!_hand.IsHavingCardID()) return;
             if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
             
             int gotCardID = _hand.GetGrabbingCardID();
             
             _hand.SetGrabbingCardID(_slot.MyCardID);
+            _slot.DeleteCard();
             _slot.CreateCard(gotCardID);
             
             _settingCard.OnNext(_slot.MyCardID);
@@ -58,6 +63,7 @@ namespace Card
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            if (_slot.MyCardID == -1) return;
             if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
             _slot.MyCard.view.shadow.SetActive(false);
             Destroy(_draggingCard);

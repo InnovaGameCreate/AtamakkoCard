@@ -7,15 +7,9 @@ namespace Card
 {
     public class CardSlot : MonoBehaviour
     {
-        private ReactiveProperty<bool> _select = new ReactiveProperty<bool>(false);
 
-        public ReactiveProperty<bool> MySelect
-        {
-            get => _select;
-            set => _select = value;
-        }
+        public ReactiveProperty<bool> MySelect { get; set; } = new ReactiveProperty<bool>(false);
 
-        private int _cardID = -1;
         private CardController _cardController;
         public CardController MyCard => _cardController;
 
@@ -24,16 +18,12 @@ namespace Card
 
         [SerializeField] private GameObject cardPrefab;
 
-        public int MyCardID
-        {
-            get => _cardID;
-            private set => _cardID = value;
-        }
+        public int MyCardID { get; private set; } = -1;
 
         void Start()
         {
             _selectImage = gameObject.GetComponent<Image>();
-            
+            MySelect.Subscribe(b => { _selectImage.color = b ? SelectColor : Color.clear; }).AddTo(this);
             CPUManager.Instance.CurrentState
                 .Where(s => s == GameState.Battle)
                 .Subscribe(_ =>
@@ -44,16 +34,6 @@ namespace Card
                     }
                 })
                 .AddTo(this);
-
-            _select
-                .Where(b => b)
-                .Subscribe(_ => _selectImage.color = SelectColor)
-                .AddTo(this);
-
-            _select
-                .Where((b => b == false))
-                .Subscribe(_ => _selectImage.color = Color.clear)
-                .AddTo(this);
         }
 
         public void CreateCard(int cardID)
@@ -63,7 +43,7 @@ namespace Card
             {
                 var card = Instantiate(cardPrefab, transform);
                 _cardController = card.GetComponent<CardController>();
-                _cardController.Init(_cardID);
+                _cardController.Init(MyCardID);
             }
             else
             {
@@ -73,7 +53,7 @@ namespace Card
 
         public void DeleteCard()
         {
-            _cardID = -1;
+            MyCardID = -1;
             foreach (Transform childObj in transform)
             {
                 Destroy(childObj.gameObject);

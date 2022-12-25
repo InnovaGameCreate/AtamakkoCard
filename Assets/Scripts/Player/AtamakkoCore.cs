@@ -11,7 +11,7 @@ namespace Player
         [SerializeField] private GameObject[] sSlot;
         
         public bool UsedUltimate { get; set; }
-        public UltimateState UltimateState { get; set; }
+        //public UltimateState UltimateState { get; set; }
 
         public void Initialize(List<int> deck)
         {
@@ -39,6 +39,11 @@ namespace Player
             ShuffleDeck();
         }
 
+        public virtual List<int> GetDeck()
+        {
+            return DeckData.DeckCards;
+        }
+
         public bool CheckDeck()
         {
             return DeckData.DeckCards.Count <= 0;
@@ -62,7 +67,7 @@ namespace Player
 
         public void UseUltimate()
         {
-            switch (UltimateState)
+            switch (AtamakkoData.UltimateState)
             {
                 case UltimateState.Attack:
                     AtamakkoData.DamageCorrection += 1;

@@ -1,12 +1,12 @@
 using UnityEngine;
 
-namespace Field
+namespace Card
 {
     public class Hand : MonoBehaviour
     {
-        private int _grabbingCardID;
+        private int _grabbingCardID = -1;
 
-        // Update is called once per frame
+        /*
         void Update()
         {
             if (Camera.main != null)
@@ -15,7 +15,7 @@ namespace Field
                 targetPos.z = 0f;
                 transform.position = targetPos;
             }
-        }
+        }*/
 
         public int GetGrabbingCardID()
         {
@@ -29,7 +29,7 @@ namespace Field
             _grabbingCardID = cardID;
         }
 
-        public bool IsHavaintCardID()
+        public bool IsHavingCardID()
         {
             return _grabbingCardID != -1;
         }
