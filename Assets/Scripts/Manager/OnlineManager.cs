@@ -381,9 +381,18 @@ namespace Manager
                     {
                         _enemy.AddDamage(myDamage);
                     }
+                    if (myCard.Additional == "〇")
+                    {
+                        _player.Move(playerAttack);
+                    }
+                    
                     if (_player.AtamakkoData.MyPosition == _enemyPlace)
                     {
                         _player.AddDamage(_enemyDamage);
+                    }
+                    if (enemyCard.Additional == "〇")
+                    {
+                        _enemy.Move(_enemyPlace);
                     }
                 }
 
@@ -417,7 +426,17 @@ namespace Manager
                     */
                     
                     _player.Move(playerMove);
+                    if (myCard.Additional == "〇" && _enemy.AtamakkoData.MyPosition == playerMove)
+                    {
+                        int myDamage = _player.GetDamage(myCard.Damage);
+                        _enemy.AddDamage(myDamage);
+                    }
                     _enemy.Move(_enemyPlace);
+                    if (enemyCard.Additional == "〇" && _player.AtamakkoData.MyPosition == _enemyPlace)
+                    {
+                        int enemyDamage = _enemy.GetDamage(enemyCard.Damage);
+                        _player.AddDamage(enemyDamage);
+                    }
                 }
             }
             else if (myInitiative > enemyInitiative || (myInitiative == enemyInitiative && myCard.Kind == "攻撃"))
@@ -454,8 +473,8 @@ namespace Manager
         [PunRPC]
         private void SendAction(int damage, int place)
         {
-            _enemyDamage = damage;
-            _enemyPlace = place;
+            _enemyDamage = (damage + 3) % 6;
+            _enemyPlace = (place + 3) % 6;
             _getData = true;
         }
 
@@ -488,6 +507,10 @@ namespace Manager
                 {
                     _enemy.AddDamage(myDamage);
                 }
+                if (card.Additional == "〇")
+                {
+                    _player.Move(attackPosition);
+                }
             }
 
             if (card.Kind == "移動")
@@ -512,7 +535,11 @@ namespace Manager
                 await TimeCounter.Instance.CountDown(30);
 
                 _player.Move(movePosition);
-                
+                if (card.Additional == "〇" && _enemy.AtamakkoData.MyPosition == movePosition)
+                {
+                    int myDamage = _player.GetDamage(card.Damage);
+                    _enemy.AddDamage(myDamage);
+                }
             }
         }
 
@@ -532,12 +559,21 @@ namespace Manager
                 {
                     _player.AddDamage(_enemyDamage);
                 }
+                if (card.Additional == "〇")
+                {
+                    _enemy.Move(_enemyPlace);
+                }
             }
 
             if (card.Kind == "移動")
             {
                 //int movePosition = _enemy.MoveSelect(_player.AtamakkoData.MyPosition, card);
                 _enemy.Move(_enemyPlace);
+                if (card.Additional == "〇" && _player.AtamakkoData.MyPosition == _enemyPlace)
+                {
+                    int enemyDamage = _enemy.GetDamage(card.Damage);
+                    _player.AddDamage(enemyDamage);
+                }
             }
         }
 
