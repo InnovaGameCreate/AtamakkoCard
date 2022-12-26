@@ -6,6 +6,7 @@ using Card;
 using Cysharp.Threading.Tasks;
 using Photon.Pun;
 using Player;
+using TMPro;
 using UI;
 using UniRx;
 using UnityEngine;
@@ -33,6 +34,8 @@ namespace Manager
         [SerializeField] private MoveButton moveButton;
         [SerializeField] private GameObject[] sSlot;
         [SerializeField] private GameObject cardPrefab;
+        [SerializeField] private TextMeshProUGUI playerName;
+        [SerializeField] private TextMeshProUGUI enemyName;
         private PlayerCore _player;
         private EnemyCore _enemy;
         private CardController _cardController;
@@ -126,6 +129,9 @@ namespace Manager
             // プレイヤーの初期設定
             _player.Initialize(playerDeck);
             _enemy.Initialize(_enemyDeck);
+
+            playerName.text = PlayerConfig.PlayerName;
+            photonView.RPC(nameof(SetEnemyName), RpcTarget.Others, playerName.text);
             
             // ゲーム終了の設定
             _player.AtamakkoData.MyHp
@@ -147,6 +153,12 @@ namespace Manager
             
             // ドローフェーズへ
             _currentState.Value = GameState.Draw;
+        }
+
+        [PunRPC]
+        private void SetEnemyName(string text)
+        {
+            enemyName.text = text;
         }
 
         /*

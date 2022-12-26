@@ -18,7 +18,7 @@ public class PlayerName : MonoBehaviour
     public void OnClick()//clickされたら名前を登録してウィンドウを閉じる。
     {
         PlayerConfig.PlayerName = name.text;
-        gameObject.SetActive(false);
         PlayerConfig.SetData();
+        gameObject.SetActive(false);
     }
 }
