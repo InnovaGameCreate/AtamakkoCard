@@ -53,7 +53,7 @@ namespace Card
         {
             if (_slot.MyCardID == -1) return;
             if (!_portable) return;
-            _draggingCard.transform.position = eventData.position;
+            _draggingCard.transform.position = _hand.transform.position;
         }
         
         public void OnDrop(PointerEventData eventData)

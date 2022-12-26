@@ -7,25 +7,25 @@ using UnityEngine;
 
 public class PlayerConfig : MonoBehaviour
 {
-    public static List<bool> unLockCard = new List<bool>();//‚Ç‚ÌƒJ[ƒh‚ğæ“¾‚µ‚Ä‚¢‚é‚©
-    public static List<bool> unLockEquipment = new List<bool>();//‚Ç‚Ì‘•”õ‚ğæ“¾‚µ‚Ä‚¢‚é‚©
-    public static string PlayerName;//ƒvƒŒƒCƒ„[‚Ì–¼‘O
+    public static List<bool> unLockCard = new List<bool>();//ã©ã®ã‚«ãƒ¼ãƒ‰ã‚’å–å¾—ã—ã¦ã„ã‚‹ã‹
+    public static List<bool> unLockEquipment = new List<bool>();//ã©ã®è£…å‚™ã‚’å–å¾—ã—ã¦ã„ã‚‹ã‹
+    public static string PlayerName;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åå‰
     public static List<int> Deck = new List<int>();
-    public static List<int> Equipmnet = new List<int>();//(ã•”A’†‰›A‰º•”AƒAƒNƒZƒTƒŠ)
-    public static bool DevelopMode = true;//ŠJ”­ƒ‚[ƒh‚©‚Ç‚¤‚©ií‚É‰Šú‰»‚³‚ê‚é)
-    private int DevelopModeCardNum;//card‚ÌŒÂ”
-    private int DevelopModeEquipmentNum;//equipment‚ÌŒÂ”
-    private static int isTutorial;//0‚Ì‚Íƒ`ƒ…[ƒgƒŠƒAƒ‹‚ğ‚Ü‚¾ó‚¯‚Ä‚¢‚È‚¢
+    public static List<int> Equipmnet = new List<int>();//(ä¸Šéƒ¨ã€ä¸­å¤®ã€ä¸‹éƒ¨ã€ã‚¢ã‚¯ã‚»ã‚µãƒª)
+    public static bool DevelopMode = true;//é–‹ç™ºãƒ¢ãƒ¼ãƒ‰ã‹ã©ã†ã‹ï¼ˆå¸¸ã«åˆæœŸåŒ–ã•ã‚Œã‚‹)
+    private int DevelopModeCardNum;//cardã®å€‹æ•°
+    private int DevelopModeEquipmentNum;//equipmentã®å€‹æ•°
+    private static int isTutorial;//0ã®æ™‚ã¯ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã‚’ã¾ã å—ã‘ã¦ã„ãªã„
 
     public static int IsTutorial { get => isTutorial; set => isTutorial = value; }
 
     public static void Init()
     {
-        unLockCard = PlayerPrefsUtility.LoadList<bool>("unLockcard");//unLockcard‚©‚ç”z—ñ‚ğ“Ç‚İ‚Ş
-        unLockEquipment = PlayerPrefsUtility.LoadList<bool>("unLockEquipment");//unLockEquipment‚©‚ç”z—ñ‚ğ“Ç‚İ‚Ş
-        PlayerName = PlayerPrefs.GetString("PlayerName", "Player");//–¼‘O‚ğ“Ç‚İ‚ŞA
-        Deck = PlayerPrefsUtility.LoadList<int>("MyDeck");//©•ª‚ÌƒfƒbƒL‚ğ“Ç‚İ‚Ş
-        Equipmnet = PlayerPrefsUtility.LoadList<int>("MyEquipmnet");//©•ª‚Ì‘•”õ‚ğ“Ç‚İ‚Ş
+        unLockCard = PlayerPrefsUtility.LoadList<bool>("unLockcard");//unLockcardã‹ã‚‰é…åˆ—ã‚’èª­ã¿è¾¼ã‚€
+        unLockEquipment = PlayerPrefsUtility.LoadList<bool>("unLockEquipment");//unLockEquipmentã‹ã‚‰é…åˆ—ã‚’èª­ã¿è¾¼ã‚€
+        PlayerName = PlayerPrefs.GetString("PlayerName", "Player");//åå‰ã‚’èª­ã¿è¾¼ã‚€ã€
+        Deck = PlayerPrefsUtility.LoadList<int>("MyDeck");//è‡ªåˆ†ã®ãƒ‡ãƒƒã‚­ã‚’èª­ã¿è¾¼ã‚€
+        Equipmnet = PlayerPrefsUtility.LoadList<int>("MyEquipmnet");//è‡ªåˆ†ã®è£…å‚™ã‚’èª­ã¿è¾¼ã‚€
         IsTutorial = PlayerPrefs.GetInt("Tutorial", 0);
     }
 
@@ -45,9 +45,9 @@ public class PlayerConfig : MonoBehaviour
         if (IsTutorial == 0 || DevelopMode)
         {
             Init();
-            Debug.Log("ƒ`ƒ…[ƒgƒŠƒAƒ‹ˆ—‚ğs‚¢‚Ü‚µ‚½B");
+            Debug.Log("ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«å‡¦ç†ã‚’è¡Œã„ã¾ã—ãŸã€‚");
             IsTutorial = 1;
-            PlayerPrefs.SetInt("Tutorial", IsTutorial);//ƒ`ƒ…[ƒgƒŠƒAƒ‹‚ğˆê“x‚¾‚¯s‚í‚¹‚é
+            PlayerPrefs.SetInt("Tutorial", IsTutorial);//ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã‚’ä¸€åº¦ã ã‘è¡Œã‚ã›ã‚‹
             Equipmnet.Clear();
             Deck.Clear();
             unLockCard.Clear();
@@ -92,16 +92,16 @@ public class PlayerConfig : MonoBehaviour
         }
         for (int i = 0; i < Equipmnet.Count; i++)
         {
-            Debug.Log(i+"”Ô–Ú‚Éİ’è‚³‚ê‚Ä‚¢‚é”‚Í"+Equipmnet[i]);
+            Debug.Log(i+"ç•ªç›®ã«è¨­å®šã•ã‚Œã¦ã„ã‚‹æ•°ã¯"+Equipmnet[i]);
         }
         if (DevelopMode)
         {
-            Debug.Log("ƒfƒoƒbƒNˆ—‚ğs‚¢‚Ü‚µ‚½B");
+            Debug.Log("ãƒ‡ãƒãƒƒã‚¯å‡¦ç†ã‚’è¡Œã„ã¾ã—ãŸã€‚");
             DevelopModeEquipmentNum = Resources.Load<equipmentIcon>("EquipmentIcon").equipmentIconList.Count;
             DevelopModeCardNum = Resources.Load<CardIcon>("CardIcon").cardIconList.Count;
 
-            Debug.Log("unLockCard‚Ì—v‘f”‚Í" + unLockCard.Count + "‚Å‚·");
-            Debug.Log("unLockEquipment‚Ì—v‘f”‚Í" + unLockEquipment.Count + "‚Å‚·");
+            Debug.Log("unLockCardã®è¦ç´ æ•°ã¯" + unLockCard.Count + "ã§ã™");
+            Debug.Log("unLockEquipmentã®è¦ç´ æ•°ã¯" + unLockEquipment.Count + "ã§ã™");
             unLockCard.Clear();
             unLockEquipment.Clear();
             for (int i = 0; i < 10; i++)
