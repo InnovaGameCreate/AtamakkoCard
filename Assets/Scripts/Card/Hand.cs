@@ -6,7 +6,6 @@ namespace Card
     {
         private int _grabbingCardID = -1;
 
-        /*
         void Update()
         {
             if (Camera.main != null)
@@ -15,7 +14,7 @@ namespace Card
                 targetPos.z = 0f;
                 transform.position = targetPos;
             }
-        }*/
+        }
 
         public int GetGrabbingCardID()
         {

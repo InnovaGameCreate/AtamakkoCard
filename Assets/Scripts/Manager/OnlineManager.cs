@@ -76,7 +76,7 @@ namespace Manager
         /*
          * フェーズを切り替える関数
          */
-        private void OnStateChanged(GameState nextState)
+        private async void OnStateChanged(GameState nextState)
         {
             switch (nextState)
             {
@@ -84,16 +84,16 @@ namespace Manager
                     WaitingGame();
                     break;
                 case GameState.Init:
-                    StartGame();
+                    await StartGame();
                     break;
                 case GameState.Draw:
-                    DrawFaze();
+                    await DrawFaze();
                     break;
                 case GameState.Select:
-                    SelectFaze();
+                    await SelectFaze();
                     break;
                 case GameState.Battle:
-                    BattleFaze();
+                    await BattleFaze();
                     break;
             }
         }
@@ -103,16 +103,14 @@ namespace Manager
          */
         private async void WaitingGame()
         {
-            Debug.Log("waiting");
             await TimeCounter.Instance.CountDown(3);
-            Debug.Log("start");
             _currentState.Value = GameState.Init;
         }
 
         /*
          * ゲーム開始時に行う関数
          */
-        private async void StartGame()
+        private async UniTask StartGame()
         {
             // カードデータを取得
             await StartCoroutine(CardData.GetData());
@@ -155,7 +153,7 @@ namespace Manager
         /*
          * ドローフェーズ関数
          */
-        private async void DrawFaze()
+        private async UniTask DrawFaze()
         {
             if (_player.CheckDeck()) // 自デッキにカードがないなら
             {
@@ -195,7 +193,7 @@ namespace Manager
         /*
          * セレクトフェーズ関数
          */
-        private async void SelectFaze()
+        private async UniTask SelectFaze()
         {
             // デッキ情報を更新
             var playerList = _player.GetDeck();
@@ -228,7 +226,9 @@ namespace Manager
                 })
                 .AddTo(this);
 
+            Debug.Log("waiting");
             await TimeCounter.Instance.CountDown(120);    // カウントタイマー起動（120s）
+            Debug.Log("start");
             
             ultimateButton.MyInteractable = false;  // 必殺技ボタンのOFF
             if (_player.AtamakkoData.UltimateState != UltimateState.Normal) // 必殺技を指定していたら
@@ -273,7 +273,7 @@ namespace Manager
         }
          */
 
-        private async void BattleFaze()
+        private async UniTask BattleFaze()
         {
             // 必殺技を選択している
             if (_player.AtamakkoData.UltimateState != UltimateState.Normal)
