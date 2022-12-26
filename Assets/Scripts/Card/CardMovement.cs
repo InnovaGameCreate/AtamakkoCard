@@ -13,6 +13,7 @@ namespace Card
         private GameObject _draggingCard;
         [SerializeField] private GameObject cardPrefab;
         private CardSlot _slot;
+        private bool _portable;
 
         private readonly Subject<int> _settingCard = new Subject<int>();
         public IObservable<int> CheckCardID => _settingCard;
@@ -22,12 +23,20 @@ namespace Card
             _canvasTransform = GameObject.FindGameObjectWithTag("Stage").transform;
             _hand = FindObjectOfType<Hand>();
             _slot = gameObject.GetComponent<CardSlot>();
+
+            CPUManager.Instance.CurrentState
+                .Subscribe(state => _portable = state == GameState.Select)
+                .AddTo(this);
+            
+            OnlineManager.Instance.CurrentState
+                .Subscribe(state => _portable = state == GameState.Select)
+                .AddTo(this);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
+            if (!_portable) return;
             
             // ドラッグ時のカード生成
             _draggingCard = Instantiate(cardPrefab, _canvasTransform);
@@ -43,14 +52,14 @@ namespace Card
         public void OnDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
+            if (!_portable) return;
             _draggingCard.transform.position = eventData.position;
         }
         
         public void OnDrop(PointerEventData eventData)
         {
             if (!_hand.IsHavingCardID()) return;
-            if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
+            if (!_portable) return;
             
             int gotCardID = _hand.GetGrabbingCardID();
             
@@ -64,12 +73,13 @@ namespace Card
         public void OnEndDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
+            if (!_portable) return;
             _slot.MyCard.view.shadow.SetActive(false);
             Destroy(_draggingCard);
 
             int gotCardID = _hand.GetGrabbingCardID();
             _slot.CreateCard(gotCardID);
+            Debug.Log(gotCardID);
             
             _settingCard.OnNext(_slot.MyCardID);
         }
