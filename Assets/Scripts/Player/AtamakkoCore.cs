@@ -22,6 +22,12 @@ namespace Player
             ShuffleDeck();
         }
 
+        public void ResetCorrection()
+        {
+            AtamakkoData.DamageCorrection = 0;
+            AtamakkoData.SpeedCorrection = 0;
+        }
+
         private void ShuffleDeck()
         {
             System.Random random = new System.Random((int) DateTime.Now.Ticks); // ランダムのインスタンス化

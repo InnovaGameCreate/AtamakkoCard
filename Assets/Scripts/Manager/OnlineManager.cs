@@ -197,6 +197,8 @@ namespace Manager
             // デッキ情報を更新
             var playerList = _player.GetDeck();
             var enemyList = _enemy.GetDeck();
+            _player.ResetCorrection();
+            _enemy.ResetCorrection();
             foreach (Transform childObj in playerContent.transform)
             {
                 Destroy(childObj.gameObject);
