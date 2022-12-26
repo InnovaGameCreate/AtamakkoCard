@@ -76,7 +76,7 @@ namespace Manager
         /*
          * フェーズを切り替える関数
          */
-        private async void OnStateChanged(GameState nextState)
+        private void OnStateChanged(GameState nextState)
         {
             switch (nextState)
             {
@@ -84,16 +84,16 @@ namespace Manager
                     WaitingGame();
                     break;
                 case GameState.Init:
-                    await StartGame();
+                    StartGame();
                     break;
                 case GameState.Draw:
-                    await DrawFaze();
+                    DrawFaze();
                     break;
                 case GameState.Select:
-                    await SelectFaze();
+                    SelectFaze();
                     break;
                 case GameState.Battle:
-                    await BattleFaze();
+                    BattleFaze();
                     break;
             }
         }
@@ -110,7 +110,7 @@ namespace Manager
         /*
          * ゲーム開始時に行う関数
          */
-        private async UniTask StartGame()
+        private async void StartGame()
         {
             // カードデータを取得
             await StartCoroutine(CardData.GetData());
@@ -152,7 +152,7 @@ namespace Manager
         /*
          * ドローフェーズ関数
          */
-        private async UniTask DrawFaze()
+        private async void DrawFaze()
         {
             if (_player.CheckDeck()) // 自デッキにカードがないなら
             {
@@ -192,7 +192,7 @@ namespace Manager
         /*
          * セレクトフェーズ関数
          */
-        private async UniTask SelectFaze()
+        private async void SelectFaze()
         {
             // デッキ情報を更新
             var playerList = _player.GetDeck();
@@ -221,6 +221,7 @@ namespace Manager
             decisionButton.Decision // 決定ボタンが押されたとき
                 .Subscribe(_ =>
                 {
+                    decisionButton.MyInteractable = false;
                     TimeCounter.Instance.EndTimer(); // タイマーを0にする
                 })
                 .AddTo(this);
@@ -272,7 +273,7 @@ namespace Manager
         }
          */
 
-        private async UniTask BattleFaze()
+        private async void BattleFaze()
         {
             // 必殺技を選択している
             if (_player.AtamakkoData.UltimateState != UltimateState.Normal)

@@ -11,7 +11,7 @@ public class PlayerName : MonoBehaviour
     {
         if(PlayerConfig.IsTutorial != 0)
         {
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
         }
     }
 

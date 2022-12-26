@@ -23,7 +23,8 @@ namespace Card
             _canvasTransform = GameObject.FindGameObjectWithTag("Stage").transform;
             _hand = FindObjectOfType<Hand>();
             _slot = gameObject.GetComponent<CardSlot>();
-
+            
+            /*
             if (PlayerConfig.IsOnline)
             {
                 OnlineManager.Instance.CurrentState
@@ -36,13 +37,15 @@ namespace Card
                     .Subscribe(state => _portable = state == GameState.Select)
                     .AddTo(this);
             }
+            */
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (!_portable) return;
-            
+            if (PlayerConfig.IsOnline) if (OnlineManager.Instance.CurrentState.Value != GameState.Select) return;
+            if (!PlayerConfig.IsOnline) if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
+
             // ドラッグ時のカード生成
             _draggingCard = Instantiate(cardPrefab, _canvasTransform);
             _draggingCard.GetComponent<CardController>().Init(_slot.MyCardID);
@@ -57,14 +60,16 @@ namespace Card
         public void OnDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (!_portable) return;
+            if (PlayerConfig.IsOnline) if (OnlineManager.Instance.CurrentState.Value != GameState.Select) return;
+            if (!PlayerConfig.IsOnline) if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
             _draggingCard.transform.position = _hand.transform.position;
         }
         
         public void OnDrop(PointerEventData eventData)
         {
             if (!_hand.IsHavingCardID()) return;
-            //if (!_portable) return;
+            if (PlayerConfig.IsOnline) if (OnlineManager.Instance.CurrentState.Value != GameState.Select) return;
+            if (!PlayerConfig.IsOnline) if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
             
             int gotCardID = _hand.GetGrabbingCardID();
             
@@ -78,7 +83,8 @@ namespace Card
         public void OnEndDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (!_portable) return;
+            if (PlayerConfig.IsOnline) if (OnlineManager.Instance.CurrentState.Value != GameState.Select) return;
+            if (!PlayerConfig.IsOnline) if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
             
             _slot.MyCard.view.shadow.SetActive(false);
             Destroy(_draggingCard);
