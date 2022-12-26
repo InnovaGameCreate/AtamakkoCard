@@ -24,13 +24,18 @@ namespace Card
             _hand = FindObjectOfType<Hand>();
             _slot = gameObject.GetComponent<CardSlot>();
 
-            CPUManager.Instance.CurrentState
-                .Subscribe(state => _portable = state == GameState.Select)
-                .AddTo(this);
-            
-            OnlineManager.Instance.CurrentState
-                .Subscribe(state => _portable = state == GameState.Select)
-                .AddTo(this);
+            if (PlayerConfig.IsOnline)
+            {
+                OnlineManager.Instance.CurrentState
+                    .Subscribe(state => _portable = state == GameState.Select)
+                    .AddTo(this);
+            }
+            else
+            {
+                CPUManager.Instance.CurrentState
+                    .Subscribe(state => _portable = state == GameState.Select)
+                    .AddTo(this);
+            }
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -59,7 +64,7 @@ namespace Card
         public void OnDrop(PointerEventData eventData)
         {
             if (!_hand.IsHavingCardID()) return;
-            if (!_portable) return;
+            //if (!_portable) return;
             
             int gotCardID = _hand.GetGrabbingCardID();
             
@@ -74,6 +79,7 @@ namespace Card
         {
             if (_slot.MyCardID == -1) return;
             if (!_portable) return;
+            
             _slot.MyCard.view.shadow.SetActive(false);
             Destroy(_draggingCard);
 

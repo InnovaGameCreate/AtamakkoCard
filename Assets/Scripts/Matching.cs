@@ -1,15 +1,24 @@
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Matching : MonoBehaviourPunCallbacks
 {
     private bool _inRoom;
     private bool _isMatching;
 
+    /*
+    [SerializeField] private GameObject privateUI;
+    [SerializeField] private TMP_InputField passwordInputField;
+    [SerializeField] private Button joinButton;
+    */
+
     public void CPUButton()
     {
+        PlayerConfig.IsOnline = false;
         SceneManager.LoadScene("BattleCPU");
     }
     
@@ -37,7 +46,8 @@ public class Matching : MonoBehaviourPunCallbacks
     {
         var roomOptions = new RoomOptions
         {
-            MaxPlayers = 2
+            MaxPlayers = 2,
+            //IsVisible = false
         };
 
         PhotonNetwork.CreateRoom(null, roomOptions);
@@ -56,6 +66,7 @@ public class Matching : MonoBehaviourPunCallbacks
             {
                 _isMatching = true;
                 _inRoom = false;
+                PlayerConfig.IsOnline = true;
                 SceneManager.LoadScene("BattleOnline");
             }
         }

@@ -24,16 +24,33 @@ namespace Card
         {
             _selectImage = gameObject.GetComponent<Image>();
             MySelect.Subscribe(b => { _selectImage.color = b ? SelectColor : Color.clear; }).AddTo(this);
-            CPUManager.Instance.CurrentState
-                .Where(s => s == GameState.Battle)
-                .Subscribe(_ =>
-                {
-                    if (MyCardID < 0)
+            if (PlayerConfig.IsOnline)
+            {
+                OnlineManager.Instance.CurrentState
+                    .Where(s => s == GameState.Battle)
+                    .Subscribe(_ =>
                     {
-                        Destroy(gameObject);
-                    }
-                })
-                .AddTo(this);
+                        if (MyCardID < 0)
+                        {
+                            Destroy(gameObject);
+                        }
+                    })
+                    .AddTo(this);
+            }
+            else
+            {
+                CPUManager.Instance.CurrentState
+                    .Where(s => s == GameState.Battle)
+                    .Subscribe(_ =>
+                    {
+                        if (MyCardID < 0)
+                        {
+                            Destroy(gameObject);
+                        }
+                    })
+                    .AddTo(this);
+            }
+            
         }
 
         public void CreateCard(int cardID)

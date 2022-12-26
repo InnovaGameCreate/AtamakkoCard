@@ -4,6 +4,7 @@ using Card;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerConfig : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class PlayerConfig : MonoBehaviour
     public static List<int> Deck = new List<int>();
     public static List<int> Equipmnet = new List<int>();//(上部、中央、下部、アクセサリ)
     public static bool DevelopMode = true;//開発モードかどうか（常に初期化される)
+    public static bool IsOnline = false;
     private int DevelopModeCardNum;//cardの個数
     private int DevelopModeEquipmentNum;//equipmentの個数
     private static int isTutorial;//0の時はチュートリアルをまだ受けていない
