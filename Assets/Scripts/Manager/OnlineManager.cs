@@ -116,16 +116,15 @@ namespace Manager
             await StartCoroutine(CardData.GetData());
             
             // デッキのインスタンス生成
-            var myDeck = Resources.Load<Deck>("Deck1").cardIDList;
-            //var playerDeck = PlayerConfig.Deck;
-            photonView.RPC(nameof(SendDeck), RpcTarget.Others, myDeck.ToArray());
+            var playerDeck = PlayerConfig.Deck;
+            photonView.RPC(nameof(SendDeck), RpcTarget.Others, playerDeck.ToArray());
             
             await UniTask.WaitUntil((() => _getData));
             _getData = false;
             await UniTask.Delay(10);
 
             // プレイヤーの初期設定
-            _player.Initialize(myDeck);
+            _player.Initialize(playerDeck);
             _enemy.Initialize(_enemyDeck);
             
             // ゲーム終了の設定
@@ -473,7 +472,7 @@ namespace Manager
         [PunRPC]
         private void SendAction(int damage, int place)
         {
-            _enemyDamage = (damage + 3) % 6;
+            _enemyDamage = damage;
             _enemyPlace = (place + 3) % 6;
             _getData = true;
         }
@@ -501,8 +500,9 @@ namespace Manager
                 }
 
                 await TimeCounter.Instance.CountDown(30);
-
                 int myDamage = _player.GetDamage(card.Damage);
+                photonView.RPC(nameof(SendAction), RpcTarget.Others, myDamage, attackPosition);
+
                 if (_enemy.AtamakkoData.MyPosition == attackPosition)
                 {
                     _enemy.AddDamage(myDamage);
@@ -533,6 +533,7 @@ namespace Manager
                 }
 
                 await TimeCounter.Instance.CountDown(30);
+                photonView.RPC(nameof(SendAction), RpcTarget.Others, 0, movePosition);
 
                 _player.Move(movePosition);
                 if (card.Additional == "〇" && _enemy.AtamakkoData.MyPosition == movePosition)

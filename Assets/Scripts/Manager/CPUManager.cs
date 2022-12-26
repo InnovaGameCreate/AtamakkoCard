@@ -112,12 +112,12 @@ namespace Manager
             
             // デッキのインスタンス生成
             var deck = Resources.Load<Deck>("Deck1").cardIDList;
-            //var playerDeck = PlayerConfig.Deck;
+            var playerDeck = PlayerConfig.Deck;
 
             await UniTask.Delay(10);
             
             // プレイヤーの初期設定
-            _player.Initialize(deck);
+            _player.Initialize(playerDeck);
             _enemy.Initialize(deck);
             
             // ゲーム終了の設定

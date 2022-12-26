@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: 4cbc63d85a6af774d95b49ede86d7a88
+  - enabled: 1
     path: Assets/Scenes/Matching.unity
     guid: d7a04adaf9321434d8ba994d5f3e4d92
   - enabled: 1
@@ -20,9 +23,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BattleCPU.unity
     guid: e08229b7958e0ba4094fd6611acc3184
-  - enabled: 1
-    path: Assets/Scenes/Title.unity
-    guid: 4cbc63d85a6af774d95b49ede86d7a88
   - enabled: 1
     path: Assets/Scenes/StorySelectScene.unity
     guid: dc1cde9a7145b024cb62054aedd0a381
