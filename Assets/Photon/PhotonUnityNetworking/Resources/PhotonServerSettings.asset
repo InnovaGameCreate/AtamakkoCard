@@ -54,6 +54,7 @@ MonoBehaviour:
   - SendSelectFaze
   - SendAction
   - SendDeck
+  - SetEnemyName
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
