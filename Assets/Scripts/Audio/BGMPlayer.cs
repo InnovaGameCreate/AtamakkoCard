@@ -56,6 +56,7 @@ namespace System.Audio
                     PlayBGM(CurrentScene.Title);
                     break;
                 case "Battle":
+                case "BattleOnline":
                 case "BattleCPU":
                     PlayBGM(CurrentScene.Battle);
                     break;
