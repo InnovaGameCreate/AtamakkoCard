@@ -38,8 +38,7 @@ namespace Manager
         [SerializeField] private TextMeshProUGUI enemyName;
         private PlayerCore _player;
         private EnemyCore _enemy;
-        private CardController _cardController;
-        
+
         private bool _getData;
         private List<int> _enemyDeck;
         private int _enemyDamage;
@@ -106,6 +105,10 @@ namespace Manager
          */
         private async void WaitingGame()
         {
+            //自分と相手のプレイヤーネームを表示
+            playerName.text = PlayerConfig.PlayerName;
+            photonView.RPC(nameof(SetEnemyName), RpcTarget.Others, playerName.text);
+
             await TimeCounter.Instance.CountDown(3);
             _currentState.Value = GameState.Init;
         }
@@ -130,8 +133,6 @@ namespace Manager
             _player.Initialize(playerDeck);
             _enemy.Initialize(_enemyDeck);
 
-            playerName.text = PlayerConfig.PlayerName;
-            photonView.RPC(nameof(SetEnemyName), RpcTarget.Others, playerName.text);
             
             // ゲーム終了の設定
             _player.AtamakkoData.MyHp
@@ -292,7 +293,7 @@ namespace Manager
             // 必殺技を選択している
             if (_player.AtamakkoData.UltimateState != UltimateState.Normal)
             {
-                await AnimationManager.Instance.MyUltimateCutIn();
+                await AnimationManager.Instance.MyUltimateCutIn(_player.AtamakkoData.UltimateState);
                 switch (_player.AtamakkoData.UltimateState)
                 {
                     case UltimateState.Recover:
