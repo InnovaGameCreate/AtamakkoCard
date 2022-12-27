@@ -33,7 +33,6 @@ namespace Manager
         [SerializeField] private GameObject cardPrefab;
         private PlayerCore _player;
         private EnemyCore _enemy;
-        private CardController _cardController;
 
         private bool _youWin;
 
@@ -246,7 +245,7 @@ namespace Manager
             // 必殺技を選択している
             if (_player.AtamakkoData.UltimateState != UltimateState.Normal)
             {
-                await AnimationManager.Instance.MyUltimateCutIn();
+                await AnimationManager.Instance.MyUltimateCutIn(_player.AtamakkoData.UltimateState);
                 switch (_player.AtamakkoData.UltimateState)
                 {
                     case UltimateState.Recover:

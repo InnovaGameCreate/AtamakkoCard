@@ -1,6 +1,7 @@
 using System;
 using System.Effect;
 using Cysharp.Threading.Tasks;
+using Player;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -54,11 +55,25 @@ namespace Manager
             _loserIn.stopped += Result_Stopped;
         }
 
-        public async UniTask MyUltimateCutIn()
+        public async UniTask MyUltimateCutIn(UltimateState UltimateType)
         {
             var token = this.GetCancellationTokenOnDestroy();
             _pUltimateDirector.Play();
-            EffectManager.Instance.InstantiateEffect(EffectType.specialDamageUp, transform);
+
+            switch (UltimateType)//使用するアルティメットに対応するエフェクトを再生する。
+            {
+                case UltimateState.Recover:
+                    EffectManager.Instance.InstantiateEffect(EffectType.specialHeal, transform);//体力回復アルティメットの使用エフェクト
+                    break;
+                case UltimateState.Attack:
+                    EffectManager.Instance.InstantiateEffect(EffectType.specialDamageUp, transform);//攻撃力上昇アルティメットの使用エフェクト
+                    break;
+                case UltimateState.Speed:
+                    EffectManager.Instance.InstantiateEffect(EffectType.specialSpeedUp, transform);//先制度上昇アルティメットの使用エフェクト
+                    break;
+                default:
+                    break;
+            }
             await UniTask.Delay(TimeSpan.FromSeconds(_pUltimateDirector.duration), cancellationToken:token);
         }
         
