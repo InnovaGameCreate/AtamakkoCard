@@ -1,4 +1,5 @@
 using System;
+using System.Audio;
 using System.Effect;
 using Card;
 using Cysharp.Threading.Tasks;
@@ -31,6 +32,7 @@ namespace Manager
         [SerializeField] private MoveButton moveButton;
         [SerializeField] private GameObject[] sSlot;
         [SerializeField] private GameObject cardPrefab;
+        [SerializeField] private UltimateInformText informText;
         private PlayerCore _player;
         private EnemyCore _enemy;
 
@@ -245,16 +247,21 @@ namespace Manager
             // 必殺技を選択している
             if (_player.AtamakkoData.UltimateState != UltimateState.Normal)
             {
-                await AnimationManager.Instance.MyUltimateCutIn(_player.AtamakkoData.UltimateState);
+                AnimationManager.Instance.MyUltimateCutIn(_player.AtamakkoData.UltimateState);
+                informText.setText(_player.AtamakkoData.UltimateState);
                 switch (_player.AtamakkoData.UltimateState)
                 {
                     case UltimateState.Recover:
+                        EffectManager.Instance.InstantiateEffect(EffectType.GreenEffect, _player.transform);
+                        SeManager.Instance.ShotSe(SeType.ultimateHeal);//必殺技使用時にSEを再生
                         break;
                     case UltimateState.Attack:
                         EffectManager.Instance.InstantiateEffect(EffectType.RedEffect, _player.transform);
+                        SeManager.Instance.ShotSe(SeType.ultimateDamageUp);//必殺技使用時にSEを再生
                         break;
                     case UltimateState.Speed:
                         EffectManager.Instance.InstantiateEffect(EffectType.BlueEffect, _player.transform);
+                        SeManager.Instance.ShotSe(SeType.ultimateSpeedUp);//必殺技使用時にSEを再生
                         break;
                 }
             }
@@ -266,6 +273,7 @@ namespace Manager
                 switch (_enemy.AtamakkoData.UltimateState)
                 {
                     case UltimateState.Recover:
+                        EffectManager.Instance.InstantiateEffect(EffectType.GreenEffect, _player.transform);
                         break;
                     case UltimateState.Attack:
                         EffectManager.Instance.InstantiateEffect(EffectType.RedEffect, _enemy.transform);

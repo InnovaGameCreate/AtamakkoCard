@@ -228,7 +228,7 @@ namespace Manager
         {
             if (_playerData.UltimateState != UltimateState.Normal)
             {
-                await AnimationManager.Instance.MyUltimateCutIn(_playerData.UltimateState);
+                AnimationManager.Instance.MyUltimateCutIn(_playerData.UltimateState);
                 photonView.RPC(nameof(EnemyUltimateCutIn), RpcTarget.Others);
             }
             
