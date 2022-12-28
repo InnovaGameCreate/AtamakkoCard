@@ -12,5 +12,6 @@ namespace System.Effect
         specialSpeedUp,
         RedEffect,
         BlueEffect,
+        GreenEffect,
     }
 }

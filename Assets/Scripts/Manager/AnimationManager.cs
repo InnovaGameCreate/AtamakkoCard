@@ -55,10 +55,10 @@ namespace Manager
             _loserIn.stopped += Result_Stopped;
         }
 
-        public async UniTask MyUltimateCutIn(UltimateState UltimateType)
+        public void MyUltimateCutIn(UltimateState UltimateType)
         {
-            var token = this.GetCancellationTokenOnDestroy();
-            _pUltimateDirector.Play();
+            //var token = this.GetCancellationTokenOnDestroy();
+            //_pUltimateDirector.Play();
 
             switch (UltimateType)//使用するアルティメットに対応するエフェクトを再生する。
             {
@@ -74,7 +74,7 @@ namespace Manager
                 default:
                     break;
             }
-            await UniTask.Delay(TimeSpan.FromSeconds(_pUltimateDirector.duration), cancellationToken:token);
+            //await UniTask.Delay(TimeSpan.FromSeconds(_pUltimateDirector.duration), cancellationToken:token);
         }
         
         public async UniTask EnUltimateCutIn()

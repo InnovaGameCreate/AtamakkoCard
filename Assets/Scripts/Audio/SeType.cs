@@ -12,5 +12,8 @@ namespace System.Audio
         CardDraw,
         ButtonClick,
         dragonFlap,
+        ultimateHeal,
+        ultimateSpeedUp,
+        ultimateDamageUp
     }
 }
