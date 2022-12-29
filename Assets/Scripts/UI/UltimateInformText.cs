@@ -12,10 +12,8 @@ namespace UI
         /// アルティメットを使用すると自分側に自分の使用したアルティメットをテキストで表示
         /// 相手側にも自分の使用したアルティメットをテキストで表示
         /// </summary>
-        [SerializeField]
-        private TextMeshProUGUI _playerInformText;
-        [SerializeField]
-        private TextMeshProUGUI _enemyInformText;
+        [SerializeField] private TextMeshProUGUI _playerInformText;
+        [SerializeField] private TextMeshProUGUI _enemyInformText;
 
         private void Start()
         {

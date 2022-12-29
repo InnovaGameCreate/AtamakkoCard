@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 using System.IO;
 using TMPro;
 using System.Audio;
+using Cysharp.Threading.Tasks;
 
 namespace storyMode
 {
@@ -13,23 +14,18 @@ namespace storyMode
     {
         const string SHEET_ID = "1OBn1iwK1yuuwgfM-vpQWOdmHe6XepyghLTHrdLZ4Mto";
 
-        private int TextNum = 0;
-        [SerializeField]
+        private int TextNum = 0; [SerializeField]
         private string SHEET_NAME;
         List<string[]> characterDataArrayList;
         private float textSpeed = 0.05f;//文字送り速度
         public int currentChapter;
-        [SerializeField]
-        private Image StillImage;
-        [SerializeField]
-        private Image BackGroundImage;
+        [SerializeField] private Image StillImage;
+        [SerializeField] private Image BackGroundImage;
         StoryBoardEvent eventSystem;
 
         //テキスト
-        [SerializeField]
-        private TextMeshProUGUI CommentText;
-        [SerializeField]
-        private TextMeshProUGUI CharacterName;
+        [SerializeField] private TextMeshProUGUI CommentText;
+        [SerializeField] private TextMeshProUGUI CharacterName;
         private bool isWriting = false;                                 //書いているかどうか
         private bool autoWriting = false;
         private bool skipWriting = false;
@@ -40,25 +36,16 @@ namespace storyMode
         private string capter;
         private string Type;
         private string lastCapter = null;
-        private string characterName;                                            //話者の名前
+        private string characterName;                                   //話者の名前
         private string comment;                                         //書かれる内容
         private string diff;                                            //表情差分
         private bool readEnd = false;                                   //読み込み完了しているか
 
 
-        //吹き出し系
-        [SerializeField]
-        private Sprite[] Still;
-        [SerializeField]
-        private Sprite[] BackImage;
+        [SerializeField] private Sprite[] Still;        //スチル画像
+        [SerializeField] private Sprite[] BackImage;
 
-        //スチル画像
 
-        [System.Obsolete]
-        private void Awake()
-        {
-            StartCoroutine(Method(SHEET_NAME));
-        }
         private void OnEnable()
         {
             autoWriting = false;
@@ -66,10 +53,19 @@ namespace storyMode
             StartCoroutine(next());
             textSpeed = 0.05f;
         }
+
+        [System.Obsolete]
         private void Start()
         {
-            StartCoroutine(startText());
+            loadData();
             eventSystem = GameObject.FindObjectOfType<StoryBoardEvent>().GetComponent<StoryBoardEvent>();
+        }
+
+        [System.Obsolete]
+        private async void loadData()
+        {
+            await Method(SHEET_NAME);
+            nextText();
         }
 
         public void nextText()
@@ -95,11 +91,6 @@ namespace storyMode
             CharacterName.text = characterName;                                  //名前
 
             if (characterDataArrayList.Count - 1 > TextNum) TextNum++;    //読み込んだdataの行数以上には行かない
-        }
-
-        public void startTalk()
-        {
-            nextText();
         }
 
         private void endTalk()
@@ -158,57 +149,50 @@ namespace storyMode
 
         IEnumerator textDisplay()//テキストを一文字ずつ表示するする
         {
-            if (Type == "テキスト")
+            switch (Type)
             {
-                isWriting = true;
-                CommentText.text = "";
-                //SeManager.Instance.ShotSe(SeType.talk);
-                for (int i = 0; i <= comment.Length; i++)
-                {
-                    CommentText.text = comment.Substring(0, i);
-                    yield return new WaitForSeconds(textSpeed);
-                }
-                //SeManager.Instance.stopSe();
-                isWriting = false;
+                case "テキスト":
+                    isWriting = true;
+                    deleteText();
+                    for (int i = 0; i <= comment.Length; i++)
+                    {
+                        CommentText.text = comment.Substring(0, i);
+                        yield return new WaitForSeconds(textSpeed);
+                    }
+                    isWriting = false;
 
-                if (autoWriting)                         //自動送り機能がオンの時に文章が終わると次の文章を送るようにする
-                {
-                    yield return new WaitForSeconds(0.5f);
-                    nextText();
-                }
-                if (skipWriting)                         //スキップ機能がオンの時に文章が終わると次の文章を送るようにする
-                {
+                    if (autoWriting)                         //自動送り機能がオンの時に文章が終わると次の文章を送るようにする
+                    {
+                        yield return new WaitForSeconds(0.5f);
+                        nextText();
+                    }
+                    if (skipWriting)                         //スキップ機能がオンの時に文章が終わると次の文章を送るようにする
+                    {
+                        yield return new WaitForSeconds(0.1f);
+                        nextText();
+                    }
+                    break;
+                case "スチル":
+                    showSteel(int.Parse(comment));
                     yield return new WaitForSeconds(0.1f);
+                    yield return new WaitUntil(() => Input.anyKey);
+                    StillImage.sprite = Still[0];
                     nextText();
-                }
+                    break;
+                case "背景":
+                    ChangeBackGroundImage(int.Parse(comment));
+                    yield return new WaitForSeconds(0.4f);
+                    nextText();
+                    break;
+                case "SE":
+                    SeManager.Instance.ShotSe((SeType)System.Enum.Parse(typeof(SeType), comment, true));
+                    yield return new WaitForSeconds(0.3f);
+                    nextText();
+                    break;
+                default:
+                    Debug.LogError("スプレットシートのデータの記入ミスがあります");
+                    break;
             }
-            else if (Type == "スチル")
-            {
-                showSteel(int.Parse(comment));
-                yield return new WaitForSeconds(0.1f);
-                yield return new WaitUntil(() => Input.anyKey);
-                StillImage.sprite = Still[0];
-                nextText();
-            }
-            else if (Type == "背景")
-            {
-                ChangeBackGroundImage(int.Parse(comment));
-                yield return new WaitForSeconds(0.4f);
-                nextText();
-            }
-            else if (Type == "SE")
-            {
-                SeManager.Instance.ShotSe((SeType)System.Enum.Parse(typeof(SeType), comment, true));
-                yield return new WaitForSeconds(0.3f);
-                nextText();
-            }
-        }
-
-        IEnumerator startText()
-        {
-            yield return new WaitUntil(() => readEnd);
-            //yield return new WaitForSeconds(0.1f);
-            startTalk();
         }
 
         public void showSteel(int num)
@@ -217,7 +201,6 @@ namespace storyMode
         }
         public void ChangeBackGroundImage(int num)
         {
-            //Debug.Log("背景を" + num + "に変更しました");
             BackGroundImage.sprite = BackImage[num];
         }
 
@@ -225,8 +208,7 @@ namespace storyMode
         {
             while (true)
             {
-                yield return new WaitUntil(() => readEnd);
-                yield return new WaitUntil(() => Input.GetKey(KeyCode.Mouse0));
+                yield return new WaitUntil(() => readEnd && Input.GetKey(KeyCode.Mouse0));
                 if (!onAnimation) nextText();
                 yield return new WaitForSeconds(0.5f);
             }
@@ -234,42 +216,28 @@ namespace storyMode
 
         public void Auto()
         {
-            if (autoWriting == false)
+            autoWriting ^= true;
+            if (autoWriting)
             {
                 skipWriting = false;
-                autoWriting = true;
                 textSpeed = 0.05f;
-                if (isWriting == false)
-                {
-                    nextText();
-                }
-            }
-            else
-            {
-                autoWriting = false;
+                if (!isWriting) nextText();
             }
         }
 
         public void Skip()
         {
-            if (skipWriting == false)
+            skipWriting ^= true;
+            if (skipWriting)
             {
-                skipWriting = true;
                 autoWriting = false;
                 textSpeed = 0.01f;
-                if (isWriting == false)
-                {
-                    nextText();
-                }
+                if (!isWriting) nextText();
             }
-            else
-            {
-                skipWriting = false;
-                textSpeed = 0.05f;
-            }
+            else textSpeed = 0.05f;
         }
 
-        public void nullText()//テキスト内を消す
+        public void deleteText()//テキスト内を消す
         {
             CommentText.text = "";
         }

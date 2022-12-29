@@ -9,8 +9,7 @@ namespace storyMode
         /// シナリオで最後のマスに行った後次のステージへ進むかどうか
         /// </summary>
 
-        [SerializeField]
-        private SceneObject nextScene;
+        [SerializeField] private SceneObject nextScene;
 
         public void goNestStage()
         {
