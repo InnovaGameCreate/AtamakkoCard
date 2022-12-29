@@ -25,16 +25,11 @@ namespace storyMode
             scenarioend2,
             scenarioend3,
         }
-        [SerializeField]
-        NovelComment Comment;
-        [SerializeField]
-        private GameObject NovelCanvas;
-        [SerializeField]
-        private scenarioType scenario;//どのscenarioに対応するか
-        [SerializeField]
-        private GameObject[] Scene;//シナリオに登場するステージ
-        [SerializeField]
-        private GameObject NestStageCheckPanel;//次のステージへ進むか確認用パネル
+        [SerializeField] NovelComment Comment;
+        [SerializeField] private GameObject NovelCanvas;
+        [SerializeField] private scenarioType scenario;//どのscenarioに対応するか
+        [SerializeField] private GameObject[] Scene;//シナリオに登場するステージ
+        [SerializeField] private GameObject NestStageCheckPanel;//次のステージへ進むか確認用パネル
         private void Start()
         {
             NestStageCheckPanel = FindObjectOfType<NestStagePanel>().gameObject;
@@ -1217,7 +1212,7 @@ namespace storyMode
             Comment.currentChapter = currentChapter;
             NovelCanvas.SetActive(true);
             Comment.ChangeBackGroundImage(1);
-            Comment.nullText();
+            Comment.deleteText();
             Comment.onAnimation = true;
             yield return new WaitForSeconds(2f);
             Comment.ChangeBackGroundImage(2);

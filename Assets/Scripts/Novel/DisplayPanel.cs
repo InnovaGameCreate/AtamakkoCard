@@ -7,8 +7,7 @@ namespace storyMode
         /// <summary>
         /// 非表示のオブジェクトを特定の条件で表示する
         /// </summary>
-        [SerializeField]
-        private GameObject TargetObject;
+        [SerializeField] private GameObject TargetObject;
 
         public void OnClick(bool _bool)
         {

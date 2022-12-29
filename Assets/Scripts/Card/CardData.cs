@@ -13,6 +13,7 @@ namespace Card
     
         public static List<string[]> CardDataArrayList;
 
+        [System.Obsolete]
         public static IEnumerator GetData()
         {
             UnityWebRequest request = UnityWebRequest.Get("https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/gviz/tq?tqx=out:csv&sheet="+SHEET_NAME);
