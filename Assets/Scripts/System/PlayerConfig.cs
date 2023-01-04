@@ -1,10 +1,8 @@
 using Arena;
 using Assemble;
 using Card;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerConfig : MonoBehaviour
 {
@@ -15,6 +13,7 @@ public class PlayerConfig : MonoBehaviour
     public static List<int> Equipmnet = new List<int>();//(上部、中央、下部、アクセサリ)
     public static bool DevelopMode = true;//開発モードかどうか（常に初期化される)
     public static bool IsOnline = false;
+    public static int StoryProgress;//ストーリーの進行具合
     private int DevelopModeCardNum;//cardの個数
     private int DevelopModeEquipmentNum;//equipmentの個数
     private static int isTutorial;//0の時はチュートリアルをまだ受けていない
@@ -29,6 +28,7 @@ public class PlayerConfig : MonoBehaviour
         Deck = PlayerPrefsUtility.LoadList<int>("MyDeck");//自分のデッキを読み込む
         Equipmnet = PlayerPrefsUtility.LoadList<int>("MyEquipmnet");//自分の装備を読み込む
         IsTutorial = PlayerPrefs.GetInt("Tutorial", 0);
+        StoryProgress = PlayerPrefs.GetInt("StoryProgress", 0);
     }
 
     public static void SetData()
@@ -38,6 +38,7 @@ public class PlayerConfig : MonoBehaviour
         PlayerPrefsUtility.SaveList<int>("MyDeck", Deck);
         PlayerPrefsUtility.SaveList<int>("MyEquipmnet", Equipmnet);
         PlayerPrefs.SetString("PlayerName", PlayerName);
+        PlayerPrefs.SetInt("StoryProgress", StoryProgress);
     }
     void Start()
     {
