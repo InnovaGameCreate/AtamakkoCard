@@ -12,6 +12,7 @@ namespace storyMode
         {
             scenario1,
             scenario2,
+            scenarioSelect,
             scenarioBlue1,
             scenarioBlue2,
             scenarioBlue3,

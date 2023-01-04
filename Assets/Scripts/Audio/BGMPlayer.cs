@@ -62,6 +62,7 @@ namespace System.Audio
                     break;
                 case "StoryBoard1":
                 case "StoryBoard2":
+                case "StoryBoardSelect":
                 case "StoryBoardBlue1":
                 case "StoryBoardBlue2":
                 case "StoryBoardBlue3":

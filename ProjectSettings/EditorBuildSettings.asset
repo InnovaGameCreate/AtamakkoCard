@@ -39,6 +39,9 @@ EditorBuildSettings:
     path: Assets/Scenes/StoryScenario/StoryBoard2.unity
     guid: c4d543be41c1ed14aa767260a69fad42
   - enabled: 1
+    path: Assets/Scenes/StoryScenario/StoryBoardSelect.unity
+    guid: b81325684166f554b806637306478ae3
+  - enabled: 1
     path: Assets/Scenes/StoryScenario/StoryBoardBlue1.unity
     guid: e669a1cf14e39a14d8919ad88c73b084
   - enabled: 1
