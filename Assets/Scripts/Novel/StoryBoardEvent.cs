@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using System.story;
 
 namespace storyMode
 {
@@ -33,7 +34,6 @@ namespace storyMode
         [SerializeField] private GameObject NestStageCheckPanel;//次のステージへ進むか確認用パネル
         private void Start()
         {
-            NestStageCheckPanel = FindObjectOfType<NestStagePanel>().gameObject;
             NestStageCheckPanel.SetActive(false);
             Comment.currentChapter = 0;
             Scene[1].SetActive(false);
@@ -215,7 +215,22 @@ namespace storyMode
                         activeText(15);
                         break;
                     case 19:
-                    //ボス戦
+                        //ボス戦
+                        break;
+                    case 20:
+                        activeText(16);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (scenario == scenarioType.scenarioSelect)
+            {
+                switch (eventNum)
+                {
+                    case 1:
+                        activeText(0);
+                        break;
                     default:
                         break;
                 }
@@ -1180,7 +1195,96 @@ namespace storyMode
                     case 4:
                         activeText(3);
                         break;
-
+                    case 5:
+                        activeText(4);
+                        break;
+                    case 6:
+                        activeText(5);
+                        break;
+                    case 7:
+                        activeText(6);
+                        break;
+                    case 8:
+                        activeText(7);
+                        break;
+                    case 9:
+                        //戦闘
+                        break;
+                    case 10:
+                        activeText(8);
+                        break;
+                    case 11:
+                        //戦闘
+                        break;
+                    case 12:
+                        activeText(9);
+                        break;
+                    case 13:
+                        activeText(10);
+                        break;
+                    case 14:
+                        //戦闘
+                        break;
+                    case 15:
+                        activeText(11);
+                        break;
+                    case 16:
+                        //湧水の使徒と戦闘
+                        break;
+                    case 17:
+                        activeText(12);
+                        break;
+                    case 18:
+                        //最古のドラゴンと戦闘
+                        break;
+                    case 19:
+                        activeText(13);
+                        break;
+                    case 21:
+                        activeText(15);
+                        break;
+                    case 22:
+                        activeText(16);
+                        break;
+                    case 23:
+                        activeText(17);
+                        break;
+                    case 24:
+                        activeText(18);
+                        break;
+                    case 25:
+                        activeText(19);
+                        break;
+                    case 26:
+                        //戦闘
+                        break;
+                    case 27:
+                        //戦闘
+                        break;
+                    case 28:
+                        activeText(20);
+                        break;
+                    case 29:
+                        //戦闘
+                        break;
+                    case 30:
+                        //戦闘
+                        break;
+                    case 31:
+                        activeText(21);
+                        break;
+                    case 32:
+                        //戦闘
+                        break;
+                    case 33:
+                        activeText(22);
+                        break;
+                    case 34:
+                        //戦闘
+                        break;
+                    case 35:
+                        activeText(23);
+                        break;
                     default:
                         break;
                 }
@@ -1269,6 +1373,21 @@ namespace storyMode
                         yield return new WaitForSeconds(4f);
                         Comment.ChangeBackGroundImage(0);
                         NovelCanvas.SetActive(false);
+                        break;
+                    case 17:
+                        NestStageCheckPanel.SetActive(true);
+                        break;
+                    default:
+                        Debug.Log("何も設定されていない終了イベントです");
+                        break;
+                }
+            }
+            if (scenario == scenarioType.scenarioSelect)
+            {
+                switch (eventNum)
+                {
+                    case 1:
+                        NestStageCheckPanel.SetActive(true);
                         break;
                     default:
                         Debug.Log("何も設定されていない終了イベントです");
@@ -1466,13 +1585,10 @@ namespace storyMode
             {
                 switch (eventNum)
                 {
-                    case 10:
-                        StartCoroutine(changeStage(0, 10));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                    case 14:
+                        StartCoroutine(changeStage(0, 14));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
-                    case 19:
-                        StartCoroutine(changeStage(1, 19));//現在のステージ数：現在のチャプターを送って次のステージへ移る
-                        break;
-                    case 21:
+                    case 24:
                         NestStageCheckPanel.SetActive(true);
                         break;
                     default:

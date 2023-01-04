@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace storyMode
+namespace System.story
 {
     public class NestStagePanel : MonoBehaviour
     {
@@ -22,7 +22,6 @@ namespace storyMode
             SceneManager.LoadScene("Title");
             completeStage();
         }
-
 
         private void completeStage()//シナリオの進行度を保存
         {
@@ -49,28 +48,28 @@ namespace storyMode
                 case "StoryBoardEnd1":
                     ProgressInt = 6;
                     break;
-                case "StoryBoardEnd2":
+                case "StoryBoardRed1":
                     ProgressInt = 7;
                     break;
-                case "StoryBoardEnd3":
+                case "StoryBoardRed2":
                     ProgressInt = 8;
                     break;
-                case "StoryBoardRed1":
+                case "StoryBoardRed3":
                     ProgressInt = 9;
                     break;
-                case "StoryBoardRed2":
+                case "StoryBoardEnd2":
                     ProgressInt = 10;
                     break;
-                case "StoryBoardRed3":
+                case "StoryBoardWhite1":
                     ProgressInt = 11;
                     break;
-                case "StoryBoardWhite1":
+                case "StoryBoardWhite2":
                     ProgressInt = 12;
                     break;
-                case "StoryBoardWhite2":
+                case "StoryBoardWhite3":
                     ProgressInt = 13;
                     break;
-                case "StoryBoardWhite3":
+                case "StoryBoardEnd3":
                     ProgressInt = 14;
                     break;
                 default:

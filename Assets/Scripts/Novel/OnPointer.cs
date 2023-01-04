@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
-namespace system.story
+namespace System.story
 {
     public class OnPointer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
