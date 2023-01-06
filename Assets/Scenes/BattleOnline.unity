@@ -2244,7 +2244,6 @@ GameObject:
   m_Component:
   - component: {fileID: 397918048}
   - component: {fileID: 397918052}
-  - component: {fileID: 397918051}
   - component: {fileID: 397918050}
   m_Layer: 0
   m_Name: ClientManager
@@ -2290,47 +2289,6 @@ MonoBehaviour:
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &397918051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397918046}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82d9b09068898c74c998b0bde5701b1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotPrefab: {fileID: 5094284188052895845, guid: a2e259a45e1d9f34fbdf6e2a721eee9f, type: 3}
-  cardManager: {fileID: 1662660821}
-  decisionButton: {fileID: 1440085936}
-  ultimateButton: {fileID: 1802493115}
-  battleSlots:
-  - {fileID: 1332649876}
-  - {fileID: 1441495766}
-  - {fileID: 1377712188}
-  enemySlots:
-  - {fileID: 1675475858}
-  - {fileID: 1758576551}
-  - {fileID: 56032025}
-  playerHand: {fileID: 1662660820}
-  playerContent: {fileID: 1194963144}
-  enemyContent: {fileID: 631565044}
-  playerObject: {fileID: 719954264}
-  enemyObject: {fileID: 2005962705}
-  stage: {fileID: 399115894}
-  attackButton: {fileID: 7036546511688966486, guid: 9b1a366252da8b84eb05d49a08f7606a, type: 3}
-  moveButton: {fileID: 2187454101119206122, guid: 5ac8ac5be5fccf14f95fe26bca3e5776, type: 3}
-  sSlot:
-  - {fileID: 1207025366}
-  - {fileID: 1716097152}
-  - {fileID: 2065121039}
-  - {fileID: 1154257007}
-  - {fileID: 624991012}
-  - {fileID: 1642038174}
-  cardPrefab: {fileID: 593849358202494829, guid: 72c8dea659686e2448a9716aab7123ce, type: 3}
-  informText: {fileID: 1889339492}
 --- !u!114 &397918052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2371,9 +2329,9 @@ MonoBehaviour:
   - {fileID: 624991012}
   - {fileID: 1642038174}
   cardPrefab: {fileID: 593849358202494829, guid: 72c8dea659686e2448a9716aab7123ce, type: 3}
+  informText: {fileID: 1889339492}
   playerName: {fileID: 3101103556073227716}
   enemyName: {fileID: 1657947240}
-  informText: {fileID: 1889339492}
 --- !u!1 &399115894
 GameObject:
   m_ObjectHideFlags: 0

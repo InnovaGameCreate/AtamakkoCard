@@ -8,15 +8,14 @@ namespace Card
 {
     public class CardData : MonoBehaviour
     {
-        private const string SHEET_ID = "10ffaXstejMSgOXv8xDcLqIRntThBsr5R76YawNDt4uM";
-        private const string SHEET_NAME = "シート1";
+        private const string SheetID = "10ffaXstejMSgOXv8xDcLqIRntThBsr5R76YawNDt4uM";
+        private const string SheetName = "シート1";
     
         public static List<string[]> CardDataArrayList;
 
-        [System.Obsolete]
         public static IEnumerator GetData()
         {
-            UnityWebRequest request = UnityWebRequest.Get("https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/gviz/tq?tqx=out:csv&sheet="+SHEET_NAME);
+            UnityWebRequest request = UnityWebRequest.Get("https://docs.google.com/spreadsheets/d/"+SheetID+"/gviz/tq?tqx=out:csv&sheet="+SheetName);
             yield return request.SendWebRequest();
 
             if (request.isHttpError || request.isNetworkError)

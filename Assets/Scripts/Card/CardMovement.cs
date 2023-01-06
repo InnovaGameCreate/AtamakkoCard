@@ -43,8 +43,7 @@ namespace Card
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (PlayerConfig.IsOnline) if (OnlineManager.Instance.CurrentState.Value != GameState.Select) return;
-            if (!PlayerConfig.IsOnline) if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
+            if (!BattleManager.Instance.CardMobile) return;
 
             // ドラッグ時のカード生成
             _draggingCard = Instantiate(cardPrefab, _canvasTransform);
@@ -60,16 +59,14 @@ namespace Card
         public void OnDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (PlayerConfig.IsOnline) if (OnlineManager.Instance.CurrentState.Value != GameState.Select) return;
-            if (!PlayerConfig.IsOnline) if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
+            if (!BattleManager.Instance.CardMobile) return;
             _draggingCard.transform.position = _hand.transform.position;
         }
         
         public void OnDrop(PointerEventData eventData)
         {
             if (!_hand.IsHavingCardID()) return;
-            if (PlayerConfig.IsOnline) if (OnlineManager.Instance.CurrentState.Value != GameState.Select) return;
-            if (!PlayerConfig.IsOnline) if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
+            if (!BattleManager.Instance.CardMobile) return;
             
             int gotCardID = _hand.GetGrabbingCardID();
             
@@ -83,8 +80,7 @@ namespace Card
         public void OnEndDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (PlayerConfig.IsOnline) if (OnlineManager.Instance.CurrentState.Value != GameState.Select) return;
-            if (!PlayerConfig.IsOnline) if (CPUManager.Instance.CurrentState.Value != GameState.Select) return;
+            if (!BattleManager.Instance.CardMobile) return;
             
             _slot.MyCard.view.shadow.SetActive(false);
             Destroy(_draggingCard);
