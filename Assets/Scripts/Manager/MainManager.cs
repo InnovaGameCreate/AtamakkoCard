@@ -11,7 +11,7 @@ namespace Manager
         void Start()
         {
             toMatching.Pushed
-                .Subscribe(_ => SceneManager.LoadScene("Matching"))
+                .Subscribe(_ => SceneManager.LoadScene("MatchingManager"))
                 .AddTo(this);
         }
     }
