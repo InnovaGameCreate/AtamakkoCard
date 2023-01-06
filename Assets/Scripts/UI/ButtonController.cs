@@ -1,4 +1,5 @@
 using System;
+using System.Audio;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ namespace UI
         private readonly Subject<bool> _pushed = new Subject<bool>();
         public IObservable<bool> Pushed => _pushed;
         private Button _button;
+        [SerializeField] private SeType se;
 
         public bool MyInteractable
         {
@@ -26,6 +28,7 @@ namespace UI
                 .Subscribe(_ =>
                 {
                     _pushed.OnNext(true);
+                    SeManager.Instance.ShotSe(se);
                 })
                 .AddTo(this);
             

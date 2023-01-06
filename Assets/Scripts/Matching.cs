@@ -1,20 +1,42 @@
 using Photon.Pun;
 using Photon.Realtime;
-using TMPro;
+using UI;
+using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class Matching : MonoBehaviourPunCallbacks
 {
     private bool _inRoom;
     private bool _isMatching;
 
+    [SerializeField] private ButtonController onlineMatching;
+    [SerializeField] private ButtonController cpuBattle;
+
     /*
     [SerializeField] private GameObject privateUI;
     [SerializeField] private TMP_InputField passwordInputField;
     [SerializeField] private Button joinButton;
     */
+
+    private void Start()
+    {
+        onlineMatching.Pushed
+            .Subscribe(_ =>
+            {
+                cpuBattle.MyInteractable = false;
+                MatchingButton();
+            })
+            .AddTo(this);
+
+        cpuBattle.Pushed
+            .Subscribe(_ =>
+            {
+                onlineMatching.MyInteractable = false;
+                CPUButton();
+            })
+            .AddTo(this);
+    }
 
     public void CPUButton()
     {
