@@ -1,4 +1,3 @@
-using System;
 using System.Audio;
 using System.Collections.Generic;
 using System.Effect;
@@ -14,111 +13,33 @@ using UnityEngine;
 
 namespace Manager
 {
-    public class OnlineManager : MonoBehaviourPunCallbacks
+    public class OnlineManager : BattleManager
     {
-        public IReadOnlyReactiveProperty<GameState> CurrentState => _currentState;
-        private readonly ReactiveProperty<GameState> _currentState = new ReactiveProperty<GameState>(GameState.Waiting);
-
-        [SerializeField] private CardSlot slotPrefab;
-        [SerializeField] private Transform cardManager;
-        [SerializeField] private DecisionButton decisionButton;
-        [SerializeField] private UltimateButton ultimateButton;
-        [SerializeField] private CardSlot[] battleSlots;
-        [SerializeField] private CardSlot[] enemySlots;
-        [SerializeField] private GameObject playerHand;
-        [SerializeField] private GameObject playerContent;
-        [SerializeField] private GameObject enemyContent;
-        [SerializeField] private GameObject playerObject;
-        [SerializeField] private GameObject enemyObject;
-        [SerializeField] private GameObject stage;
-        [SerializeField] private AttackButton attackButton;
-        [SerializeField] private MoveButton moveButton;
-        [SerializeField] private GameObject[] sSlot;
-        [SerializeField] private GameObject cardPrefab;
         [SerializeField] private TextMeshProUGUI playerName;
         [SerializeField] private TextMeshProUGUI enemyName;
-        [SerializeField] private UltimateInformText informText;
-        private PlayerCore _player;
-        private EnemyCore _enemy;
 
         private bool _getData;
         private List<int> _enemyDeck;
         private int _enemyDamage;
         private int _enemyPlace;
 
-        private bool _youWin;
-
-        public static OnlineManager Instance;
-
-        private readonly Subject<int> _selected = new Subject<int>();
-        public IObservable<int> Selected => _selected;
-
-        private void Awake()
-        {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }
-
-        private void Start()
-        {
-            // アタマッコ生成
-            _player = playerObject.GetComponent<PlayerCore>();
-            _enemy = enemyObject.GetComponent<EnemyCore>();
-
-            // ターン制御の設定
-            _currentState
-                .Subscribe(OnStateChanged)
-                .AddTo(this);
-        }
-
-        /*
-         * フェーズを切り替える関数
-         */
-        private void OnStateChanged(GameState nextState)
-        {
-            switch (nextState)
-            {
-                case GameState.Waiting:
-                    WaitingGame();
-                    break;
-                case GameState.Init:
-                    StartGame();
-                    break;
-                case GameState.Draw:
-                    DrawFaze();
-                    break;
-                case GameState.Select:
-                    SelectFaze();
-                    break;
-                case GameState.Battle:
-                    BattleFaze();
-                    break;
-            }
-        }
-
         /*
          * ゲームをスタートする前に行う関数
          */
-        private async void WaitingGame()
+        protected override async void WaitingGame()
         {
             //自分と相手のプレイヤーネームを表示
             playerName.text = PlayerConfig.PlayerName;
             photonView.RPC(nameof(SetEnemyName), RpcTarget.Others, playerName.text);
 
             await TimeCounter.Instance.CountDown(3);
-            _currentState.Value = GameState.Init;
+            _CurrentState.Value = GameState.Init;
         }
 
         /*
          * ゲーム開始時に行う関数
          */
-        private async void StartGame()
+        protected override async void StartGame()
         {
             // カードデータを取得
             await StartCoroutine(CardData.GetData());
@@ -132,30 +53,30 @@ namespace Manager
             await UniTask.Delay(10);
 
             // プレイヤーの初期設定
-            _player.Initialize(playerDeck);
-            _enemy.Initialize(_enemyDeck);
+            Player.Initialize(playerDeck);
+            Enemy.Initialize(_enemyDeck);
 
             
             // ゲーム終了の設定
-            _player.AtamakkoData.MyHp
+            Player.AtamakkoData.MyHp
                 .Where(hp => hp == 0)
                 .Subscribe(_ =>
                 {
-                    _currentState.Value = GameState.End;
+                    _CurrentState.Value = GameState.End;
                     AnimationManager.Instance.ResultFadeIn(false);
                 })
                 .AddTo(this);
-            _enemy.AtamakkoData.MyHp
+            Enemy.AtamakkoData.MyHp
                 .Where(hp => hp == 0)
                 .Subscribe(_ =>
                 {
-                    _currentState.Value = GameState.End;
+                    _CurrentState.Value = GameState.End;
                     AnimationManager.Instance.ResultFadeIn(true);
                 })
                 .AddTo(this);
             
             // ドローフェーズへ
-            _currentState.Value = GameState.Draw;
+            _CurrentState.Value = GameState.Draw;
         }
 
         [PunRPC]
@@ -167,23 +88,23 @@ namespace Manager
         /*
          * ドローフェーズ関数
          */
-        private async void DrawFaze()
+        protected override async void DrawFaze()
         {
-            if (_player.CheckDeck()) // 自デッキにカードがないなら
+            if (Player.CheckDeck()) // 自デッキにカードがないなら
             {
-                _player.RefillDeck(); // デッキを補充する
-                photonView.RPC(nameof(SendDeck), RpcTarget.Others, _player.GetDeck().ToArray());
+                Player.RefillDeck(); // デッキを補充する
+                photonView.RPC(nameof(SendDeck), RpcTarget.Others, Player.GetDeck().ToArray());
                 
                 await UniTask.WaitUntil((() => _getData));
                 _getData = false;
                 await UniTask.Delay(10);
                 
-                _enemy.SetDeck(_enemyDeck);
+                Enemy.SetDeck(_enemyDeck);
             }
             /*
-            if (_enemy.CheckDeck()) // 敵デッキにカードがないなら
+            if (Enemy.CheckDeck()) // 敵デッキにカードがないなら
             {
-                _enemy.RefillDeck(); // デッキを補充する
+                Enemy.RefillDeck(); // デッキを補充する
             }
             */
             
@@ -192,28 +113,28 @@ namespace Manager
                 // 自身の手札補充＆スロット生成
                 for (int i = 0; i < 6; i++)
                 {
-                    CreateSlot(_player.DrawCard());
+                    CreateSlot(Player.DrawCard());
                 }
                 // エネミーの手札補充
                 for (int i = 0; i < 6; i++)
                 {
-                    _enemy.DrawCard();
+                    Enemy.DrawCard();
                 }
             }
 
-            _currentState.Value = GameState.Select;
+            _CurrentState.Value = GameState.Select;
         }
 
         /*
          * セレクトフェーズ関数
          */
-        private async void SelectFaze()
+        protected override async void SelectFaze()
         {
             // デッキ情報を更新
-            var playerList = _player.GetDeck();
-            var enemyList = _enemy.GetDeck();
-            _player.ResetCorrection();
-            _enemy.ResetCorrection();
+            var playerList = Player.GetDeck();
+            var enemyList = Enemy.GetDeck();
+            Player.ResetCorrection();
+            Enemy.ResetCorrection();
             foreach (Transform childObj in playerContent.transform)
             {
                 Destroy(childObj.gameObject);
@@ -233,39 +154,43 @@ namespace Manager
                 var card = Instantiate(cardPrefab, enemyContent.transform);
                 card.GetComponent<CardController>().Init(cardID);
             }
+
+            CardMobile = true;
             
-            ultimateButton.MyInteractable = !_player.UsedUltimate; // 必殺技を使っているかどうかを判断
+            ultimateButton.MyInteractable = !Player.UsedUltimate; // 必殺技を使っているかどうかを判断
             decisionButton.Decision // 決定ボタンが押されたとき
                 .Subscribe(_ =>
                 {
                     decisionButton.MyInteractable = false;
+                    CardMobile = false;
                     TimeCounter.Instance.EndTimer(); // タイマーを0にする
                 })
                 .AddTo(this);
 
             Debug.Log("waiting");
             await TimeCounter.Instance.CountDown(120);    // カウントタイマー起動（120s）
+            CardMobile = false;
             Debug.Log("start");
             
             ultimateButton.MyInteractable = false;  // 必殺技ボタンのOFF
-            if (_player.AtamakkoData.UltimateState != UltimateState.Normal) // 必殺技を指定していたら
+            if (Player.AtamakkoData.UltimateState != UltimateState.Normal) // 必殺技を指定していたら
             {
-                _player.UsedUltimate = true;   // 必殺技を使用済みに
+                Player.UsedUltimate = true;   // 必殺技を使用済みに
             }
             
             // 敵の行動情報を受け取る
-            //_enemy.CardSelect(); // CPUがカードを選択する
-            //_enemy.UltimateSelect();
+            //Enemy.CardSelect(); // CPUがカードを選択する
+            //Enemy.UltimateSelect();
 
             for (int i = 0; i < battleSlots.Length; i++)
             {
-                _player.SetSettingCard(i, battleSlots[i].MyCardID);
+                Player.SetSettingCard(i, battleSlots[i].MyCardID);
             }
 
             photonView.RPC(nameof(SendSelectFaze), 
                     RpcTarget.Others, 
-                    _player.GetSettingCards().ToArray(), 
-                    _player.AtamakkoData.UltimateState);
+                    Player.GetSettingCards().ToArray(), 
+                    Player.AtamakkoData.UltimateState);
             
             
             await UniTask.WaitUntil(() => _getData);
@@ -274,10 +199,10 @@ namespace Manager
 
             for (int i = 0; i < enemySlots.Length; i++)
             {
-                EnemyCard(i, _enemy.GetNowCardID(i));
+                EnemyCard(i, Enemy.GetNowCardID(i));
             }
             
-            _currentState.Value = GameState.Battle;
+            _CurrentState.Value = GameState.Battle;
         }
 
         /*
@@ -290,48 +215,48 @@ namespace Manager
         }
          */
 
-        private async void BattleFaze()
+        protected override async void BattleFaze()
         {
             // 必殺技を選択している
-            if (_player.AtamakkoData.UltimateState != UltimateState.Normal)
+            if (Player.AtamakkoData.UltimateState != UltimateState.Normal)
             {
-                AnimationManager.Instance.MyUltimateCutIn(_player.AtamakkoData.UltimateState);
-                informText.setText(_player.AtamakkoData.UltimateState);
-                switch (_player.AtamakkoData.UltimateState)
+                AnimationManager.Instance.MyUltimateCutIn(Player.AtamakkoData.UltimateState);
+                informText.setText(Player.AtamakkoData.UltimateState);
+                switch (Player.AtamakkoData.UltimateState)
                 {
                     case UltimateState.Recover:
-                        EffectManager.Instance.InstantiateEffect(EffectType.GreenEffect, _player.transform);
+                        EffectManager.Instance.InstantiateEffect(EffectType.GreenEffect, Player.transform);
                         SeManager.Instance.ShotSe(SeType.ultimateHeal);//必殺技使用時にSEを再生
                         break;
                     case UltimateState.Attack:
-                        EffectManager.Instance.InstantiateEffect(EffectType.RedEffect, _player.transform);
+                        EffectManager.Instance.InstantiateEffect(EffectType.RedEffect, Player.transform);
                         SeManager.Instance.ShotSe(SeType.ultimateDamageUp);//必殺技使用時にSEを再生
                         break;
                     case UltimateState.Speed:
-                        EffectManager.Instance.InstantiateEffect(EffectType.BlueEffect, _player.transform);
+                        EffectManager.Instance.InstantiateEffect(EffectType.BlueEffect, Player.transform);
                         SeManager.Instance.ShotSe(SeType.ultimateSpeedUp);//必殺技使用時にSEを再生
                         break;
                 }
             }
-            _player.UseUltimate();
+            Player.UseUltimate();
             // 必殺技を選択している
-            if (_enemy.AtamakkoData.UltimateState != UltimateState.Normal)
+            if (Enemy.AtamakkoData.UltimateState != UltimateState.Normal)
             {
                 await AnimationManager.Instance.EnUltimateCutIn();
-                switch (_enemy.AtamakkoData.UltimateState)
+                switch (Enemy.AtamakkoData.UltimateState)
                 {
                     case UltimateState.Recover:
-                        EffectManager.Instance.InstantiateEffect(EffectType.GreenEffect, _player.transform);
+                        EffectManager.Instance.InstantiateEffect(EffectType.GreenEffect, Player.transform);
                         break;
                     case UltimateState.Attack:
-                        EffectManager.Instance.InstantiateEffect(EffectType.RedEffect, _enemy.transform);
+                        EffectManager.Instance.InstantiateEffect(EffectType.RedEffect, Enemy.transform);
                         break;
                     case UltimateState.Speed:
-                        EffectManager.Instance.InstantiateEffect(EffectType.BlueEffect, _enemy.transform);
+                        EffectManager.Instance.InstantiateEffect(EffectType.BlueEffect, Enemy.transform);
                         break;
                 }
             }
-            _enemy.UseUltimate();
+            Enemy.UseUltimate();
 
             for (int i = 0; i < battleSlots.Length; i++)
             {
@@ -349,28 +274,28 @@ namespace Manager
                 enemySlots[i].DeleteCard();
             }
             
-            _player.TrashCard();
-            _enemy.TrashCard();
+            Player.TrashCard();
+            Enemy.TrashCard();
             
-            _player.AtamakkoData.UltimateState = UltimateState.Normal;
-            _enemy.AtamakkoData.UltimateState = UltimateState.Normal;
+            Player.AtamakkoData.UltimateState = UltimateState.Normal;
+            Enemy.AtamakkoData.UltimateState = UltimateState.Normal;
             
-            _currentState.Value = GameState.Draw;
+            _CurrentState.Value = GameState.Draw;
         }
 
         private async UniTask Battle(int slotNum)
         {
-            var myCard = new CardModel(CardData.CardDataArrayList[_player.GetNowCardID(slotNum)]);
-            var enemyCard = new CardModel(CardData.CardDataArrayList[_enemy.GetNowCardID(slotNum)]);
-            int myInitiative = _player.GetInitiative(myCard.Initiative);
-            int enemyInitiative = _enemy.GetInitiative(enemyCard.Initiative);
+            var myCard = new CardModel(CardData.CardDataArrayList[Player.GetNowCardID(slotNum)]);
+            var enemyCard = new CardModel(CardData.CardDataArrayList[Enemy.GetNowCardID(slotNum)]);
+            int myInitiative = Player.GetInitiative(myCard.Initiative);
+            int enemyInitiative = Enemy.GetInitiative(enemyCard.Initiative);
             await UniTask.Delay(10);
 
             if (myInitiative == enemyInitiative && myCard.Kind == enemyCard.Kind)
             {
                 if (myCard.Kind == "攻撃")
                 {
-                    var canAttack = _player.CanAttack(myCard);
+                    var canAttack = Player.CanAttack(myCard);
                     int playerAttack = 0;
                     foreach (var t in canAttack)
                     {
@@ -389,10 +314,10 @@ namespace Manager
                     }
                     await TimeCounter.Instance.CountDown(30);
 
-                    int myDamage = _player.GetDamage(myCard.Damage);
+                    int myDamage = Player.GetDamage(myCard.Damage);
                     /*
-                    int enemyDamage = _enemy.GetDamage(enemyCard.Damage);
-                    int enemyAttack = _enemy.AttackSelect(_player.AtamakkoData.MyPosition, enemyCard);
+                    int enemyDamage = Enemy.GetDamage(enemyCard.Damage);
+                    int enemyAttack = Enemy.AttackSelect(Player.AtamakkoData.MyPosition, enemyCard);
                     */
                     photonView.RPC(nameof(SendAction), RpcTarget.Others, myDamage, playerAttack);
 
@@ -400,28 +325,28 @@ namespace Manager
                     _getData = false;
                     await UniTask.Delay(10);
 
-                    if (_enemy.AtamakkoData.MyPosition == playerAttack)
+                    if (Enemy.AtamakkoData.MyPosition == playerAttack)
                     {
-                        _enemy.AddDamage(myDamage);
+                        Enemy.AddDamage(myDamage);
                     }
                     if (myCard.Additional == "〇")
                     {
-                        _player.Move(playerAttack);
+                        Player.Move(playerAttack);
                     }
                     
-                    if (_player.AtamakkoData.MyPosition == _enemyPlace)
+                    if (Player.AtamakkoData.MyPosition == _enemyPlace)
                     {
-                        _player.AddDamage(_enemyDamage);
+                        Player.AddDamage(_enemyDamage);
                     }
                     if (enemyCard.Additional == "〇")
                     {
-                        _enemy.Move(_enemyPlace);
+                        Enemy.Move(_enemyPlace);
                     }
                 }
 
                 if (myCard.Kind == "移動")
                 {
-                    var canMove = _player.CanMove(myCard);
+                    var canMove = Player.CanMove(myCard);
                     int playerMove = 0;
                     foreach (var t in canMove)
                     {
@@ -445,20 +370,20 @@ namespace Manager
                     await UniTask.Delay(10);
                     
                     /*
-                    int enemyMove = _enemy.MoveSelect(_player.AtamakkoData.MyPosition, enemyCard);
+                    int enemyMove = Enemy.MoveSelect(Player.AtamakkoData.MyPosition, enemyCard);
                     */
                     
-                    _player.Move(playerMove);
-                    if (myCard.Additional == "〇" && _enemy.AtamakkoData.MyPosition == playerMove)
+                    Player.Move(playerMove);
+                    if (myCard.Additional == "〇" && Enemy.AtamakkoData.MyPosition == playerMove)
                     {
-                        int myDamage = _player.GetDamage(myCard.Damage);
-                        _enemy.AddDamage(myDamage);
+                        int myDamage = Player.GetDamage(myCard.Damage);
+                        Enemy.AddDamage(myDamage);
                     }
-                    _enemy.Move(_enemyPlace);
-                    if (enemyCard.Additional == "〇" && _player.AtamakkoData.MyPosition == _enemyPlace)
+                    Enemy.Move(_enemyPlace);
+                    if (enemyCard.Additional == "〇" && Player.AtamakkoData.MyPosition == _enemyPlace)
                     {
-                        int enemyDamage = _enemy.GetDamage(enemyCard.Damage);
-                        _player.AddDamage(enemyDamage);
+                        int enemyDamage = Enemy.GetDamage(enemyCard.Damage);
+                        Player.AddDamage(enemyDamage);
                     }
                 }
             }
@@ -488,8 +413,8 @@ namespace Manager
         private void SendSelectFaze(int[] setting, UltimateState ultimateState)
         {
             var list = setting.ToList();
-            _enemy.SetSettingCards(list);
-            _enemy.AtamakkoData.UltimateState = ultimateState;
+            Enemy.SetSettingCards(list);
+            Enemy.AtamakkoData.UltimateState = ultimateState;
             _getData = true;
         }
 
@@ -505,7 +430,7 @@ namespace Manager
         {
             if (card.Kind == "攻撃")
             {
-                var canAttack = _player.CanAttack(card);
+                var canAttack = Player.CanAttack(card);
                 int attackPosition = 0;
                 foreach (var t in canAttack)
                 {
@@ -524,22 +449,22 @@ namespace Manager
                 }
 
                 await TimeCounter.Instance.CountDown(30);
-                int myDamage = _player.GetDamage(card.Damage);
+                int myDamage = Player.GetDamage(card.Damage);
                 photonView.RPC(nameof(SendAction), RpcTarget.Others, myDamage, attackPosition);
 
-                if (_enemy.AtamakkoData.MyPosition == attackPosition)
+                if (Enemy.AtamakkoData.MyPosition == attackPosition)
                 {
-                    _enemy.AddDamage(myDamage);
+                    Enemy.AddDamage(myDamage);
                 }
                 if (card.Additional == "〇")
                 {
-                    _player.Move(attackPosition);
+                    Player.Move(attackPosition);
                 }
             }
 
             if (card.Kind == "移動")
             {
-                var canMove = _player.CanMove(card);
+                var canMove = Player.CanMove(card);
                 int movePosition = 0;
                 foreach (var t in canMove)
                 {
@@ -559,11 +484,11 @@ namespace Manager
                 await TimeCounter.Instance.CountDown(30);
                 photonView.RPC(nameof(SendAction), RpcTarget.Others, 0, movePosition);
 
-                _player.Move(movePosition);
-                if (card.Additional == "〇" && _enemy.AtamakkoData.MyPosition == movePosition)
+                Player.Move(movePosition);
+                if (card.Additional == "〇" && Enemy.AtamakkoData.MyPosition == movePosition)
                 {
-                    int myDamage = _player.GetDamage(card.Damage);
-                    _enemy.AddDamage(myDamage);
+                    int myDamage = Player.GetDamage(card.Damage);
+                    Enemy.AddDamage(myDamage);
                 }
             }
         }
@@ -577,27 +502,27 @@ namespace Manager
             if (card.Kind == "攻撃")
             {
                 /*
-                int enemyDamage = _enemy.GetDamage(card.Damage);
-                int attackPosition = _enemy.AttackSelect(_player.AtamakkoData.MyPosition, card);
+                int enemyDamage = Enemy.GetDamage(card.Damage);
+                int attackPosition = Enemy.AttackSelect(Player.AtamakkoData.MyPosition, card);
                 */
-                if (_player.AtamakkoData.MyPosition == _enemyPlace)
+                if (Player.AtamakkoData.MyPosition == _enemyPlace)
                 {
-                    _player.AddDamage(_enemyDamage);
+                    Player.AddDamage(_enemyDamage);
                 }
                 if (card.Additional == "〇")
                 {
-                    _enemy.Move(_enemyPlace);
+                    Enemy.Move(_enemyPlace);
                 }
             }
 
             if (card.Kind == "移動")
             {
-                //int movePosition = _enemy.MoveSelect(_player.AtamakkoData.MyPosition, card);
-                _enemy.Move(_enemyPlace);
-                if (card.Additional == "〇" && _player.AtamakkoData.MyPosition == _enemyPlace)
+                //int movePosition = Enemy.MoveSelect(Player.AtamakkoData.MyPosition, card);
+                Enemy.Move(_enemyPlace);
+                if (card.Additional == "〇" && Player.AtamakkoData.MyPosition == _enemyPlace)
                 {
-                    int enemyDamage = _enemy.GetDamage(card.Damage);
-                    _player.AddDamage(enemyDamage);
+                    int enemyDamage = Enemy.GetDamage(card.Damage);
+                    Player.AddDamage(enemyDamage);
                 }
             }
         }

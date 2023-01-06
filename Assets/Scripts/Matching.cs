@@ -38,13 +38,13 @@ public class Matching : MonoBehaviourPunCallbacks
             .AddTo(this);
     }
 
-    public void CPUButton()
+    private void CPUButton()
     {
         PlayerConfig.IsOnline = false;
         SceneManager.LoadScene("BattleCPU");
     }
-    
-    public void MatchingButton()
+
+    private void MatchingButton()
     {
         PhotonNetwork.ConnectUsingSettings();
         Debug.Log("Joined");
