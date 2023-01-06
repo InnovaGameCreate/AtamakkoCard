@@ -52,7 +52,7 @@ namespace System.Audio
             switch (scene)
             {
                 case "Title":
-                case "Matching":
+                case "MatchingManager":
                     PlayBGM(CurrentScene.Title);
                     break;
                 case "Battle":

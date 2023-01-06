@@ -5,7 +5,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Matching : MonoBehaviourPunCallbacks
+public class MatchingManager : MonoBehaviourPunCallbacks
 {
     private bool _inRoom;
     private bool _isMatching;
