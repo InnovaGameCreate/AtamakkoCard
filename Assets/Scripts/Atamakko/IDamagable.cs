@@ -1,4 +1,4 @@
-namespace Player
+namespace Atamakko
 {
     public interface IDamagable
     {

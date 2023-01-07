@@ -1,4 +1,4 @@
-using Player;
+using Atamakko;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;

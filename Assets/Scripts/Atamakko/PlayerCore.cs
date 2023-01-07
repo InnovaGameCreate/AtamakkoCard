@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using Atamakko;
 using Card;
 using UnityEngine;
 
-namespace Player
+namespace Atamakko
 {
     public class PlayerCore : AtamakkoCore
     {

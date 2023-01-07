@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using Card;
 using UnityEngine;
 
-namespace Player
+namespace Atamakko
 {
     public class DeckData : MonoBehaviour
     {

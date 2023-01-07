@@ -1,16 +1,16 @@
 using TMPro;
 using UnityEngine;
 using System.Threading.Tasks;
+using Atamakko;
 using Photon.Pun;
-using Player;
 
 namespace UI
 {
     public class UltimateInformText : MonoBehaviourPunCallbacks
     {
         /// <summary>
-        /// ƒAƒ‹ƒeƒBƒƒbƒg‚ğg—p‚·‚é‚Æ©•ª‘¤‚É©•ª‚Ìg—p‚µ‚½ƒAƒ‹ƒeƒBƒƒbƒg‚ğƒeƒLƒXƒg‚Å•\¦
-        /// ‘Šè‘¤‚É‚à©•ª‚Ìg—p‚µ‚½ƒAƒ‹ƒeƒBƒƒbƒg‚ğƒeƒLƒXƒg‚Å•\¦
+        /// ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã‚’ä½¿ç”¨ã™ã‚‹ã¨è‡ªåˆ†å´ã«è‡ªåˆ†ã®ä½¿ç”¨ã—ãŸã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã‚’ãƒ†ã‚­ã‚¹ãƒˆã§è¡¨ç¤º
+        /// ç›¸æ‰‹å´ã«ã‚‚è‡ªåˆ†ã®ä½¿ç”¨ã—ãŸã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã‚’ãƒ†ã‚­ã‚¹ãƒˆã§è¡¨ç¤º
         /// </summary>
         [SerializeField] private TextMeshProUGUI _playerInformText;
         [SerializeField] private TextMeshProUGUI _enemyInformText;
@@ -24,33 +24,33 @@ namespace UI
         public async void setText(UltimateState UltimateType)
         {
             await Task.Delay(2000);
-            string ultimateText = null;//•\¦—pƒeƒLƒXƒg‚Ì¶¬
-            switch (UltimateType)//g—p‚·‚éƒAƒ‹ƒeƒBƒƒbƒg‚É‘Î‰‚·‚éƒGƒtƒFƒNƒg‚ğÄ¶‚·‚éB
+            string ultimateText = null;//è¡¨ç¤ºç”¨ãƒ†ã‚­ã‚¹ãƒˆã®ç”Ÿæˆ
+            switch (UltimateType)//ä½¿ç”¨ã™ã‚‹ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã«å¯¾å¿œã™ã‚‹ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å†ç”Ÿã™ã‚‹ã€‚
             {
                 case UltimateState.Recover:
-                    ultimateText = "‘Ì—Í‰ñ•œ‚ÌƒAƒ‹ƒeƒBƒƒbƒg‚ğg—p‚µ‚Ü‚µ‚½";//‘Ì—Í‰ñ•œƒAƒ‹ƒeƒBƒƒbƒg‚Ìg—pƒGƒtƒFƒNƒg
+                    ultimateText = "ä½“åŠ›å›å¾©ã®ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã‚’ä½¿ç”¨ã—ã¾ã—ãŸ";//ä½“åŠ›å›å¾©ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã®ä½¿ç”¨ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
                     break;
                 case UltimateState.Attack:
-                    ultimateText = "UŒ‚—Íã¸‚ÌƒAƒ‹ƒeƒBƒƒbƒg‚ğg—p‚µ‚Ü‚µ‚½";//UŒ‚—Íã¸ƒAƒ‹ƒeƒBƒƒbƒg‚Ìg—pƒGƒtƒFƒNƒg
+                    ultimateText = "æ”»æ’ƒåŠ›ä¸Šæ˜‡ã®ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã‚’ä½¿ç”¨ã—ã¾ã—ãŸ";//æ”»æ’ƒåŠ›ä¸Šæ˜‡ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã®ä½¿ç”¨ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
                     break;
                 case UltimateState.Speed:
-                    ultimateText = "æ§“xã¸‚ÌƒAƒ‹ƒeƒBƒƒbƒg‚ğg—p‚µ‚Ü‚µ‚½";//æ§“xã¸ƒAƒ‹ƒeƒBƒƒbƒg‚Ìg—pƒGƒtƒFƒNƒg
+                    ultimateText = "å…ˆåˆ¶åº¦ä¸Šæ˜‡ã®ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã‚’ä½¿ç”¨ã—ã¾ã—ãŸ";//å…ˆåˆ¶åº¦ä¸Šæ˜‡ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã®ä½¿ç”¨ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
                     break;
                 default:
-                    Debug.LogError("–¢Š„“–‚ÌƒAƒ‹ƒeƒBƒƒbƒg‚ğ•\¦‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·");
+                    Debug.LogError("æœªå‰²å½“ã®ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã‚’è¡¨ç¤ºã—ã‚ˆã†ã¨ã—ã¦ã„ã¾ã™");
                     break;
             }
             _playerInformText.text = ultimateText;
             if (PlayerConfig.IsOnline)
             {
-                ultimateText = "‘Šè‚Í" + ultimateText;
+                ultimateText = "ç›¸æ‰‹ã¯" + ultimateText;
                 photonView.RPC(nameof(setEnemyInformText), RpcTarget.Others, ultimateText);
             }
 
             await Task.Delay(3000);
             if (PlayerConfig.IsOnline)
             {
-                ultimateText = "‘Šè‚Í" + ultimateText;
+                ultimateText = "ç›¸æ‰‹ã¯" + ultimateText;
                 photonView.RPC(nameof(setEnemyInformText), RpcTarget.Others, "");
             }
             _playerInformText.text = null;
