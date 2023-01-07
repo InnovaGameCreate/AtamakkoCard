@@ -45,7 +45,6 @@ public class BackGroundImageChanger : MonoBehaviour
             frontImage.sprite = behindImage.sprite;
             frontImage.DOFade(1, 0);
             frontImage.DOFade(0, changeTime);
-            Debug.Log(count);
             behindImage.sprite = BackGroundImages[count];
             yield return new WaitForSeconds(changeTime);
 

@@ -14,6 +14,7 @@ public class PlayerConfig : MonoBehaviour
     public static bool DevelopMode = true;//開発モードかどうか（常に初期化される)
     public static bool IsOnline = false;
     public static int StoryProgress;//ストーリーの進行具合
+    public static int ArenaRank;//アリーナのランク
     private int DevelopModeCardNum;//cardの個数
     private int DevelopModeEquipmentNum;//equipmentの個数
     private static int isTutorial;//0の時はチュートリアルをまだ受けていない
@@ -29,6 +30,7 @@ public class PlayerConfig : MonoBehaviour
         Equipmnet = PlayerPrefsUtility.LoadList<int>("MyEquipmnet");//自分の装備を読み込む
         IsTutorial = PlayerPrefs.GetInt("Tutorial", 0);
         StoryProgress = PlayerPrefs.GetInt("StoryProgress", 0);
+        ArenaRank = PlayerPrefs.GetInt("ArenaRank", 11);
     }
 
     public static void SetData()
@@ -39,6 +41,7 @@ public class PlayerConfig : MonoBehaviour
         PlayerPrefsUtility.SaveList<int>("MyEquipmnet", Equipmnet);
         PlayerPrefs.SetString("PlayerName", PlayerName);
         PlayerPrefs.SetInt("StoryProgress", StoryProgress);
+        PlayerPrefs.SetInt("ArenaRank", ArenaRank);
     }
     void Start()
     {
