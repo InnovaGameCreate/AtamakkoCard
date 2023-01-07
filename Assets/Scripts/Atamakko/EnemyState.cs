@@ -1,6 +1,4 @@
-using UnityEngine;
-
-namespace Player
+namespace Atamakko
 {
     public enum EnemyState
     {

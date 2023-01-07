@@ -1,7 +1,7 @@
 using UniRx;
 using UnityEngine;
 
-namespace Player
+namespace Atamakko
 {
     public class AtamakkoData : MonoBehaviour
     {

@@ -1,6 +1,6 @@
+using Atamakko;
 using Card;
 using Photon.Pun;
-using Player;
 using UI;
 using UniRx;
 using UnityEngine;

@@ -8,7 +8,7 @@ namespace Card
         public int CardID { get; set; }
         
         public CardView view;
-        private CardModel _model;
+        public CardModel Model { get; private set; }
 
         private UIExplanation _explanation;
 
@@ -20,8 +20,8 @@ namespace Card
         public void Init(int id)
         {
             CardID = id;
-            _model = new CardModel(CardData.CardDataArrayList[CardID]);
-            view.Show(_model);
+            Model = new CardModel(CardData.CardDataArrayList[CardID]);
+            view.Show(Model);
             //_explanation = GameObject.FindGameObjectWithTag("Explanation").GetComponent<UIExplanation>();
         }
 

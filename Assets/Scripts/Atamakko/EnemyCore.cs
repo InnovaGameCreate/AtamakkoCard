@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Atamakko;
 using Card;
 
-namespace Player
+namespace Atamakko
 {
     public class EnemyCore : AtamakkoCore
     {

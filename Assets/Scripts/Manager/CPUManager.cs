@@ -1,8 +1,8 @@
 using System.Audio;
 using System.Effect;
+using Atamakko;
 using Card;
 using Cysharp.Threading.Tasks;
-using Player;
 using UI;
 using UniRx;
 using UnityEngine;

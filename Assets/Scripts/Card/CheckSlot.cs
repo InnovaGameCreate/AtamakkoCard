@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using Card;
 using UI;
 using UniRx;
 using UnityEngine;
 
-namespace Field
+namespace Card
 {
     public class CheckSlot : MonoBehaviour
     {

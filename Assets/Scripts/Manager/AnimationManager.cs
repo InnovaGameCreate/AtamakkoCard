@@ -1,7 +1,7 @@
 using System;
 using System.Effect;
+using Atamakko;
 using Cysharp.Threading.Tasks;
-using Player;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -60,16 +60,16 @@ namespace Manager
             //var token = this.GetCancellationTokenOnDestroy();
             //_pUltimateDirector.Play();
 
-            switch (UltimateType)//g—p‚·‚éƒAƒ‹ƒeƒBƒƒbƒg‚É‘Î‰‚·‚éƒGƒtƒFƒNƒg‚ğÄ¶‚·‚éB
+            switch (UltimateType)//ä½¿ç”¨ã™ã‚‹ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã«å¯¾å¿œã™ã‚‹ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å†ç”Ÿã™ã‚‹ã€‚
             {
                 case UltimateState.Recover:
-                    EffectManager.Instance.InstantiateEffect(EffectType.specialHeal, transform);//‘Ì—Í‰ñ•œƒAƒ‹ƒeƒBƒƒbƒg‚Ìg—pƒGƒtƒFƒNƒg
+                    EffectManager.Instance.InstantiateEffect(EffectType.specialHeal, transform);//ä½“åŠ›å›å¾©ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã®ä½¿ç”¨ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
                     break;
                 case UltimateState.Attack:
-                    EffectManager.Instance.InstantiateEffect(EffectType.specialDamageUp, transform);//UŒ‚—Íã¸ƒAƒ‹ƒeƒBƒƒbƒg‚Ìg—pƒGƒtƒFƒNƒg
+                    EffectManager.Instance.InstantiateEffect(EffectType.specialDamageUp, transform);//æ”»æ’ƒåŠ›ä¸Šæ˜‡ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã®ä½¿ç”¨ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
                     break;
                 case UltimateState.Speed:
-                    EffectManager.Instance.InstantiateEffect(EffectType.specialSpeedUp, transform);//æ§“xã¸ƒAƒ‹ƒeƒBƒƒbƒg‚Ìg—pƒGƒtƒFƒNƒg
+                    EffectManager.Instance.InstantiateEffect(EffectType.specialSpeedUp, transform);//å…ˆåˆ¶åº¦ä¸Šæ˜‡ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã®ä½¿ç”¨ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
                     break;
                 default:
                     break;
