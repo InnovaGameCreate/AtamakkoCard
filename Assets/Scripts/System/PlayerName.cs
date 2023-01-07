@@ -1,24 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class PlayerName : MonoBehaviour
+namespace system
 {
-    [SerializeField]
-    private TMP_InputField name;
-    void Start()
+    public class PlayerName : MonoBehaviour
     {
-        if(PlayerConfig.IsTutorial != 0)
+        [SerializeField]
+        private TMP_InputField name;
+        void Start()
         {
-            //gameObject.SetActive(false);
+            if (PlayerConfig.IsTutorial != 0)
+            {
+                //gameObject.SetActive(false);
+            }
         }
-    }
 
-    public void OnClick()//clickされたら名前を登録してウィンドウを閉じる。
-    {
-        PlayerConfig.PlayerName = name.text;
-        PlayerConfig.SetData();
-        gameObject.SetActive(false);
+        public void OnClick()//clickされたら名前を登録してウィンドウを閉じる。
+        {
+            PlayerConfig.PlayerName = name.text;
+            PlayerConfig.SetData();
+            gameObject.SetActive(false);
+        }
     }
 }

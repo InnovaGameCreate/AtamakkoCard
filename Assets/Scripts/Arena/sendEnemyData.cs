@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arena
@@ -7,7 +5,12 @@ namespace Arena
 
     public class sendEnemyData : MonoBehaviour
     {
-        public void sendData(int enemyID)
+        private int enemyID = 0;
+        public void SetEnemyData(int ID)
+        {
+            enemyID = ID;
+        }
+        public void SendData()
         {
             enemyDeckData.setDeckData(enemyID);
         }

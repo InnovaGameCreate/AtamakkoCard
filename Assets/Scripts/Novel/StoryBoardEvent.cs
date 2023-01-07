@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using System.story;
+using Arena;
+using UnityEngine.SceneManagement;
 
 namespace storyMode
 {
@@ -72,84 +74,99 @@ namespace storyMode
                         break;
                     case 9:
                         //戦闘
-                        activeText(8);
+                        encountEnemy(1);
                         break;
                     case 10:
-                        activeText(9);
+                        activeText(8);
                         break;
                     case 11:
-                        activeText(10);
+                        activeText(9);
                         break;
-                    case 12://ドラゴンとの戦闘
-                        Comment.currentChapter = 11;
+                    case 12:
+                        //ドラゴンとの戦闘
+                        //Comment.currentChapter = 10;
                         break;
                     case 13:
-                        activeText(12);
+                        activeText(11);
                         break;
                     case 14:
-                        activeText(13);
+                        activeText(12);
                         break;
                     case 15:
-                        activeText(14);
+                        activeText(13);
                         break;
                     case 16:
+                        activeText(14);
+                        break;
+                    case 17:
                         activeText(15);
                         break;
-                    case 17://敵との戦闘
+                    case 18:
+                        //敵との戦闘
+                        break;
+                    case 19:
                         activeText(16);
                         break;
-                    case 18:
-                        activeText(17);
-                        break;
-                    case 19://ボス戦
-                        activeText(18);
+                    case 20:
+                        //ボス戦
                         break;
                     case 21:
-                        activeText(20);
-                        break;
-                    case 22:
-                        activeText(21);
+                        activeText(17);
                         break;
                     case 23:
+                        activeText(19);
+                        break;
+                    case 24:
+                        activeText(20);
+                        break;
+                    case 25:
+                        activeText(21);
+                        break;
+                    case 26://仲間と合流
                         activeText(22);
                         break;
-                    case 24://仲間と合流
-                        activeText(23);
-                        break;
-                    case 25://戦闘
+                    case 27:
+                        //戦闘
 
                         break;
-                    case 26:
-                        activeText(25);
-                        break;
-                    case 27:
-                        activeText(26);
-                        break;
-                    case 28://ボス戦
-                        activeText(27);
+                    case 28:
+                        activeText(23);
                         break;
                     case 29:
-                        activeText(28);
+                        activeText(24);
                         break;
-                    case 30://戦闘
-                        activeText(29);
+                    case 30:
+                        activeText(25);
                         break;
                     case 31:
-                        activeText(30);
+                        //ボス戦
                         break;
                     case 32:
-                        activeText(31);
-                        break;
-                    case 33:
                         activeText(32);
                         break;
-                    case 34://戦闘
-                        activeText(33);
+                    case 33:
+                        activeText(26);
+                        break;
+                    case 34:
+                        //戦闘
                         break;
                     case 35:
-                        activeText(34);
+                        activeText(27);
                         break;
-                    case 36://戦闘
+                    case 36:
+                        activeText(28);
+                        break;
+                    case 37:
+                        activeText(29);
+                        break;
+                    case 38:
+                        activeText(30);
+                        break;
+                    case 39:
+                        activeText(31);
+                        break;
+                    case 40:
+                        //戦闘
                         break;
                     default:
                         Debug.Log("何も設定されていない開始イベントです");
@@ -1326,6 +1343,12 @@ namespace storyMode
             Comment.onAnimation = false;
             Debug.Log("終了イベント：" + currentStageNum);
         }
+
+        private void encountEnemy(int EnemyID)
+        {
+            enemyDeckData.setDeckData(EnemyID);
+            SceneManager.LoadScene("BattleCPU");
+        }
         IEnumerator talkEndEvent(int eventNum)
         {
             yield return new WaitForFixedUpdate();
@@ -1336,22 +1359,10 @@ namespace storyMode
                     case 5:
                         StartCoroutine(changeStage(0, 5));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
-                    case 17:
-                        Comment.ChangeBackGroundImage(0);
-                        //戦闘開始の信号を送る
-                        Debug.Log("終了イベント17");
+                    case 18:
+                        StartCoroutine(changeStage(1, 18));//現在のステージ数：現在のチャプターを送って次のステー
                         break;
-                    case 19:
-                        Comment.ChangeBackGroundImage(0);
-                        //戦闘開始の信号を送る、戦闘後次のステージへ
-                        Debug.Log("終了イベント19");
-                        break;
-                    case 28:
-                        Comment.ChangeBackGroundImage(0);
-                        //戦闘開始の信号を送る
-                        Debug.Log("終了イベント28");
-                        break;
-                    case 39:
+                    case 33:
                         NestStageCheckPanel.SetActive(true);
                         break;
                     default:
