@@ -22,7 +22,8 @@ namespace Assemble
         private hand Hand;
         protected virtual void Start()
         {
-            canvasTransform = FindObjectOfType<Canvas>().transform;
+            canvasTransform = GameObject.FindGameObjectWithTag("InstantiateTarget").transform;
+            //canvasTransform = FindObjectOfType<Canvas>().transform;
             Hand = FindObjectOfType<hand>();
 
             if (MyItem == null) itemImage.color = new Color(0, 0, 0, 0);
