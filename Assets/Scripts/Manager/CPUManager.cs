@@ -1,8 +1,10 @@
 using System.Audio;
 using System.Effect;
+using Arena;
 using Atamakko;
 using Card;
 using Cysharp.Threading.Tasks;
+using Photon.Pun;
 using UI;
 using UniRx;
 using UnityEngine;
@@ -11,15 +13,13 @@ namespace Manager
 {
     public class CPUManager : BattleManager
     {
-
         /*
          * ゲームをスタートする前に行う関数
          */
         protected override async void WaitingGame()
         {
-            Debug.Log("waiting");
+            PhotonNetwork.OfflineMode = true;
             await TimeCounter.Instance.CountDown(3);
-            Debug.Log("start");
             _CurrentState.Value = GameState.Init;
         }
 
@@ -32,14 +32,14 @@ namespace Manager
             await StartCoroutine(CardData.GetData());
             
             // デッキのインスタンス生成
-            var deck = Resources.Load<Deck>("Deck1").cardIDList;
             var playerDeck = PlayerConfig.Deck;
+            var enemyDeck = enemyDeckData.enemyDeck;
 
             await UniTask.Delay(10);
             
             // プレイヤーの初期設定
             Player.Initialize(playerDeck);
-            Enemy.Initialize(deck);
+            Enemy.Initialize(enemyDeck);
             
             // ゲーム終了の設定
             Player.AtamakkoData.MyHp

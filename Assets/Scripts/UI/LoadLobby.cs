@@ -13,7 +13,7 @@ namespace UI
         public override void OnLeftRoom()
         {
             PhotonNetwork.Disconnect();
-            SceneManager.LoadScene("MatchingManager");
+            SceneManager.LoadScene("Matching");
         }
     }
 }

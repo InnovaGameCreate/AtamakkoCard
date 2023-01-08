@@ -28,6 +28,7 @@ namespace Manager
          */
         protected override async void WaitingGame()
         {
+            PhotonNetwork.OfflineMode = false;
             //自分と相手のプレイヤーネームを表示
             playerName.text = PlayerConfig.PlayerName;
             photonView.RPC(nameof(SetEnemyName), RpcTarget.Others, playerName.text);
@@ -537,6 +538,12 @@ namespace Manager
         {
             var slot = Instantiate(slotPrefab, cardManager);
             slot.CreateCard(cData);
+        }
+
+        public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+        {
+            _CurrentState.Value = GameState.End;
+            AnimationManager.Instance.ResultFadeIn(true);
         }
     }
 }
