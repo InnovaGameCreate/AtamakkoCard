@@ -8,16 +8,21 @@ using Photon.Pun;
 using UI;
 using UniRx;
 using UnityEngine;
+using TMPro;
 
 namespace Manager
 {
     public class CPUManager : BattleManager
     {
+        [SerializeField] private TextMeshProUGUI playerName;
+        [SerializeField] private TextMeshProUGUI enemyName;
         /*
          * ゲームをスタートする前に行う関数
          */
         protected override async void WaitingGame()
         {
+            playerName.text = PlayerConfig.PlayerName;
+            enemyName.text = enemyDeckData._enemyName;
             PhotonNetwork.OfflineMode = true;
             await TimeCounter.Instance.CountDown(3);
             _CurrentState.Value = GameState.Init;

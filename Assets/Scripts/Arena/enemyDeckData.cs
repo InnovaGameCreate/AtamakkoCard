@@ -9,7 +9,9 @@ namespace Arena
     public class enemyDeckData : MonoBehaviour
     {
 
-        public static List<int> enemyDeck = new List<int>();//出来のデッキのデータ
+        public static List<int> enemyDeck = new List<int>();//敵のデッキのデータ
+        public static string _enemyName;
+        public static int _enemyID;
 
         private const string SHEET_ID = "1laAr4f3RgQRTD1ySSnLHooyNnRByMtzh-oqSSYV9LtM";
         private const string SHEET_NAME = "シート1";
@@ -18,6 +20,8 @@ namespace Arena
         public static void setDeckData(int enemyID)
         {
             var Model = new enmyDeckModel(CardDataArrayList[enemyID]);
+            _enemyName = Model.characterName;
+            _enemyID = Model.ID;
             enemyDeck.Clear();
             for (int i = 0; i < 12; i++)
             {
