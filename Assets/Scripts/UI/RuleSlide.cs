@@ -3,19 +3,23 @@ using UnityEngine;
 
 namespace UI
 {
+    /// <summary>
+    /// ルール表示を管理するクラス
+    /// </summary>
     public class RuleSlide : MonoBehaviour
     {
-        [SerializeField] private ButtonController leftSlide;
-        [SerializeField] private ButtonController rightSlide;
+        [SerializeField] private ButtonController leftSlide; // 左へスライドするボタン
+        [SerializeField] private ButtonController rightSlide; // 右へスライドするボタン
 
-        [SerializeField] private GameObject[] slideRule;
-        private readonly ReactiveProperty<int> _numSlide = new ReactiveProperty<int>(0);
+        [SerializeField] private GameObject[] slideRule; // ルールスライド
+        private readonly ReactiveProperty<int> _numSlide = new ReactiveProperty<int>(0); // スライド番号
 
-        [SerializeField] private ButtonController ruleButton;
-        [SerializeField] private ButtonController closeButton;
+        [SerializeField] private ButtonController ruleButton; // ルールボタン
+        [SerializeField] private ButtonController closeButton; // 閉じるボタン
 
         private void Start()
         {
+            // スライド番号に合わせてスライドを表示＆ボタンのON・OFFを切り替える
             _numSlide
                 .Subscribe(num =>
                 {
@@ -42,6 +46,7 @@ namespace UI
                 })
                 .AddTo(this);
             
+            // ルールボタンを押したときにルールスライドを表示する
             ruleButton.Pushed
                 .Subscribe(_ =>
                 {
@@ -54,6 +59,7 @@ namespace UI
                 })
                 .AddTo(this);
             
+            // 閉じるボタンを押したときにルールスライドを非表示にする
             closeButton.Pushed
                 .Subscribe(_ =>
                 {
@@ -66,14 +72,15 @@ namespace UI
                 })
                 .AddTo(this);
             
+            // 左ボタンを押したときにスライドを左に送る
             leftSlide.Pushed
                 .Subscribe(_ => _numSlide.Value--)
                 .AddTo(this);
 
+            // 右ボタンを押したときにスライドを右に送る
             rightSlide.Pushed
                 .Subscribe(_ => _numSlide.Value++)
                 .AddTo(this);
-
         }
     }
 }

@@ -1,22 +1,27 @@
-using UnityEngine;
 
 namespace Card
 {
+    /// <summary>
+    /// カードの内部情報のクラス
+    /// </summary>
     public class CardModel
-
     {
-        public readonly int ID;
-        public readonly string Name;
-        public readonly int Initiative;
-        public readonly int Damage;
-        public readonly string Kind;
-        public readonly string Additional;
-        public readonly string Effect;
-        public int Rarity;
-        public readonly string[] Move;
-        public readonly string[] Attack;
-        public readonly string Explanation;
+        public readonly int ID; // カードID
+        public readonly string Name; // カード名
+        public readonly int Initiative; // 先制度
+        public readonly int Damage; // ダメージ
+        public readonly string Kind; // 種類（攻撃，移動）
+        public readonly string Additional; // 追加効果の有無
+        public readonly string Effect; // エフェクト（斬撃，射撃）
+        public int Rarity; // レアリティ
+        public readonly string[] Move; // 移動の間合い
+        public readonly string[] Attack; // 攻撃の間合い
+        public readonly string Explanation; // 説明文
         
+        /// <summary>
+        /// カード情報の初期化
+        /// </summary>
+        /// <param name="dataList">カード情報</param>
         public CardModel(string[] dataList) {
             ID = int.Parse(dataList[0]);
             Name = dataList[1];

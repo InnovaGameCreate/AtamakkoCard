@@ -128,7 +128,7 @@ namespace Manager
             CardMobile = true;
             
             ultimateButton.MyInteractable = !Player.UsedUltimate; // 必殺技を使っているかどうかを判断
-            decisionButton.Decision // 決定ボタンが押されたとき
+            decisionButton.Pushed // 決定ボタンが押されたとき
                 .Subscribe(_ =>
                 {
                     CardMobile = false;
@@ -150,7 +150,7 @@ namespace Manager
 
             for (int i = 0; i < battleSlots.Length; i++)
             {
-                Player.SetSettingCard(i, battleSlots[i].MyCardID);
+                Player.SetSettingCard(battleSlots[i].MyCardID);
                 EnemyCard(i, Enemy.GetNowCardID(i));
             }
             

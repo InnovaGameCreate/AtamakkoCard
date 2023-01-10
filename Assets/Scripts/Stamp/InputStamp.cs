@@ -5,30 +5,24 @@ using UnityEngine.UI;
 
 namespace Stamp
 {
+    /// <summary>
+    /// スタンプを押すクラス
+    /// </summary>
     public class InputStamp : MonoBehaviour
     {
-        public enum StampID
-        {
-            Defeat,
-            Good
-        }
+        [SerializeField] private byte buttonID; // ボタンID
+        [SerializeField] private Button button; // ボタン
         
-        [SerializeField] private Button button;
+        // 押されたときのイベント
         private readonly Subject<byte> _stampClick = new Subject<byte>();
-
         public IObservable<byte> OnClickStamp => _stampClick;
 
         void Start()
         {
+            // 押されたときボタンIDを送る
             button.OnClickAsObservable()
-                .Subscribe(_ => _stampClick.OnNext(CheckImageID()))
+                .Subscribe(_ => _stampClick.OnNext(buttonID))
                 .AddTo(this);
-        }
-
-        private byte CheckImageID()
-        {
-            var sValue = (StampID)Enum.Parse(typeof(StampID), button.name);
-            return (byte)sValue;
         }
     }
 }

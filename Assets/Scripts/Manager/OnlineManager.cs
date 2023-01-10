@@ -159,7 +159,7 @@ namespace Manager
             CardMobile = true;
             
             ultimateButton.MyInteractable = !Player.UsedUltimate; // 必殺技を使っているかどうかを判断
-            decisionButton.Decision // 決定ボタンが押されたとき
+            decisionButton.Pushed // 決定ボタンが押されたとき
                 .Subscribe(_ =>
                 {
                     decisionButton.MyInteractable = false;
@@ -183,9 +183,9 @@ namespace Manager
             //Enemy.CardSelect(); // CPUがカードを選択する
             //Enemy.UltimateSelect();
 
-            for (int i = 0; i < battleSlots.Length; i++)
+            foreach (var t in battleSlots)
             {
-                Player.SetSettingCard(i, battleSlots[i].MyCardID);
+                Player.SetSettingCard(t.MyCardID);
             }
 
             photonView.RPC(nameof(SendSelectFaze), 
@@ -542,8 +542,11 @@ namespace Manager
 
         public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
         {
-            _CurrentState.Value = GameState.End;
-            AnimationManager.Instance.ResultFadeIn(true);
+            if (_CurrentState.Value != GameState.End)
+            {
+                _CurrentState.Value = GameState.End;
+                AnimationManager.Instance.ResultFadeIn(true);
+            }
         }
     }
 }

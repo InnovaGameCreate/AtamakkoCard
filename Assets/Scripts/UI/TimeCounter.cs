@@ -5,21 +5,27 @@ using UnityEngine;
 
 namespace UI
 {
+    /// <summary>
+    /// 時間をカウントするクラス
+    /// </summary>
     public class TimeCounter : MonoBehaviour
     {
-        private int _countTime;
-        private int _nowTime;
+        private int _countTime; // カウントする時間
+        private int _nowTime; // 今の時間
         
+        // カウントするのイベント
         private readonly Subject<bool> _countNow = new Subject<bool>();
         public IObservable<bool> CountNow => _countNow;
 
+        // 時間を送るイベント
         private readonly Subject<int> _timer = new Subject<int>();
         public IObservable<int> Timer => _timer;
 
-        public static TimeCounter Instance;
+        public static TimeCounter Instance; // インスタンス化
 
         private void Awake()
         {
+            // シングルトン化
             if (Instance == null)
             {
                 Instance = this;
@@ -32,18 +38,20 @@ namespace UI
                 Destroy(gameObject);
             }
         }
-        
-        public void SetTimer(int countTime)
-        {
-            _countTime = countTime;
-            //StartCoroutine(CountDown());
-        }
 
+        /// <summary>
+        /// タイマーを０にする。
+        /// </summary>
         public void EndTimer()
         {
             _nowTime = _countTime;
         }
-
+        
+        /// <summary>
+        /// カウントダウンを始める。
+        /// </summary>
+        /// <param name="countTime">制限時間</param>
+        /// <returns>コルーチン</returns>
         public IEnumerator CountDown(int countTime)
         {
             _nowTime = 0;
