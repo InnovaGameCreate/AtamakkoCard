@@ -68,8 +68,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: ce6566b07b26e0b4fa2471cac070546f, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -92,7 +92,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemImage: {fileID: 5133418718631231540}
   itemImageObj: {fileID: 7641477953827677278}
+  textMesh: {fileID: 0}
+  itemShowImage: {fileID: 0}
   MySlotType: 0
+  CardView: {fileID: 0}
+  PositionNum: 0
+  cardPrefab: {fileID: 0}
 --- !u!1 &7641477953827677278
 GameObject:
   m_ObjectHideFlags: 0
