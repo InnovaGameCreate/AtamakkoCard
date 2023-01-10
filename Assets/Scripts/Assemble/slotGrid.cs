@@ -18,15 +18,19 @@ namespace Assemble
             StartCoroutine(SetUp());
         }
 
-        IEnumerator SetUp()
+        IEnumerator SetUp()//スロットにカードをセットする
         {
-            
             yield return new WaitForSeconds(0.5f);
 
             for (int i = 0; i < Resources.Load<equipmentIcon>("EquipmentIcon").equipmentIconList.Count; i++)
             {
- 
-                Init(equipmentData.CardDataArrayList[i]);
+                if(i != PlayerConfig.Equipmnet[0] 
+                    && i != PlayerConfig.Equipmnet[1]
+                    && i != PlayerConfig.Equipmnet[2]
+                    && i != PlayerConfig.Equipmnet[3]
+                    && i != PlayerConfig.Equipmnet[4]
+                    && i != PlayerConfig.Equipmnet[5]) 
+                    Init(equipmentData.CardDataArrayList[i]);
             }
         }
 
