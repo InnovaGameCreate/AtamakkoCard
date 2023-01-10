@@ -1,33 +1,33 @@
-using UI;
 using UnityEngine;
 
 namespace Card
 {
+    /// <summary>
+    /// カードの実体
+    /// </summary>
     public class CardController : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandler
     {
-        public int CardID { get; set; }
-        
-        public CardView view;
-        public CardModel Model { get; private set; }
+        private int CardID { get; set; } // カードID
+        public CardView view; // カードの見た目
+        public CardModel Model { get; private set; } // カードの内部情報
 
-        private UIExplanation _explanation;
+        //private UIExplanation _explanation; 
 
         private void Awake()
         {
             view = GetComponent<CardView>();
         }
 
+        /// <summary>
+        /// カードの初期化。
+        /// </summary>
+        /// <param name="id">カードID</param>
         public void Init(int id)
         {
             CardID = id;
             Model = new CardModel(CardData.CardDataArrayList[CardID]);
             view.Show(Model);
             //_explanation = GameObject.FindGameObjectWithTag("Explanation").GetComponent<UIExplanation>();
-        }
-
-        public void FlipOver()
-        {
-            view.backCard.SetActive(!view.backCard.activeSelf);
         }
 
         /*

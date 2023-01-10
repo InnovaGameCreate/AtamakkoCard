@@ -3,38 +3,34 @@ using UnityEngine;
 
 namespace Atamakko
 {
+    /// <summary>
+    /// アタマッコの内部情報
+    /// </summary>
     public class AtamakkoData : MonoBehaviour
     {
-        public UltimateState UltimateState { get; set; } = UltimateState.Normal;
-        public int SpeedCorrection { get; set; } = 0;
-        public int DamageCorrection { get; set; } = 0;
+        public UltimateState UltimateState { get; set; } = UltimateState.Normal; // 必殺技情報。基本はNormal。
+        public int SpeedCorrection { get; set; } // 先制度補正
+        public int DamageCorrection { get; set; } // ダメージ補正
 
-        private ReactiveProperty<int> _hp = new ReactiveProperty<int>(6);
-        public ReactiveProperty<int> MyHp
-        {
-            get => _hp;
-            set => _hp = value;
-        }
-        
-        [SerializeField] private int position;
+        public ReactiveProperty<int> MyHp { get; set; } = new ReactiveProperty<int>(6); // HP
 
-        public int MyPosition
+        [SerializeField] private int position; // 位置
+
+        public int MyPosition // 外部からアクセス可能な位置
         {
             get => position;
             set => position = value;
         }
 
-        // Start is called before the first frame update
         void Start()
         {
-            _hp
-                .Where(hp => hp > 6)
-                .Subscribe(_ => _hp.Value = 6)
-                .AddTo(this);
-
-            _hp
-                .Where(hp => hp < 0)
-                .Subscribe(_ => _hp.Value = 0)
+            // HPが6~0の値に収まる処理
+            MyHp
+                .Subscribe(hp =>
+                {
+                    if (hp >= 6) MyHp.Value = 6;
+                    if (hp <= 0) MyHp.Value = 0;
+                })
                 .AddTo(this);
         }
     }

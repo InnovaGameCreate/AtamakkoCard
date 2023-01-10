@@ -5,9 +5,16 @@ using UnityEngine;
 
 namespace Atamakko
 {
+    /// <summary>
+    /// CPU（弱い）の中身
+    /// </summary>
     public class EasyCPU : MonoBehaviour
     {
-
+        /// <summary>
+        /// セットするカードを選択する。ランダムで行われる。
+        /// </summary>
+        /// <param name="handID">手札のカードID</param>
+        /// <returns>セットするカードID</returns>
         public List<int> SelectCardLogic(List<int> handID)
         {
             var cards = new List<int>();
@@ -21,6 +28,11 @@ namespace Atamakko
             return cards;
         }
 
+        /// <summary>
+        /// 必殺技を選択する。体力が３以下なら回復の必殺技を使う。
+        /// </summary>
+        /// <param name="myDate">アタマッコの内部データ</param>
+        /// <returns>使用する必殺技</returns>
         public UltimateState SelectUltimateLogic(AtamakkoData myDate)
         {
             if (myDate.MyHp.Value <= 3)
@@ -31,6 +43,13 @@ namespace Atamakko
             return UltimateState.Normal;
         }
 
+        /// <summary>
+        /// 攻撃する場所を選択する。プレイヤーが攻撃可能な位置にいる場合、攻撃位置に決定する。
+        /// </summary>
+        /// <param name="enemy">自身の位置</param>
+        /// <param name="player">プレイヤーの位置</param>
+        /// <param name="card">使用するカード</param>
+        /// <returns>攻撃する位置</returns>
         public int SelectAttackLogic(int enemy, int player, CardModel card)
         {
             int select = -1;
@@ -55,6 +74,13 @@ namespace Atamakko
             return select;
         }
 
+        /// <summary>
+        /// 移動する場所を選択する。ランダムで決定する。
+        /// </summary>
+        /// <param name="enemy">自分の位置</param>
+        /// <param name="player">プレイヤーの位置</param>
+        /// <param name="card">使用するカード</param>
+        /// <returns>移動する位置</returns>
         public int SelectMoveLogic(int enemy, int player, CardModel card)
         {
             var canSelect = new List<int>();

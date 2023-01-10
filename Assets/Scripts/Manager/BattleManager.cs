@@ -14,7 +14,7 @@ namespace Manager
 
         [SerializeField] protected CardSlot slotPrefab;
         [SerializeField] protected Transform cardManager;
-        [SerializeField] protected DecisionButton decisionButton;
+        [SerializeField] protected ButtonController decisionButton;
         [SerializeField] protected UltimateButton ultimateButton;
         [SerializeField] protected CardSlot[] battleSlots;
         [SerializeField] protected CardSlot[] enemySlots;

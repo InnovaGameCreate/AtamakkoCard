@@ -6,50 +6,47 @@ using UnityEngine.UI;
 
 namespace Stamp
 {
+    /// <summary>
+    /// スタンプ機能を管理するクラス
+    /// </summary>
     public class StampManager : MonoBehaviourPunCallbacks
     {
-        // [SerializeField] private List<GameObject> buttons;
-        
-        [SerializeField] private List<InputStamp> _listStamp;
-        [SerializeField] private List<Sprite> _listSprites;
+        [SerializeField] private List<InputStamp> listStamp; // 
+        [SerializeField] private List<Sprite> listSprites;
+        [SerializeField] private GameObject mStamp;
 
-        private GameObject _mStamp;
-        private GameObject _obj;
-        private readonly Vector3 _myStamp = new Vector3(0, -80);
-        private readonly Vector3 _enemyStamp = new Vector3(0, 80);
+        private GameObject _obj; // スタンプのオブジェクト
+        private readonly Vector3 _myStamp = new(0, -80); // 自身のスタンプの位置
+        private readonly Vector3 _enemyStamp = new(0, 80); // 相手のスタンプの位置
         
-        // Start is called before the first frame update
         private void Start()
         {
-            /* 
-            foreach (var stamps in buttons)
-            {
-                _listStamp.Add(stamps.GetComponent<InputStamp>());
-                _listSprites.Add(stamps.GetComponent<Image>().sprite);
-            }
-             */
-            
-            _mStamp = (GameObject) Resources.Load("Prefab/IStamp");
-            foreach (var inputStamp in _listStamp)
+            foreach (var inputStamp in listStamp)
+                // スタンプが押されたときの処理
                 inputStamp.OnClickStamp
                     .Subscribe(stampID =>
                     {
-                        SendStamp(_myStamp, stampID);
-                        photonView.RPC(nameof(SendStamp), RpcTarget.Others, _enemyStamp, stampID);
+                        SendStamp(true, stampID);
+                        photonView.RPC(nameof(SendStamp), RpcTarget.Others, false, stampID);
                     })
                     .AddTo(this);
         }
 
+        /// <summary>
+        /// スタンプを表示する。
+        /// </summary>
+        /// <param name="isMine">自分のスタンプかどうか</param>
+        /// <param name="stampID">スタンプID</param>
         [PunRPC]
-        private void SendStamp(Vector3 vector3, byte stampID)
+        private void SendStamp(bool isMine, byte stampID)
         {
             if (_obj != null)
             {
                 Destroy(_obj);
             }
-            _obj = Instantiate(_mStamp, vector3, Quaternion.identity);
-            _obj.GetComponent<Image>().sprite = _listSprites[stampID];
-            _obj.transform.SetParent(this.transform, false);
+            _obj = isMine ? Instantiate(mStamp, _myStamp, Quaternion.identity) : Instantiate(mStamp, _enemyStamp, Quaternion.identity);
+            _obj.GetComponent<Image>().sprite = listSprites[stampID];
+            _obj.transform.SetParent(transform, false);
         }
     }
 

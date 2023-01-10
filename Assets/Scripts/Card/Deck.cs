@@ -6,6 +6,6 @@ namespace Card
     [CreateAssetMenu(menuName = "Creat Deck", fileName = "Deck")]
     public class Deck : ScriptableObject
     {
-        public List<int> cardIDList;
+        public List<int> cardIDList; // デッキに入っているカードID
     }
 }

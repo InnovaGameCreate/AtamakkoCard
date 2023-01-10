@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Manager;
 using UI;
 using UniRx;
@@ -8,28 +7,28 @@ using UnityEngine.UI;
 
 namespace Card
 {
+    /// <summary>
+    /// カードスロットクラス
+    /// </summary>
     public class CardSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-
+        // 使用するスロットの処理
         public ReactiveProperty<bool> MySelect { get; set; } = new ReactiveProperty<bool>(false);
-
-        private CardController _cardController;
-        public CardController MyCard => _cardController;
-
         private Image _selectImage;
         private static readonly Color SelectColor = new Color(255, 0, 0);
 
-        [SerializeField] private GameObject cardPrefab;
-        private PredictionManager _predictionManager;
-        private List<GameObject> _areaObjects;
-
-        public int MyCardID { get; private set; } = -1;
-
+        [SerializeField] private GameObject cardPrefab; // カードのプレハブ
+        public CardController MyCard { get; private set; } // スロット内のカード
+        public int MyCardID { get; private set; } = -1; // 持っているカードID
+        private PredictionManager _predictionManager; // 予測間合い
+        
         void Start()
         {
             _selectImage = gameObject.GetComponent<Image>();
-            MySelect.Subscribe(b => { _selectImage.color = b ? SelectColor : Color.clear; }).AddTo(this);
             _predictionManager = FindObjectOfType<PredictionManager>();
+            // 使用するスロットの色を変える
+            MySelect.Subscribe(b => { _selectImage.color = b ? SelectColor : Color.clear; }).AddTo(this);
+            // 戦闘フェイズ時に空のスロットを消す
             BattleManager.Instance.CurrentState
                 .Where(s => s == GameState.Battle)
                 .Subscribe(_ =>
@@ -43,14 +42,18 @@ namespace Card
             
         }
 
+        /// <summary>
+        /// カードを生成する。
+        /// </summary>
+        /// <param name="cardID">カードID</param>
         public void CreateCard(int cardID)
         {
             MyCardID = cardID;
             if (cardID >= 0)
             {
                 var card = Instantiate(cardPrefab, transform);
-                _cardController = card.GetComponent<CardController>();
-                _cardController.Init(MyCardID);
+                MyCard = card.GetComponent<CardController>();
+                MyCard.Init(MyCardID);
             }
             else
             {
@@ -58,6 +61,9 @@ namespace Card
             }
         }
 
+        /// <summary>
+        /// カードを消す。
+        /// </summary>
         public void DeleteCard()
         {
             MyCardID = -1;
@@ -66,10 +72,13 @@ namespace Card
                 Destroy(childObj.gameObject);
             }
         }
-
+        
+        /// <summary>
+        /// カードを裏返す。
+        /// </summary>
         public void FlipOver()
         {
-            _cardController.view.backCard.SetActive(!_cardController.view.backCard.activeSelf);
+            MyCard.view.backCard.SetActive(!MyCard.view.backCard.activeSelf);
         }
 
         public bool IsVisible(string[] cardData)
@@ -77,17 +86,21 @@ namespace Card
             return true;
         }
 
+        /// <summary>
+        /// カードをかざした時に間合いを表示する
+        /// </summary>
+        /// <param name="eventData">マウスポインタ</param>
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (MyCardID < 0 || _cardController == null) return;
+            if (MyCardID < 0 || MyCard == null) return;
             if (BattleManager.Instance.CurrentState.Value != GameState.Select) return;
-            switch (_cardController.Model.Kind)
+            switch (MyCard.Model.Kind)
             {
                 case "攻撃":
                 {
-                    for (int i = 0; i < _cardController.Model.Attack.Length; i++)
+                    for (int i = 0; i < MyCard.Model.Attack.Length; i++)
                     {
-                        if (_cardController.Model.Attack[i] == "〇")
+                        if (MyCard.Model.Attack[i] == "〇")
                         {
                             _predictionManager.Show(i, true);
                         }
@@ -97,9 +110,9 @@ namespace Card
                 }
                 case "移動":
                 {
-                    for (int i = 0; i < _cardController.Model.Move.Length; i++)
+                    for (int i = 0; i < MyCard.Model.Move.Length; i++)
                     {
-                        if (_cardController.Model.Move[i] == "〇")
+                        if (MyCard.Model.Move[i] == "〇")
                         {
                             _predictionManager.Show(i, false);
                         }
@@ -110,9 +123,13 @@ namespace Card
             }
         }
 
+        /// <summary>
+        /// かざしていないとき表示した間合いを非表示にする。
+        /// </summary>
+        /// <param name="eventData">マウスポインタ</param>
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (MyCardID < 0 || _cardController == null) return;
+            if (MyCardID < 0 || MyCard == null) return;
             if (BattleManager.Instance.CurrentState.Value != GameState.Select) return;
             _predictionManager.Hide();
         }

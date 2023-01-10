@@ -4,15 +4,22 @@ using UnityEngine.UI;
 
 namespace Card
 {
+    /// <summary>
+    /// カードの見た目を設定するクラス
+    /// </summary>
     public class CardView : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI nameText, iniText, expText;
-        [SerializeField] private Image cardSprite;
-        [SerializeField] private CardTypeIcon cardTypeIcon;
-        [SerializeField] private GameObject place;
-        public GameObject backCard;
-        public GameObject shadow;
+        [SerializeField] private TextMeshProUGUI nameText, iniText, expText; // 名前，先制度，説明文
+        [SerializeField] private Image cardSprite; // カードアイコン
+        [SerializeField] private CardTypeIcon cardTypeIcon; // カードの種類アイコン
+        [SerializeField] private GameObject place; // カードの間合い
+        public GameObject backCard; // カードの裏側
+        public GameObject shadow; // 影
 
+        /// <summary>
+        /// カードの見た目を設定する。
+        /// </summary>
+        /// <param name="cardModel">カードデータ</param>
         public void Show(CardModel cardModel)
         {
             nameText.text = cardModel.Name;

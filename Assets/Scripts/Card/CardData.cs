@@ -6,6 +6,9 @@ using UnityEngine.Networking;
 
 namespace Card
 {
+    /// <summary>
+    /// スプレッドシートからカードのデータを取ってくるクラス
+    /// </summary>
     public class CardData : MonoBehaviour
     {
         private const string SheetID = "10ffaXstejMSgOXv8xDcLqIRntThBsr5R76YawNDt4uM";
@@ -13,6 +16,10 @@ namespace Card
     
         public static List<string[]> CardDataArrayList;
 
+        /// <summary>
+        /// カードのデータを取得する。
+        /// </summary>
+        /// <returns>データを持ってくるまで</returns>
         public static IEnumerator GetData()
         {
             UnityWebRequest request = UnityWebRequest.Get("https://docs.google.com/spreadsheets/d/"+SheetID+"/gviz/tq?tqx=out:csv&sheet="+SheetName);
@@ -28,6 +35,11 @@ namespace Card
             }
         }
 
+        /// <summary>
+        /// 取得したカード情報を整理する。
+        /// </summary>
+        /// <param name="text">取得したカード情報</param>
+        /// <returns>整理したカード情報</returns>
         static List<string[]> ConvertToArrayListFrom(string text)
         {
             List<string[]> cardDataStringsList = new List<string[]>();

@@ -2066,6 +2066,7 @@ MonoBehaviour:
   uiUltimate: {fileID: 483223089}
   ultimate: 0
   playerData: {fileID: 719954269}
+  se: 3
 --- !u!114 &367618023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2438,7 +2439,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotPrefab: {fileID: 5094284188052895845, guid: a2e259a45e1d9f34fbdf6e2a721eee9f, type: 3}
   cardManager: {fileID: 1662660821}
-  decisionButton: {fileID: 1440085936}
+  decisionButton: {fileID: 0}
   ultimateButton: {fileID: 1802493115}
   battleSlots:
   - {fileID: 1332649876}
@@ -3012,12 +3013,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7589beceabb98b6449d05d24384fd73c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _listStamp:
+  listStamp:
   - {fileID: 1068044418}
   - {fileID: 1481006724}
-  _listSprites:
+  listSprites:
   - {fileID: 21300000, guid: 23fa42237671abf4f95abea795c51d27, type: 3}
   - {fileID: 21300000, guid: f9ff9d62025b7324981af71fb9aceaad, type: 3}
+  mStamp: {fileID: 2983254441436719102, guid: 7d6be7f96b10af34b8d14708d8d93779, type: 3}
 --- !u!114 &479403900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3991,6 +3993,7 @@ MonoBehaviour:
   uiUltimate: {fileID: 483223089}
   ultimate: 1
   playerData: {fileID: 719954269}
+  se: 3
 --- !u!1 &756290052
 GameObject:
   m_ObjectHideFlags: 0
@@ -5301,6 +5304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38dc8fcc3f6ae6b41b413739bd5b62e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonID: 0
   button: {fileID: 1068044415}
 --- !u!1 &1088370098
 GameObject:
@@ -5438,7 +5442,7 @@ MonoBehaviour:
   - {fileID: 1332649876}
   - {fileID: 1441495766}
   - {fileID: 1377712188}
-  dButton: {fileID: 1440085936}
+  dButton: {fileID: 0}
 --- !u!1 &1132499910
 GameObject:
   m_ObjectHideFlags: 0
@@ -7130,10 +7134,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1440085930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5c88d4564e2957448a4309ecdb79cca, type: 3}
+  m_Script: {fileID: 11500000, guid: f4709b4adb10b094daf62503945bd9de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bDecision: {fileID: 1440085935}
+  se: 3
 --- !u!114 &1441495766 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5094284188052895845, guid: a2e259a45e1d9f34fbdf6e2a721eee9f, type: 3}
@@ -7400,6 +7404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38dc8fcc3f6ae6b41b413739bd5b62e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonID: 1
   button: {fileID: 1481006721}
 --- !u!1 &1492491031
 GameObject:
@@ -8030,6 +8035,7 @@ MonoBehaviour:
   uiUltimate: {fileID: 483223089}
   ultimate: 3
   playerData: {fileID: 719954269}
+  se: 3
 --- !u!1001 &1657947238
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8657,6 +8663,7 @@ MonoBehaviour:
   uiUltimate: {fileID: 483223089}
   ultimate: 2
   playerData: {fileID: 719954269}
+  se: 3
 --- !u!1001 &1675475856
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9413,6 +9420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiUltimate: {fileID: 483223089}
+  se: 3
 --- !u!1 &1863361209
 GameObject:
   m_ObjectHideFlags: 0
