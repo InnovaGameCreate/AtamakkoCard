@@ -119,12 +119,15 @@ namespace Atamakko
             {
                 case UltimateState.Attack:
                     AtamakkoData.DamageCorrection += 1;
+                    UsedUltimate = true;
                     break;
                 case UltimateState.Recover:
                     AtamakkoData.MyHp.Value += 3;
+                    UsedUltimate = true;
                     break;
                 case UltimateState.Speed:
                     AtamakkoData.SpeedCorrection += 1;
+                    UsedUltimate = true;
                     break;
             }
         }

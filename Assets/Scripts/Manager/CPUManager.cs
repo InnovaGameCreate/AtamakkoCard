@@ -14,11 +14,13 @@ namespace Manager
 {
     public class CPUManager : BattleManager
     {
+        // 名前
         [SerializeField] private TextMeshProUGUI playerName;
         [SerializeField] private TextMeshProUGUI enemyName;
-        /*
-         * ゲームをスタートする前に行う関数
-         */
+
+        /// <summary>
+        /// 待ちフェイズ
+        /// </summary>
         protected override async void WaitingGame()
         {
             playerName.text = PlayerConfig.PlayerName;
@@ -28,9 +30,9 @@ namespace Manager
             _CurrentState.Value = GameState.Init;
         }
 
-        /*
-         * ゲーム開始時に行う関数
-         */
+        /// <summary>
+        /// スタートフェイズ
+        /// </summary>
         protected override async void StartGame()
         {
             // カードデータを取得
@@ -68,9 +70,9 @@ namespace Manager
             _CurrentState.Value = GameState.Draw;
         }
 
-        /*
-         * ドローフェーズ関数
-         */
+        /// <summary>
+        /// ドローフェーズ
+        /// </summary>
         protected override async void DrawFaze()
         {
             if (Player.CheckDeck()) // 自デッキにカードがないなら
@@ -98,17 +100,20 @@ namespace Manager
                 }
             }
 
+            // 選択フェイズへ
             _CurrentState.Value = GameState.Select;
         }
 
-        /*
-         * セレクトフェーズ関数
-         */
+        /// <summary>
+        /// 選択フェイズ
+        /// </summary>
         protected override async void SelectFaze()
         {
             // デッキ情報を更新
             var playerList = Player.GetDeck();
             var enemyList = Enemy.GetDeck();
+            Player.ResetCorrection();
+            Enemy.ResetCorrection();
             foreach (Transform childObj in playerContent.transform)
             {
                 Destroy(childObj.gameObject);
@@ -131,6 +136,7 @@ namespace Manager
             }
 
             CardMobile = true;
+            settingPlace.SetActive(true);
             
             ultimateButton.MyInteractable = !Player.UsedUltimate; // 必殺技を使っているかどうかを判断
             decisionButton.Pushed // 決定ボタンが押されたとき
@@ -144,34 +150,26 @@ namespace Manager
             await TimeCounter.Instance.CountDown(120);    // カウントタイマー起動（120s）
             CardMobile = false;
             ultimateButton.MyInteractable = false;  // 必殺技ボタンのOFF
-            if (Player.AtamakkoData.UltimateState != UltimateState.Normal) // 必殺技を指定していたら
-            {
-                Player.UsedUltimate = true;   // 必殺技を使用済みに
-            }
+            settingPlace.SetActive(false);
             
             // 敵の行動情報を受け取る
             Enemy.CardSelect(); // CPUがカードを選択する
             Enemy.UltimateSelect();
 
+            // 敵のカードを表示する
             for (int i = 0; i < battleSlots.Length; i++)
             {
                 Player.SetSettingCard(battleSlots[i].MyCardID);
                 EnemyCard(i, Enemy.GetNowCardID(i));
             }
             
+            // 戦闘フェイズへ
             _CurrentState.Value = GameState.Battle;
         }
 
-        /*
-         * CPUがカード選択するフェーズ
-        
-        private void ReceiveEnemyCard()
-        {
-            _cpuSettingCard = _cpu.SelectCard(_cpuHandCard);
-            _enemyData.UltimateState = _cpu.SelectUltimate(_enemyData);
-        }
-         */
-
+        /// <summary>
+        /// 戦闘フェイズ
+        /// </summary>
         protected override async void BattleFaze()
         {
             // 必殺技を選択している
@@ -231,25 +229,33 @@ namespace Manager
                 enemySlots[i].DeleteCard();
             }
             
+            // 使用済みカードへ
             Player.TrashCard();
             Enemy.TrashCard();
             
+            // 必殺技をNormalへ
             Player.AtamakkoData.UltimateState = UltimateState.Normal;
             Enemy.AtamakkoData.UltimateState = UltimateState.Normal;
             
+            // ドローフェイズへ
             _CurrentState.Value = GameState.Draw;
         }
 
+        /// <summary>
+        /// 各スロットで戦闘を行う
+        /// </summary>
+        /// <param name="slotNum">スロット番号</param>
         private async UniTask Battle(int slotNum)
         {
+            // カード生成
             var myCard = new CardModel(CardData.CardDataArrayList[Player.GetNowCardID(slotNum)]);
             var enemyCard = new CardModel(CardData.CardDataArrayList[Enemy.GetNowCardID(slotNum)]);
+            // 先制度取得
             int myInitiative = Player.GetInitiative(myCard.Initiative);
             int enemyInitiative = Enemy.GetInitiative(enemyCard.Initiative);
             await UniTask.Delay(10);
-            Debug.Log("自分のポジション：" + Player.AtamakkoData.MyPosition);
-            Debug.Log("相手のポジション：" + Enemy.AtamakkoData.MyPosition);
 
+            // 優先度の処理
             if (myInitiative == enemyInitiative && myCard.Kind == enemyCard.Kind)
             {
                 if (myCard.Kind == "攻撃")
@@ -328,6 +334,10 @@ namespace Manager
             await UniTask.Delay(10);
         }
 
+        /// <summary>
+        /// プレイヤーの行動を処理する
+        /// </summary>
+        /// <param name="card">使用したカード</param>
         private async UniTask PlayerTurn(CardModel card)
         {
             if (card.Kind == "攻撃")
@@ -382,6 +392,10 @@ namespace Manager
             }
         }
 
+        /// <summary>
+        /// 敵の行動を処理する。
+        /// </summary>
+        /// <param name="card">使用したカード</param>
         private async UniTask EnemyTurn(CardModel card)
         {
             if (card.Kind == "攻撃")
@@ -403,12 +417,21 @@ namespace Manager
             }
         }
 
+        /// <summary>
+        /// 敵のカードを生成する
+        /// </summary>
+        /// <param name="sID">スロット番号</param>
+        /// <param name="cID">カードID</param>
         private void EnemyCard(int sID, int cID)
         {
             enemySlots[sID].CreateCard(cID);
             enemySlots[sID].FlipOver();
         }
 
+        /// <summary>
+        /// カードスロットを生成する。
+        /// </summary>
+        /// <param name="cData">カードID</param>
         void CreateSlot(int cData)
         {
             var slot = Instantiate(slotPrefab, cardManager);
