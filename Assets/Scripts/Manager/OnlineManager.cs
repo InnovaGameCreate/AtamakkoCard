@@ -13,19 +13,23 @@ using UnityEngine;
 
 namespace Manager
 {
+    /// <summary>
+    /// オンライン戦の戦闘システムを管理するクラス
+    /// </summary>
     public class OnlineManager : BattleManager
     {
+        // 名前
         [SerializeField] private TextMeshProUGUI playerName;
         [SerializeField] private TextMeshProUGUI enemyName;
+        
+        private bool _getData; // データを受け取ったかどうか
+        private List<int> _enemyDeck; // 敵のデッキ
+        private int _enemyDamage; // 敵のダメージ
+        private int _enemyPlace; // 敵の位置
 
-        private bool _getData;
-        private List<int> _enemyDeck;
-        private int _enemyDamage;
-        private int _enemyPlace;
-
-        /*
-         * ゲームをスタートする前に行う関数
-         */
+        /// <summary>
+        /// 待ちフェイズ
+        /// </summary>
         protected override async void WaitingGame()
         {
             PhotonNetwork.OfflineMode = false;
@@ -34,12 +38,13 @@ namespace Manager
             photonView.RPC(nameof(SetEnemyName), RpcTarget.Others, playerName.text);
 
             await TimeCounter.Instance.CountDown(3);
+            // スタートフェイズへ
             _CurrentState.Value = GameState.Init;
         }
 
-        /*
-         * ゲーム開始時に行う関数
-         */
+        /// <summary>
+        /// スタートフェイズ
+        /// </summary>
         protected override async void StartGame()
         {
             // カードデータを取得
@@ -49,6 +54,7 @@ namespace Manager
             var playerDeck = PlayerConfig.Deck;
             photonView.RPC(nameof(SendDeck), RpcTarget.Others, playerDeck.ToArray());
             
+            // データを受け取るまで待機
             await UniTask.WaitUntil((() => _getData));
             _getData = false;
             await UniTask.Delay(10);
@@ -76,38 +82,38 @@ namespace Manager
                 })
                 .AddTo(this);
             
-            // ドローフェーズへ
+            // ドローフェイズへ
             _CurrentState.Value = GameState.Draw;
         }
 
+        /// <summary>
+        /// 敵の名前を受け取る。
+        /// </summary>
+        /// <param name="text">名前</param>
         [PunRPC]
         private void SetEnemyName(string text)
         {
             enemyName.text = text;
         }
 
-        /*
-         * ドローフェーズ関数
-         */
+        /// <summary>
+        /// ドローフェーズ
+        /// </summary>
         protected override async void DrawFaze()
         {
             if (Player.CheckDeck()) // 自デッキにカードがないなら
             {
-                Player.RefillDeck(); // デッキを補充する
+                // デッキを補充する
+                Player.RefillDeck();
                 photonView.RPC(nameof(SendDeck), RpcTarget.Others, Player.GetDeck().ToArray());
                 
+                // データを受け取るまで待機
                 await UniTask.WaitUntil((() => _getData));
                 _getData = false;
                 await UniTask.Delay(10);
                 
                 Enemy.SetDeck(_enemyDeck);
             }
-            /*
-            if (Enemy.CheckDeck()) // 敵デッキにカードがないなら
-            {
-                Enemy.RefillDeck(); // デッキを補充する
-            }
-            */
             
             if (playerHand.transform.childCount <= 0)   // 手持ちにカードがないなら
             {
@@ -123,19 +129,22 @@ namespace Manager
                 }
             }
 
+            // 選択フェイズへ
             _CurrentState.Value = GameState.Select;
         }
 
-        /*
-         * セレクトフェーズ関数
-         */
+        /// <summary>
+        /// 選択フェイズ
+        /// </summary>
         protected override async void SelectFaze()
         {
             // デッキ情報を更新
             var playerList = Player.GetDeck();
             var enemyList = Enemy.GetDeck();
+            // 補正を初期化する
             Player.ResetCorrection();
             Enemy.ResetCorrection();
+            // 山札情報をクリアする
             foreach (Transform childObj in playerContent.transform)
             {
                 Destroy(childObj.gameObject);
@@ -145,6 +154,7 @@ namespace Manager
                 Destroy(childObj.gameObject);
             }
             await UniTask.Delay(10);
+            // 山札情報を元に表示する
             foreach (var cardID in playerList)
             {
                 var card = Instantiate(cardPrefab, playerContent.transform);
@@ -156,7 +166,8 @@ namespace Manager
                 card.GetComponent<CardController>().Init(cardID);
             }
 
-            CardMobile = true;
+            CardMobile = true; // カードを移動可能に
+            settingPlace.SetActive(true); // セットエフェクトを表示
             
             ultimateButton.MyInteractable = !Player.UsedUltimate; // 必殺技を使っているかどうかを判断
             decisionButton.Pushed // 決定ボタンが押されたとき
@@ -168,54 +179,41 @@ namespace Manager
                 })
                 .AddTo(this);
 
-            Debug.Log("waiting");
             await TimeCounter.Instance.CountDown(120);    // カウントタイマー起動（120s）
             CardMobile = false;
-            Debug.Log("start");
-            
+            settingPlace.SetActive(false);
             ultimateButton.MyInteractable = false;  // 必殺技ボタンのOFF
-            if (Player.AtamakkoData.UltimateState != UltimateState.Normal) // 必殺技を指定していたら
-            {
-                Player.UsedUltimate = true;   // 必殺技を使用済みに
-            }
-            
-            // 敵の行動情報を受け取る
-            //Enemy.CardSelect(); // CPUがカードを選択する
-            //Enemy.UltimateSelect();
 
+            // セットしたカードIDを得る
             foreach (var t in battleSlots)
             {
                 Player.SetSettingCard(t.MyCardID);
             }
 
+            // セットしたカードIDを送る
             photonView.RPC(nameof(SendSelectFaze), 
                     RpcTarget.Others, 
                     Player.GetSettingCards().ToArray(), 
                     Player.AtamakkoData.UltimateState);
             
-            
+            // データを受け取るまで待機
             await UniTask.WaitUntil(() => _getData);
             _getData = false;
             await UniTask.Delay(10);
 
+            // 敵のカードを表示する
             for (int i = 0; i < enemySlots.Length; i++)
             {
                 EnemyCard(i, Enemy.GetNowCardID(i));
             }
             
+            // 戦闘フェイズへ
             _CurrentState.Value = GameState.Battle;
         }
 
-        /*
-         * CPUがカード選択するフェーズ
-        
-        private void ReceiveEnemyCard()
-        {
-            _cpuSettingCard = _cpu.SelectCard(_cpuHandCard);
-            _enemyData.UltimateState = _cpu.SelectUltimate(_enemyData);
-        }
-         */
-
+        /// <summary>
+        /// 戦闘フェイズ
+        /// </summary>
         protected override async void BattleFaze()
         {
             // 必殺技を選択している
@@ -259,6 +257,7 @@ namespace Manager
             }
             Enemy.UseUltimate();
 
+            // スロットごとに戦闘処理を行う
             for (int i = 0; i < battleSlots.Length; i++)
             {
                 enemySlots[i].FlipOver();   // 相手カードを見えるように
@@ -275,23 +274,33 @@ namespace Manager
                 enemySlots[i].DeleteCard();
             }
             
+            // 使用済みカードへ
             Player.TrashCard();
             Enemy.TrashCard();
             
+            // 必殺技をNormalへ
             Player.AtamakkoData.UltimateState = UltimateState.Normal;
             Enemy.AtamakkoData.UltimateState = UltimateState.Normal;
             
+            // ドローフェイズへ
             _CurrentState.Value = GameState.Draw;
         }
 
+        /// <summary>
+        /// 各スロットで戦闘を行う
+        /// </summary>
+        /// <param name="slotNum">スロット番号</param>
         private async UniTask Battle(int slotNum)
         {
+            // カード生成
             var myCard = new CardModel(CardData.CardDataArrayList[Player.GetNowCardID(slotNum)]);
             var enemyCard = new CardModel(CardData.CardDataArrayList[Enemy.GetNowCardID(slotNum)]);
+            // 先制度取得
             int myInitiative = Player.GetInitiative(myCard.Initiative);
             int enemyInitiative = Enemy.GetInitiative(enemyCard.Initiative);
             await UniTask.Delay(10);
 
+            // 優先度の処理
             if (myInitiative == enemyInitiative && myCard.Kind == enemyCard.Kind)
             {
                 if (myCard.Kind == "攻撃")
@@ -316,10 +325,6 @@ namespace Manager
                     await TimeCounter.Instance.CountDown(30);
 
                     int myDamage = Player.GetDamage(myCard.Damage);
-                    /*
-                    int enemyDamage = Enemy.GetDamage(enemyCard.Damage);
-                    int enemyAttack = Enemy.AttackSelect(Player.AtamakkoData.MyPosition, enemyCard);
-                    */
                     photonView.RPC(nameof(SendAction), RpcTarget.Others, myDamage, playerAttack);
 
                     await UniTask.WaitUntil(() => _getData);
@@ -369,11 +374,7 @@ namespace Manager
                     await UniTask.WaitUntil(() => _getData);
                     _getData = false;
                     await UniTask.Delay(10);
-                    
-                    /*
-                    int enemyMove = Enemy.MoveSelect(Player.AtamakkoData.MyPosition, enemyCard);
-                    */
-                    
+
                     Player.Move(playerMove);
                     if (myCard.Additional == "〇" && Enemy.AtamakkoData.MyPosition == playerMove)
                     {
@@ -402,6 +403,10 @@ namespace Manager
             await UniTask.Delay(10);
         }
 
+        /// <summary>
+        /// デッキ情報を送る。
+        /// </summary>
+        /// <param name="deck">デッキ内のカードID</param>
         [PunRPC]
         private void SendDeck(int[] deck)
         {
@@ -410,6 +415,11 @@ namespace Manager
             _getData = true;
         }
 
+        /// <summary>
+        /// 選択フェイズでの情報を送る。
+        /// </summary>
+        /// <param name="setting">セットしたカードID</param>
+        /// <param name="ultimateState">必殺技</param>
         [PunRPC]
         private void SendSelectFaze(int[] setting, UltimateState ultimateState)
         {
@@ -419,6 +429,11 @@ namespace Manager
             _getData = true;
         }
 
+        /// <summary>
+        /// 選択した行動のデータを送る
+        /// </summary>
+        /// <param name="damage">ダメージ</param>
+        /// <param name="place">選択した位置</param>
         [PunRPC]
         private void SendAction(int damage, int place)
         {
@@ -427,6 +442,10 @@ namespace Manager
             _getData = true;
         }
 
+        /// <summary>
+        /// プレイヤーの行動を処理する
+        /// </summary>
+        /// <param name="card">使用したカード</param>
         private async UniTask PlayerTurn(CardModel card)
         {
             if (card.Kind == "攻撃")
@@ -494,6 +513,10 @@ namespace Manager
             }
         }
 
+        /// <summary>
+        /// 敵の行動を処理する。
+        /// </summary>
+        /// <param name="card">使用したカード</param>
         private async UniTask EnemyTurn(CardModel card)
         {
             await UniTask.WaitUntil(() => _getData);
@@ -502,10 +525,6 @@ namespace Manager
             
             if (card.Kind == "攻撃")
             {
-                /*
-                int enemyDamage = Enemy.GetDamage(card.Damage);
-                int attackPosition = Enemy.AttackSelect(Player.AtamakkoData.MyPosition, card);
-                */
                 if (Player.AtamakkoData.MyPosition == _enemyPlace)
                 {
                     Player.AddDamage(_enemyDamage);
@@ -518,7 +537,6 @@ namespace Manager
 
             if (card.Kind == "移動")
             {
-                //int movePosition = Enemy.MoveSelect(Player.AtamakkoData.MyPosition, card);
                 Enemy.Move(_enemyPlace);
                 if (card.Additional == "〇" && Player.AtamakkoData.MyPosition == _enemyPlace)
                 {
@@ -528,18 +546,31 @@ namespace Manager
             }
         }
 
+        /// <summary>
+        /// 敵のカードを生成する
+        /// </summary>
+        /// <param name="sID">スロット番号</param>
+        /// <param name="cID">カードID</param>
         private void EnemyCard(int sID, int cID)
         {
             enemySlots[sID].CreateCard(cID);
             enemySlots[sID].FlipOver();
         }
 
+        /// <summary>
+        /// カードスロットを生成する。
+        /// </summary>
+        /// <param name="cData">カードID</param>
         void CreateSlot(int cData)
         {
             var slot = Instantiate(slotPrefab, cardManager);
             slot.CreateCard(cData);
         }
 
+        /// <summary>
+        /// 相手が退出したときの処理
+        /// </summary>
+        /// <param name="otherPlayer"></param>
         public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
         {
             if (_CurrentState.Value != GameState.End)

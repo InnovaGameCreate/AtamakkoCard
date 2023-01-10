@@ -7,15 +7,20 @@ using UnityEngine.Playables;
 
 namespace Manager
 {
+    /// <summary>
+    /// アニメーションを管理するクラス
+    /// </summary>
     public class AnimationManager : MonoBehaviour
     {
-        public static AnimationManager Instance;
+        public static AnimationManager Instance; // インスタンス
         
+        // 必殺技のカットイン
         [SerializeField] private GameObject pUltimateCutIn;
         private PlayableDirector _pUltimateDirector;
         [SerializeField] private GameObject eUltimateCutIn;
         private PlayableDirector _eUltimateDirector;
 
+        // 勝敗時のアニメーション
         private bool _winner;
         [SerializeField] private GameObject backgroundPanel;
         private PlayableDirector _resultIn;
@@ -25,6 +30,7 @@ namespace Manager
         private PlayableDirector _loserIn;
         [SerializeField] private GameObject lobbyButton;
 
+        // 攻撃のアニメーション
         [SerializeField] private GameObject attackEffect;
         private GameObject _aEffectPrefab;
         private PlayableDirector _attackIn;
@@ -32,6 +38,7 @@ namespace Manager
 
         private void Awake()
         {
+            // シングルトン化
             if (Instance == null)
             {
                 Instance = this;
@@ -55,12 +62,16 @@ namespace Manager
             _loserIn.stopped += Result_Stopped;
         }
 
-        public void MyUltimateCutIn(UltimateState UltimateType)
+        /// <summary>
+        /// 自身の必殺技のカットイン
+        /// </summary>
+        /// <param name="ultimateType">必殺技の種類</param>
+        public void MyUltimateCutIn(UltimateState ultimateType)
         {
             //var token = this.GetCancellationTokenOnDestroy();
             //_pUltimateDirector.Play();
 
-            switch (UltimateType)//使用するアルティメットに対応するエフェクトを再生する。
+            switch (ultimateType)//使用するアルティメットに対応するエフェクトを再生する。
             {
                 case UltimateState.Recover:
                     EffectManager.Instance.InstantiateEffect(EffectType.specialHeal, transform);//体力回復アルティメットの使用エフェクト
@@ -71,12 +82,13 @@ namespace Manager
                 case UltimateState.Speed:
                     EffectManager.Instance.InstantiateEffect(EffectType.specialSpeedUp, transform);//先制度上昇アルティメットの使用エフェクト
                     break;
-                default:
-                    break;
             }
             //await UniTask.Delay(TimeSpan.FromSeconds(_pUltimateDirector.duration), cancellationToken:token);
         }
         
+        /// <summary>
+        /// 敵の必殺技のカットイン
+        /// </summary>
         public async UniTask EnUltimateCutIn()
         {
             var token = this.GetCancellationTokenOnDestroy();
@@ -84,6 +96,10 @@ namespace Manager
             await UniTask.Delay(TimeSpan.FromSeconds(_eUltimateDirector.duration), cancellationToken:token);
         }
 
+        /// <summary>
+        /// 勝敗結果の挿入
+        /// </summary>
+        /// <param name="result">勝敗</param>
         public async void ResultFadeIn(bool result)
         {
             _winner = result;
@@ -92,6 +108,10 @@ namespace Manager
             _resultIn.Play();
         }
 
+        /// <summary>
+        /// 攻撃エフェクト
+        /// </summary>
+        /// <param name="num">攻撃位置</param>
         public async UniTask AttackEffect(int num)
         {
             var token = this.GetCancellationTokenOnDestroy();
@@ -101,6 +121,10 @@ namespace Manager
             _attackIn.Play();
         }
 
+        /// <summary>
+        /// 勝敗結果エフェクトのスタート
+        /// </summary>
+        /// <param name="obj"></param>
         private async void Result_Started(PlayableDirector obj)
         {
             if (_winner)
@@ -117,6 +141,10 @@ namespace Manager
             }
         }
 
+        /// <summary>
+        /// 勝敗結果エフェクト終了後にロビーに戻るボタン配置
+        /// </summary>
+        /// <param name="obj"></param>
         private void Result_Stopped(PlayableDirector obj)
         {
             lobbyButton.SetActive(true);

@@ -53,10 +53,8 @@ namespace Atamakko
         /// </summary>
         public void UltimateSelect()
         {
-            if (!UsedUltimate)
-            {
-                AtamakkoData.UltimateState = _enemy.SelectUltimateLogic(AtamakkoData);
-            }
+            if (!UsedUltimate) AtamakkoData.UltimateState = _enemy.SelectUltimateLogic(AtamakkoData);
+            if (AtamakkoData.UltimateState != UltimateState.Normal) UsedUltimate = true;
         }
 
         /// <summary>

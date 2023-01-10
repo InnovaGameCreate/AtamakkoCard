@@ -7,36 +7,43 @@ using UnityEngine;
 
 namespace Manager
 {
+    /// <summary>
+    /// 戦闘システムを管理するクラス
+    /// </summary>
     public class BattleManager : MonoBehaviourPunCallbacks
     {
+        // 現在のフェイズ
         public IReadOnlyReactiveProperty<GameState> CurrentState => _CurrentState;
         protected readonly ReactiveProperty<GameState> _CurrentState = new ReactiveProperty<GameState>(GameState.Waiting);
 
-        [SerializeField] protected CardSlot slotPrefab;
-        [SerializeField] protected Transform cardManager;
-        [SerializeField] protected ButtonController decisionButton;
-        [SerializeField] protected UltimateButton ultimateButton;
-        [SerializeField] protected CardSlot[] battleSlots;
-        [SerializeField] protected CardSlot[] enemySlots;
-        [SerializeField] protected GameObject playerHand;
-        [SerializeField] protected GameObject playerContent;
-        [SerializeField] protected GameObject enemyContent;
-        [SerializeField] protected GameObject playerObject;
-        [SerializeField] protected GameObject enemyObject;
-        [SerializeField] protected GameObject stage;
-        [SerializeField] protected AttackButton attackButton;
-        [SerializeField] protected MoveButton moveButton;
-        [SerializeField] protected GameObject[] sSlot;
-        [SerializeField] protected GameObject cardPrefab;
-        [SerializeField] protected UltimateInformText informText;
+        [SerializeField] protected CardSlot slotPrefab; // スロットのプレハブ
+        [SerializeField] protected Transform cardManager; // スロットの親
+        [SerializeField] protected ButtonController decisionButton; // 決定ボタン
+        [SerializeField] protected UltimateButton ultimateButton; // 必殺技ボタン
+        [SerializeField] protected CardSlot[] battleSlots; // セット先のスロット
+        [SerializeField] protected CardSlot[] enemySlots; // 敵のスロット
+        [SerializeField] protected GameObject playerHand; // プレイヤーの手札
+        [SerializeField] protected GameObject playerContent; // プレイヤーの山札
+        [SerializeField] protected GameObject enemyContent; // 敵の山札＋手札
+        [SerializeField] protected GameObject playerObject; // プレイヤーのアタマッコ
+        [SerializeField] protected GameObject enemyObject; // 敵のアタマッコ
+        [SerializeField] protected GameObject stage; // ステージ
+        [SerializeField] protected AttackButton attackButton; // 攻撃ボタンのプレハブ
+        [SerializeField] protected MoveButton moveButton; // 移動ボタンのプレハブ
+        [SerializeField] protected GameObject[] sSlot; // フィールドのスロット
+        [SerializeField] protected GameObject cardPrefab; // カードのプレハブ
+        [SerializeField] protected UltimateInformText informText; // 必殺技のテキスト
+        [SerializeField] protected GameObject settingPlace; // セットするエフェクト
+        // アタマッコ
         protected PlayerCore Player;
         protected EnemyCore Enemy;
-        public bool CardMobile { get; protected set; }
+        public bool CardMobile { get; protected set; } // カードを移動可能かどうか
 
-        protected bool YouWin;
+        protected bool YouWin; // 勝敗判定
 
-        public static BattleManager Instance;
+        public static BattleManager Instance; // インスタンス
 
+        // シングルトン化
         private void Awake()
         {
             if (Instance == null)
@@ -61,9 +68,10 @@ namespace Manager
                 .AddTo(this);
         }
 
-        /*
-         * フェーズを切り替える関数
-         */
+        /// <summary>
+        /// フェーズを切り替える。
+        /// </summary>
+        /// <param name="nextState">次のフェイズ</param>
         private void OnStateChanged(GameState nextState)
         {
             switch (nextState)
@@ -86,22 +94,37 @@ namespace Manager
             }
         }
         
+        /// <summary>
+        /// 待ちフェイズ
+        /// </summary>
         protected virtual void WaitingGame()
         {
         }
 
+        /// <summary>
+        /// スタートフェイズ
+        /// </summary>
         protected virtual void StartGame()
         {
         }
 
+        /// <summary>
+        /// ドローフェイズ
+        /// </summary>
         protected virtual void DrawFaze()
         {
         }
 
+        /// <summary>
+        /// 選択フェイズ
+        /// </summary>
         protected virtual void SelectFaze()
         {
         }
         
+        /// <summary>
+        /// 戦闘フェイズ
+        /// </summary>
         protected virtual void BattleFaze()
         {
         }

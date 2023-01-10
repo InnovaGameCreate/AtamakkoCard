@@ -2304,7 +2304,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotPrefab: {fileID: 5094284188052895845, guid: a2e259a45e1d9f34fbdf6e2a721eee9f, type: 3}
   cardManager: {fileID: 1662660821}
-  decisionButton: {fileID: 0}
+  decisionButton: {fileID: 1440085936}
   ultimateButton: {fileID: 1802493115}
   battleSlots:
   - {fileID: 1332649876}
@@ -2331,6 +2331,7 @@ MonoBehaviour:
   - {fileID: 1642038174}
   cardPrefab: {fileID: 593849358202494829, guid: 72c8dea659686e2448a9716aab7123ce, type: 3}
   informText: {fileID: 1889339492}
+  settingPlace: {fileID: 2894617331635650425}
   playerName: {fileID: 3101103556073227716}
   enemyName: {fileID: 1657947240}
 --- !u!1 &399115894
@@ -10145,6 +10146,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SetEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 2125115780563821969, guid: a7e64a27afd7632499cd2646d875b040, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8895650467778705509, guid: a7e64a27afd7632499cd2646d875b040, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
@@ -10238,6 +10243,11 @@ PrefabInstance:
 --- !u!224 &2894617331635650424 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9198723461167534129, guid: a7e64a27afd7632499cd2646d875b040, type: 3}
+  m_PrefabInstance: {fileID: 2894617331635650423}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2894617331635650425 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2125115780563821969, guid: a7e64a27afd7632499cd2646d875b040, type: 3}
   m_PrefabInstance: {fileID: 2894617331635650423}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3101103556073227714
