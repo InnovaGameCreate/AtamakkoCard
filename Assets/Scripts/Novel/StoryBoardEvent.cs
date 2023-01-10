@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using System.story;
 using Arena;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +10,7 @@ namespace storyMode
         /// <summary>
         /// 実装されているシナリオをscenarioTypeで用意する。用意されているもの以外はイベントが起こらない
         /// </summary>
-        private enum scenarioType
+        private enum scenarioType//シナリオの各章
         {
             scenario1,
             scenario2,
@@ -31,14 +30,13 @@ namespace storyMode
         }
         [SerializeField] NovelComment Comment;
         [SerializeField] private GameObject NovelCanvas;
-        [SerializeField] private scenarioType scenario;//どのscenarioに対応するか
+        [SerializeField] private scenarioType scenario;//どのシナリオの章に対応するか
         [SerializeField] private GameObject[] Scene;//シナリオに登場するステージ
-        [SerializeField] private GameObject NestStageCheckPanel;//次のステージへ進むか確認用パネル
+        [SerializeField] private GameObject NextStageCheckPanel;//次のステージへ進むか確認用パネル
         private void Start()
         {
-            NestStageCheckPanel.SetActive(false);
-            Comment.currentChapter = 0;
-            Scene[1].SetActive(false);
+            NextStageCheckPanel.SetActive(false);
+            Comment.currentChapter = 0;//会話chapterを0に初期化
         }
 
         //タイルを選択したときにおこるイベント
@@ -73,18 +71,18 @@ namespace storyMode
                         activeText(7);
                         break;
                     case 9:
-                        //戦闘
-                        encountEnemy(1);
+                        //ジャイアントマンティスとの戦闘:monster01
+                        encountEnemy(23);
                         break;
                     case 10:
                         activeText(8);
                         break;
                     case 11:
                         activeText(9);
+                        //会話終了時dragonとの戦闘
                         break;
                     case 12:
-                        //ドラゴンとの戦闘
-                        //Comment.currentChapter = 10;
+                        activeText(10);
                         break;
                     case 13:
                         activeText(11);
@@ -102,12 +100,14 @@ namespace storyMode
                         activeText(15);
                         break;
                     case 18:
-                        //敵との戦闘
+                        //戦闘鬼との戦闘:monster04
+                        encountEnemy(11);
                         break;
                     case 19:
                         activeText(16);
                         break;
                     case 20:
+                        encountEnemy(11);
                         //ボス戦
                         break;
                     case 21:
@@ -126,8 +126,8 @@ namespace storyMode
                         activeText(22);
                         break;
                     case 27:
-                        //戦闘
-
+                        //キマイラとの戦闘:monster03
+                        encountEnemy(24);
                         break;
                     case 28:
                         activeText(23);
@@ -139,7 +139,8 @@ namespace storyMode
                         activeText(25);
                         break;
                     case 31:
-                        //ボス戦
+                        //ボス戦:monster05
+                        encountEnemy(25);
                         break;
                     case 32:
                         activeText(32);
@@ -148,7 +149,8 @@ namespace storyMode
                         activeText(26);
                         break;
                     case 34:
-                        //戦闘
+                        //手ごろな魔物との戦闘:monster06
+                        encountEnemy(26);
                         break;
                     case 35:
                         activeText(27);
@@ -166,7 +168,8 @@ namespace storyMode
                         activeText(31);
                         break;
                     case 40:
-                        //戦闘
+                        //幼体ドラゴンとの戦闘:monster07
+                        encountEnemy(27);
                         break;
                     default:
                         Debug.Log("何も設定されていない開始イベントです");
@@ -220,7 +223,8 @@ namespace storyMode
                         activeText(13);
                         break;
                     case 15:
-                        //戦闘
+                        //戦闘:monster07
+                        encountEnemy(28);
                         break;
                     case 16:
                         activeText(14);
@@ -300,7 +304,7 @@ namespace storyMode
                         break;
                     case 15:
                         activeText(14);
-                        //戦闘
+                        //会話終了後に戦闘
                         break;
                     case 16:
                         activeText(15);
@@ -345,6 +349,12 @@ namespace storyMode
                         break;
                     case 30:
                         activeText(26);
+                        break;
+                    case 31:
+                        //水神との戦闘
+                        break;
+                    case 32:
+                        activeText(27);
                         break;
                     default:
                         break;
@@ -686,7 +696,7 @@ namespace storyMode
                     case 30:
                         //低級の邪神との戦闘
 
-                        NestStageCheckPanel.SetActive(true);//戦闘が終わると表示する
+                        NextStageCheckPanel.SetActive(true);//戦闘が終わると表示する
                         break;
 
                     default:
@@ -785,7 +795,7 @@ namespace storyMode
                         break;
                     case 30:
                         //完全体煌々の使徒との戦闘
-                        NestStageCheckPanel.SetActive(true);//戦闘が終わると表示する
+                        NextStageCheckPanel.SetActive(true);//戦闘が終わると表示する
                         break;
 
                     default:
@@ -1324,13 +1334,12 @@ namespace storyMode
             StartCoroutine(talkEndEvent(eventNum));
         }
         /// <summary>
-        /// eventNumの会話が終わった後に動作する。
+        /// ステージを変更する際の関数
         /// </summary>
-        /// <param name="eventNum"></param>
-        IEnumerator changeStage(int currentStageNum, int currentChapter)
+        IEnumerator changeStage(int currentStageNum, int currentChapter)//現在のステージ番号とchapterを引数に持ってくる
         {
-            Scene[currentStageNum].SetActive(false);
-            Scene[currentStageNum + 1].SetActive(true);
+            Scene[currentStageNum].SetActive(false);//現在のステージを非表示にする
+            Scene[currentStageNum + 1].SetActive(true);//次のステージを表示する
             Comment.currentChapter = currentChapter;
             NovelCanvas.SetActive(true);
             Comment.ChangeBackGroundImage(1);
@@ -1343,12 +1352,17 @@ namespace storyMode
             Comment.onAnimation = false;
             Debug.Log("終了イベント：" + currentStageNum);
         }
-
+        /// <summary>
+        /// 敵と遭遇した際に、エネミーのデータを持ってきて戦闘シーンに移動する
+        /// </summary>
         private void encountEnemy(int EnemyID)
         {
             enemyDeckData.setDeckData(EnemyID);
             SceneManager.LoadScene("BattleCPU");
         }
+        /// <summary>
+        /// eventNumの会話が終わった後に動作する。
+        /// </summary>
         IEnumerator talkEndEvent(int eventNum)
         {
             yield return new WaitForFixedUpdate();
@@ -1359,11 +1373,15 @@ namespace storyMode
                     case 5:
                         StartCoroutine(changeStage(0, 5));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
+                    case 10:
+                        //ドラゴンとの戦闘:monster02
+                        encountEnemy(10);
+                        break;
                     case 18:
                         StartCoroutine(changeStage(1, 18));//現在のステージ数：現在のチャプターを送って次のステー
                         break;
-                    case 33:
-                        NestStageCheckPanel.SetActive(true);
+                    case 28:
+                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         Debug.Log("何も設定されていない終了イベントです");
@@ -1386,7 +1404,7 @@ namespace storyMode
                         NovelCanvas.SetActive(false);
                         break;
                     case 17:
-                        NestStageCheckPanel.SetActive(true);
+                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         Debug.Log("何も設定されていない終了イベントです");
@@ -1398,7 +1416,7 @@ namespace storyMode
                 switch (eventNum)
                 {
                     case 1:
-                        NestStageCheckPanel.SetActive(true);
+                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         Debug.Log("何も設定されていない終了イベントです");
@@ -1412,12 +1430,16 @@ namespace storyMode
                     case 7:
                         StartCoroutine(changeStage(0, 7));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
-                    case 14:
+                    case 16:
                         //教導の使徒と戦闘
+                        break;
+                    case 15:
+                        //ごろつきと戦闘
+                        //encountEnemy(23);
                         break;
                     case 26:
                         //ボス戦闘
-                        NestStageCheckPanel.SetActive(true);
+                        NextStageCheckPanel.SetActive(true);
                         break;
 
                     default:
@@ -1439,7 +1461,7 @@ namespace storyMode
                         break;
                     case 22:
                         //ラスボス戦
-                        NestStageCheckPanel.SetActive(true);
+                        NextStageCheckPanel.SetActive(true);
                         break;
 
                     default:
@@ -1461,7 +1483,7 @@ namespace storyMode
                         break;
                     case 20:
                         activeText(21);
-                        NestStageCheckPanel.SetActive(true);
+                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;
@@ -1478,7 +1500,7 @@ namespace storyMode
                         //小鹿を襲う魔物と戦闘
                         break;
                     case 19:
-                        NestStageCheckPanel.SetActive(true);
+                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;
@@ -1521,7 +1543,7 @@ namespace storyMode
                         StartCoroutine(changeStage(0, 8));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 11:
-                        NestStageCheckPanel.SetActive(true);
+                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;
@@ -1538,7 +1560,7 @@ namespace storyMode
                         StartCoroutine(changeStage(1, 16));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 28:
-                        NestStageCheckPanel.SetActive(true);
+                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;
@@ -1552,7 +1574,7 @@ namespace storyMode
                         StartCoroutine(changeStage(0, 9));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 21:
-                        NestStageCheckPanel.SetActive(true);
+                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;
@@ -1569,7 +1591,7 @@ namespace storyMode
                         StartCoroutine(changeStage(1, 14));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 19:
-                        NestStageCheckPanel.SetActive(true);
+                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;
@@ -1586,7 +1608,7 @@ namespace storyMode
                         StartCoroutine(changeStage(1, 19));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 21:
-                        NestStageCheckPanel.SetActive(true);
+                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;
@@ -1600,7 +1622,7 @@ namespace storyMode
                         StartCoroutine(changeStage(0, 14));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 24:
-                        NestStageCheckPanel.SetActive(true);
+                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;
