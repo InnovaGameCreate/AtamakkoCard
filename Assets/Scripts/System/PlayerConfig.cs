@@ -15,6 +15,7 @@ public class PlayerConfig : MonoBehaviour
     public static bool IsOnline = false;
     public static int StoryProgress;//ストーリーの進行具合
     public static int ArenaRank;//アリーナのランク
+    public static string LastPlayStory;//最後に遊んだ章を記録する
     private int DevelopModeCardNum;//cardの個数
     private int DevelopModeEquipmentNum;//equipmentの個数
     private static int isTutorial;//0の時はチュートリアルをまだ受けていない
@@ -31,6 +32,7 @@ public class PlayerConfig : MonoBehaviour
         IsTutorial = PlayerPrefs.GetInt("Tutorial", 0);
         StoryProgress = PlayerPrefs.GetInt("StoryProgress", 0);
         ArenaRank = PlayerPrefs.GetInt("ArenaRank", 11);
+        LastPlayStory = PlayerPrefs.GetString("LastPlayStory", "null");
     }
 
     public static void SetData()
@@ -42,6 +44,7 @@ public class PlayerConfig : MonoBehaviour
         PlayerPrefs.SetString("PlayerName", PlayerName);
         PlayerPrefs.SetInt("StoryProgress", StoryProgress);
         PlayerPrefs.SetInt("ArenaRank", ArenaRank);
+        PlayerPrefs.SetString("LastPlayStory", LastPlayStory);
     }
     void Start()
     {
@@ -98,7 +101,7 @@ public class PlayerConfig : MonoBehaviour
         }
         for (int i = 0; i < Equipmnet.Count; i++)
         {
-            Debug.Log(i+"番目に設定されている数は"+Equipmnet[i]);
+            //Debug.Log(i+"番目に設定されている数は"+Equipmnet[i]);
         }
         if (DevelopMode)
         {

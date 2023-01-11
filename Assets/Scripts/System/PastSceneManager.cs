@@ -34,6 +34,28 @@ public class PastSceneManager : MonoBehaviour
         {
             Debug.Log("PastSceneÇ™" + PastScene + "Ç©ÇÁ" + CurrentScene + "Ç…çXêVÇ≥ÇÍÇ‹ÇµÇΩ");
             PastScene = CurrentScene;
+            switch (PastScene)
+            {
+                case "StoryBoard1":
+                case "StoryBoard2":
+                case "StoryBoardSelect":
+                case "StoryBoardBlue1":
+                case "StoryBoardBlue2":
+                case "StoryBoardBlue3":
+                case "StoryBoardEnd1":
+                case "StoryBoardEnd2":
+                case "StoryBoardEnd3":
+                case "StoryBoardRed1":
+                case "StoryBoardRed2":
+                case "StoryBoardRed3":
+                case "StoryBoardWhite1":
+                case "StoryBoardWhite2":
+                case "StoryBoardWhite3":
+                    PlayerConfig.LastPlayStory = PastScene;
+                    break;
+                default:
+                    break;
+            }
         }
     }
     public void BackScene()

@@ -71,7 +71,7 @@ namespace storyMode
                         activeText(7);
                         break;
                     case 9:
-                        //ジャイアントマンティスとの戦闘:monster01
+                        //ジャイアントマンティスとの戦闘
                         encountEnemy(23);
                         break;
                     case 10:
@@ -100,7 +100,7 @@ namespace storyMode
                         activeText(15);
                         break;
                     case 18:
-                        //戦闘鬼との戦闘:monster04
+                        //戦闘鬼との戦闘
                         encountEnemy(11);
                         break;
                     case 19:
@@ -126,7 +126,7 @@ namespace storyMode
                         activeText(22);
                         break;
                     case 27:
-                        //キマイラとの戦闘:monster03
+                        //キマイラとの戦闘
                         encountEnemy(24);
                         break;
                     case 28:
@@ -149,7 +149,7 @@ namespace storyMode
                         activeText(26);
                         break;
                     case 34:
-                        //手ごろな魔物との戦闘:monster06
+                        //手ごろな魔物との戦闘
                         encountEnemy(26);
                         break;
                     case 35:
@@ -168,7 +168,7 @@ namespace storyMode
                         activeText(31);
                         break;
                     case 40:
-                        //幼体ドラゴンとの戦闘:monster07
+                        //幼体ドラゴンとの戦闘
                         encountEnemy(27);
                         break;
                     default:
@@ -230,13 +230,15 @@ namespace storyMode
                         activeText(14);
                         break;
                     case 17:
-                        //戦闘
+                        //戦闘:monster12
+                        encountEnemy(31);
                         break;
                     case 18:
                         activeText(15);
                         break;
                     case 19:
-                        //ボス戦
+                        //ボス戦:monster13
+                        encountEnemy(32);
                         break;
                     case 20:
                         activeText(16);
@@ -339,10 +341,12 @@ namespace storyMode
                         activeText(24);
                         break;
                     case 27:
-                        //戦闘
+                        //水中の魔物との戦闘
+                        encountEnemy(41);
                         break;
                     case 28:
-                        //戦闘
+                        //水中の魔物との戦闘
+                        encountEnemy(42);
                         break;
                     case 29:
                         activeText(25);
@@ -352,6 +356,7 @@ namespace storyMode
                         break;
                     case 31:
                         //水神との戦闘
+                        encountEnemy(43);
                         break;
                     case 32:
                         activeText(27);
@@ -1345,6 +1350,7 @@ namespace storyMode
             Comment.ChangeBackGroundImage(1);
             Comment.deleteText();
             Comment.onAnimation = true;
+            FindObjectOfType<StoryBoardPlayerMove>().nextPosition(Scene[currentStageNum + 1].transform.GetChild(1).position);
             yield return new WaitForSeconds(2f);
             Comment.ChangeBackGroundImage(2);
             yield return new WaitForSeconds(2f);
