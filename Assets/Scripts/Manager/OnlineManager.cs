@@ -62,7 +62,8 @@ namespace Manager
             // プレイヤーの初期設定
             Player.Initialize(playerDeck);
             Enemy.Initialize(_enemyDeck);
-
+            
+            decisionButton.MyInteractable = false;
             
             // ゲーム終了の設定
             Player.AtamakkoData.MyHp
