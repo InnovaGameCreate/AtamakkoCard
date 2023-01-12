@@ -35,6 +35,7 @@ namespace Manager
         /// </summary>
         protected override async void StartGame()
         {
+            //Debug.Log("過去のシーン：" + PastSceneManager.Instance.);
             // カードデータを取得
             await StartCoroutine(CardData.GetData());
             
@@ -46,7 +47,7 @@ namespace Manager
             
             // プレイヤーの初期設定
             Player.Initialize(playerDeck);
-            Enemy.Initialize(enemyDeck);
+            Enemy.Initialize(enemyDeck ?? playerDeck);
             
             // ゲーム終了の設定
             Player.AtamakkoData.MyHp
@@ -131,7 +132,7 @@ namespace Manager
             foreach (var cardID in enemyList)
             {
                 var card = Instantiate(cardPrefab, enemyContent.transform);
-                Debug.Log(cardID);
+                Debug.Log("敵のデッキ" + cardID);
                 card.GetComponent<CardController>().Init(cardID);
             }
 

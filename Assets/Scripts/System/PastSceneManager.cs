@@ -4,8 +4,8 @@ using UnityEngine.SceneManagement;
 public class PastSceneManager : MonoBehaviour
 {
     public  static PastSceneManager Instance { get; private set; }
-    private string CurrentScene;
-    private static string PastScene;
+    public string CurrentScene;
+    private static string PastScene = "Title";
     private void Awake()
     {
         if (Instance == null)
@@ -20,15 +20,14 @@ public class PastSceneManager : MonoBehaviour
     }
     void Start()
     {
-        PastScene = SceneManager.GetActiveScene().name;
+        //PastScene = SceneManager.GetActiveScene().name;
         Debug.Log("PastScene‚ª" + PastScene);
-        SceneManager.activeSceneChanged += ActiveSceneChanged;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
         CurrentScene = SceneManager.GetActiveScene().name;
     }
-    void ActiveSceneChanged(Scene thisScene, Scene nextScene)
+    void OnSceneUnloaded(Scene scene)
     {
-        Debug.Log(nextScene.name);
-        CurrentScene = nextScene.name;
+        CurrentScene = scene.name;
         Debug.Log("PastScene‚ª" + PastScene);
         if (CurrentScene != PastScene)
         {
