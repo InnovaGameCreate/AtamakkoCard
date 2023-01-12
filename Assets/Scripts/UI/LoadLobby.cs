@@ -1,5 +1,4 @@
 using Photon.Pun;
-using UnityEngine.SceneManagement;
 
 namespace UI
 {
@@ -22,7 +21,7 @@ namespace UI
         public override void OnLeftRoom()
         {
             PhotonNetwork.Disconnect();
-            SceneManager.LoadScene("Matching");
+            PastSceneManager.Instance.BackScene();
         }
     }
 }

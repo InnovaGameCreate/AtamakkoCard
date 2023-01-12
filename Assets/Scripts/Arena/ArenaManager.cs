@@ -32,7 +32,7 @@ public class ArenaManager : MonoBehaviour
         }
         for (int i = 0; i < _allRankerNum; i++)
         {
-            Debug.Log("•À‚×‘Ö‚¦" + i);
+            //Debug.Log("•À‚×‘Ö‚¦" + i);
             allRanker[i].transform.SetSiblingIndex(i);
         }
     }

@@ -1,3 +1,4 @@
+using Arena;
 using Photon.Pun;
 using Photon.Realtime;
 using UI;
@@ -45,6 +46,7 @@ namespace Manager
         private void CPUButton()
         {
             PlayerConfig.IsOnline = false;
+            enemyDeckData.enemyDeck = PlayerConfig.Deck;
             SceneManager.LoadScene("BattleCPU");
         }
 
