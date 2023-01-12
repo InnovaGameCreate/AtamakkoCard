@@ -430,19 +430,28 @@ namespace storyMode
                         activeText(19);
                         break;
                     case 21:
-                        //戦闘
+                        //邪教団の信者との戦闘
+                        encountEnemy(44);
                         break;
                     case 22:
                         activeText(20);
                         break;
                     case 23:
-                        //戦闘
+                        //邪教団の信者との戦闘
+                        encountEnemy(45);
                         break;
                     case 24:
                         activeText(21);
                         break;
                     case 25:
                         activeText(22);
+                        break;
+                    case 26:
+                        //神の従者との戦闘
+                        encountEnemy(47);
+                        break;
+                    case 27:
+                        activeText(23);
                         break;
                     default:
                         break;
@@ -465,7 +474,8 @@ namespace storyMode
                         activeText(3);
                         break;
                     case 5:
-                        //戦闘
+                        //道を塞ぐ魔物との戦闘
+                        encountEnemy(48);
                         break;
                     case 6:
                         activeText(4);
@@ -498,7 +508,8 @@ namespace storyMode
                         activeText(13);
                         break;
                     case 16:
-                        //戦闘
+                        //魔物に襲われる戦闘
+                        encountEnemy(49);
                         break;
                     case 17:
                         activeText(14);
@@ -1464,9 +1475,9 @@ namespace storyMode
                         break;
                     case 15:
                         //少年と戦闘
+                        encountEnemy(46);
                         break;
-                    case 22:
-                        //ラスボス戦
+                    case 24:
                         NextStageCheckPanel.SetActive(true);
                         break;
 
