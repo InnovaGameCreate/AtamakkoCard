@@ -42,6 +42,8 @@ namespace Manager
             // デッキのインスタンス生成
             var playerDeck = PlayerConfig.Deck;
             var enemyDeck = enemyDeckData.enemyDeck;
+            
+            decisionButton.MyInteractable = false;
 
             await UniTask.Delay(10);
             
@@ -129,10 +131,11 @@ namespace Manager
                 var card = Instantiate(cardPrefab, playerContent.transform);
                 card.GetComponent<CardController>().Init(cardID);
             }
+            Enemy.DebugHand();
+            Enemy.DebugDeck();
             foreach (var cardID in enemyList)
             {
                 var card = Instantiate(cardPrefab, enemyContent.transform);
-                Debug.Log("敵のデッキ" + cardID);
                 card.GetComponent<CardController>().Init(cardID);
             }
 
@@ -143,6 +146,7 @@ namespace Manager
             decisionButton.Pushed // 決定ボタンが押されたとき
                 .Subscribe(_ =>
                 {
+                    decisionButton.MyInteractable = false;
                     CardMobile = false;
                     TimeCounter.Instance.EndTimer(); // タイマーを0にする
                 })
@@ -202,7 +206,7 @@ namespace Manager
                 switch (Enemy.AtamakkoData.UltimateState)
                 {
                     case UltimateState.Recover:
-                        EffectManager.Instance.InstantiateEffect(EffectType.GreenEffect, Player.transform);
+                        EffectManager.Instance.InstantiateEffect(EffectType.GreenEffect, Enemy.transform);
                         break;
                     case UltimateState.Attack:
                         EffectManager.Instance.InstantiateEffect(EffectType.RedEffect, Enemy.transform);

@@ -81,7 +81,6 @@ namespace Atamakko
                 {
                     var toPosition = (i + AtamakkoData.MyPosition) % 6;
                     canMove.Add(toPosition);
-                    Debug.Log("CanMove：" + i);
                 }
             }
             

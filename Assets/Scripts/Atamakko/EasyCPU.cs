@@ -23,7 +23,7 @@ namespace Atamakko
             {
                 int index = (int) (random.NextDouble() * (handID.Count - 1));
                 cards.Add(handID[index]);
-                handID.Remove(index);
+                handID.Remove(handID[index]);
             }
             return cards;
         }

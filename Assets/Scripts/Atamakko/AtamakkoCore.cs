@@ -28,6 +28,22 @@ namespace Atamakko
             ShuffleDeck();
         }
 
+        public void DebugDeck()
+        {
+            foreach (var cardID in DeckData.DeckCards)
+            {
+                Debug.Log("今のデッキ："+cardID);
+            }
+        }
+        
+        public void DebugHand()
+        {
+            foreach (var cardID in DeckData.HandCards)
+            {
+                Debug.Log("今のハンド："+cardID);
+            }
+        }
+
         /// <summary>
         /// 必殺技等で得た補正を0にする。
         /// </summary>
