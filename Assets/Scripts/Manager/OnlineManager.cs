@@ -82,6 +82,13 @@ namespace Manager
                     AnimationManager.Instance.ResultFadeIn(true);
                 })
                 .AddTo(this);
+            Option.Instance.Surrender
+                .Subscribe(_ =>
+                {
+                    _CurrentState.Value = GameState.End;
+                    AnimationManager.Instance.ResultFadeIn(false);
+                })
+                .AddTo(this);
             
             // ドローフェイズへ
             _CurrentState.Value = GameState.Draw;
