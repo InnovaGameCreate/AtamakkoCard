@@ -103,7 +103,6 @@ public class GachaManager : MonoBehaviour
     public async void normalGacha(int count)
     {
         Interactable(false);
-        Debug.Log("normalGacha");
         for (int i = 0; i < count; i++)
         {
             var Equpment = Instantiate(EquipmentPrefab, InstantiatePositon.transform);

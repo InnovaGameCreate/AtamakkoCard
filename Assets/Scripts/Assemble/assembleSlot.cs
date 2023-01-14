@@ -4,14 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Card;
+using Atamakko;
 
 namespace Assemble
 {
     public class assembleSlot : slot
     {
         AssembleDeck assemble;
-        [SerializeField]
-        protected Image itemShowImage;
+        [SerializeField] protected Image itemShowImage;
+        [SerializeField] PlayerCharacterVisual Visual;
 
         [SerializeField]
         private enum slotType//装備できる装備カードのタイプ
@@ -21,14 +22,10 @@ namespace Assemble
             lower,
             accessory
         }
-        [SerializeField]
-        private slotType MySlotType;
-        [SerializeField]
-        private GameObject CardView;//装備しているカードを表示する場所
-        [SerializeField]
-        private int PositionNum;//（上部：０、中央：１、下部２、アクセサリ３～５）
-        [SerializeField]
-        private GameObject cardPrefab;//生成するカードオブジェクトのプレファブ
+        [SerializeField] private slotType MySlotType;
+        [SerializeField] private GameObject CardView;//装備しているカードを表示する場所
+        [SerializeField] private int PositionNum;//（上部：０、中央：１、下部２、アクセサリ３～５）
+        [SerializeField] private GameObject cardPrefab;//生成するカードオブジェクトのプレファブ
         private GameObject card1;
         private GameObject card2;
 
@@ -98,7 +95,9 @@ namespace Assemble
                 itemImage.color = new Color(1, 1, 1, 1);
                 itemImage.sprite = item.MyItemImage;
                 itemShowImage.color = new Color(1, 1, 1, 1);
-                itemShowImage.sprite = item.MyItemImage;
+
+                Visual.setImage();
+                //itemShowImage.sprite = item.MyItemImage;
             }
             else
             {
