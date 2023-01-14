@@ -68,6 +68,13 @@ namespace Manager
                     AnimationManager.Instance.ResultFadeIn(true);
                 })
                 .AddTo(this);
+            Option.Instance.Surrender
+                .Subscribe(_ =>
+                {
+                    _CurrentState.Value = GameState.End;
+                    AnimationManager.Instance.ResultFadeIn(false);
+                })
+                .AddTo(this);
             
             // ドローフェーズへ
             _CurrentState.Value = GameState.Draw;
@@ -293,9 +300,17 @@ namespace Manager
                     {
                         Enemy.AddDamage(myDamage);
                     }
+                    if (myCard.Additional == "〇")
+                    {
+                        Player.Move(playerAttack);
+                    }
                     if (Player.AtamakkoData.MyPosition == enemyAttack)
                     {
                         Player.AddDamage(enemyDamage);
+                    }
+                    if (enemyCard.Additional == "〇")
+                    {
+                        Enemy.Move(enemyAttack);
                     }
                 }
 
@@ -322,7 +337,17 @@ namespace Manager
                     int enemyMove = Enemy.MoveSelect(Player.AtamakkoData.MyPosition, enemyCard);
                     
                     Player.Move(playerMove);
+                    if (myCard.Additional == "〇" && Enemy.AtamakkoData.MyPosition == playerMove)
+                    {
+                        int myDamage = Player.GetDamage(myCard.Damage);
+                        Enemy.AddDamage(myDamage);
+                    }
                     Enemy.Move(enemyMove);
+                    if (enemyCard.Additional == "〇" && Player.AtamakkoData.MyPosition == enemyMove)
+                    {
+                        int enemyDamage = Enemy.GetDamage(enemyCard.Damage);
+                        Player.AddDamage(enemyDamage);
+                    }
                 }
             }
             else if (myInitiative > enemyInitiative || (myInitiative == enemyInitiative && myCard.Kind == "攻撃"))
@@ -371,6 +396,10 @@ namespace Manager
                 {
                     Enemy.AddDamage(myDamage);
                 }
+                if (card.Additional == "〇")
+                {
+                    Player.Move(attackPosition);
+                }
             }
 
             if (card.Kind == "移動")
@@ -394,6 +423,11 @@ namespace Manager
 
                 await TimeCounter.Instance.CountDown(30);
                 Player.Move(movePosition);
+                if (card.Additional == "〇" && Enemy.AtamakkoData.MyPosition == movePosition)
+                {
+                    int myDamage = Player.GetDamage(card.Damage);
+                    Enemy.AddDamage(myDamage);
+                }
             }
         }
 
@@ -412,6 +446,10 @@ namespace Manager
                 {
                     Player.AddDamage(enemyDamage);
                 }
+                if (card.Additional == "〇")
+                {
+                    Enemy.Move(attackPosition);
+                }
             }
 
             if (card.Kind == "移動")
@@ -419,6 +457,11 @@ namespace Manager
                 int movePosition = Enemy.MoveSelect(Player.AtamakkoData.MyPosition, card);
                 await UniTask.Delay(10);
                 Enemy.Move(movePosition);
+                if (card.Additional == "〇" && Player.AtamakkoData.MyPosition == movePosition)
+                {
+                    int enemyDamage = Enemy.GetDamage(card.Damage);
+                    Player.AddDamage(enemyDamage);
+                }
             }
         }
 
