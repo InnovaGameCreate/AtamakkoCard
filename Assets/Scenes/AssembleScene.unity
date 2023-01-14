@@ -2896,6 +2896,10 @@ PrefabInstance:
       value: Assembleslot (2)
       objectReference: {fileID: 0}
     - target: {fileID: 3436399326113160395, guid: a5adf92e784a470428e179d249c1b7ef, type: 3}
+      propertyPath: Visual
+      value: 
+      objectReference: {fileID: 1617113122}
+    - target: {fileID: 3436399326113160395, guid: a5adf92e784a470428e179d249c1b7ef, type: 3}
       propertyPath: CardView
       value: 
       objectReference: {fileID: 1663308164}
@@ -3719,6 +3723,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Assembleslot (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3436399326113160395, guid: a5adf92e784a470428e179d249c1b7ef, type: 3}
+      propertyPath: Visual
+      value: 
+      objectReference: {fileID: 1617113122}
     - target: {fileID: 3436399326113160395, guid: a5adf92e784a470428e179d249c1b7ef, type: 3}
       propertyPath: CardView
       value: 
@@ -6016,6 +6024,10 @@ PrefabInstance:
       value: Assembleslot (4)
       objectReference: {fileID: 0}
     - target: {fileID: 3436399326113160395, guid: a5adf92e784a470428e179d249c1b7ef, type: 3}
+      propertyPath: Visual
+      value: 
+      objectReference: {fileID: 1617113122}
+    - target: {fileID: 3436399326113160395, guid: a5adf92e784a470428e179d249c1b7ef, type: 3}
       propertyPath: CardView
       value: 
       objectReference: {fileID: 1663308164}
@@ -7348,6 +7360,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1617113121}
+  - component: {fileID: 1617113122}
   m_Layer: 5
   m_Name: Player
   m_TagString: Untagged
@@ -7382,6 +7395,24 @@ RectTransform:
   m_AnchoredPosition: {x: -237, y: 172}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1617113122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617113120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3969ad96b10241848b655e104258ca0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  top: {fileID: 344996385}
+  mid: {fileID: 747814059}
+  under: {fileID: 1623554561}
+  accessory1: {fileID: 1150000812}
+  accessory2: {fileID: 399871890}
+  accessory3: {fileID: 1629102031}
 --- !u!1 &1620838842
 GameObject:
   m_ObjectHideFlags: 0
@@ -8732,6 +8763,10 @@ PrefabInstance:
       value: Assembleslot (5)
       objectReference: {fileID: 0}
     - target: {fileID: 3436399326113160395, guid: a5adf92e784a470428e179d249c1b7ef, type: 3}
+      propertyPath: Visual
+      value: 
+      objectReference: {fileID: 1617113122}
+    - target: {fileID: 3436399326113160395, guid: a5adf92e784a470428e179d249c1b7ef, type: 3}
       propertyPath: CardView
       value: 
       objectReference: {fileID: 1663308164}
@@ -9709,6 +9744,10 @@ PrefabInstance:
       value: Assembleslot (1)
       objectReference: {fileID: 0}
     - target: {fileID: 3436399326113160395, guid: a5adf92e784a470428e179d249c1b7ef, type: 3}
+      propertyPath: Visual
+      value: 
+      objectReference: {fileID: 1617113122}
+    - target: {fileID: 3436399326113160395, guid: a5adf92e784a470428e179d249c1b7ef, type: 3}
       propertyPath: CardView
       value: 
       objectReference: {fileID: 1663308164}
@@ -9967,6 +10006,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Assembleslot
       objectReference: {fileID: 0}
+    - target: {fileID: 3436399326113160395, guid: a5adf92e784a470428e179d249c1b7ef, type: 3}
+      propertyPath: Visual
+      value: 
+      objectReference: {fileID: 1617113122}
     - target: {fileID: 3436399326113160395, guid: a5adf92e784a470428e179d249c1b7ef, type: 3}
       propertyPath: CardView
       value: 

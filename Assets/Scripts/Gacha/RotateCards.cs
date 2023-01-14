@@ -66,7 +66,6 @@ public class RotateCards : MonoBehaviour
         for (int i = 0; i < CardLength; i++)
         {
             CardIds[i] = Random.Range(0, equipmentData.CardDataArrayList.Count);
-            Debug.Log("createInts:i=" + i+":" + CardIds[i]);
         }
     }
 

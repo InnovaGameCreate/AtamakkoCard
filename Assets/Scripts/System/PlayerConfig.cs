@@ -113,8 +113,8 @@ public class PlayerConfig : MonoBehaviour
             DevelopModeEquipmentNum = Resources.Load<equipmentIcon>("EquipmentIcon").equipmentIconList.Count;
             DevelopModeCardNum = Resources.Load<CardIcon>("CardIcon").cardIconList.Count;
 
-            Debug.Log("unLockCardの要素数は" + unLockCard.Count + "です");
-            Debug.Log("unLockEquipmentの要素数は" + unLockEquipment.Count + "です");
+            //Debug.Log("unLockCardの要素数は" + unLockCard.Count + "です");
+            //Debug.Log("unLockEquipmentの要素数は" + unLockEquipment.Count + "です");
             
             DevelopMode = false;
         }
