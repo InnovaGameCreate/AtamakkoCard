@@ -15,14 +15,9 @@ namespace Assemble
         private List<Item> item = new List<Item>();
 
 
-        private void Start()
+        private void createDeck()
         {
-        }
-
-
-        public void createDeck()
-        {
-            if(DeckDataList != null) DeckDataList.RemoveRange(0, DeckDataList.Count);//DeckDatListがnullでない場合は初期化する
+            if(DeckDataList != null) DeckDataList.Clear();//DeckDatListがnullでない場合は初期化する
             foreach (Item item in MyItems)
             {
                 DeckDataList.Add(item.MyCardNum1);
@@ -62,13 +57,10 @@ namespace Assemble
                 Debug.Log("カードの枚数が12枚ではないです");
                 return;
             }
-            for (int i = 0; i < 11; i++)
-            {
-                if(PlayerConfig.Deck != null) PlayerConfig.Deck.RemoveRange(0, PlayerConfig.Deck.Count);//デッキにデータがあれば消す
-                PlayerConfig.Deck.Add(DeckDataList[i]);
-            }
             if (DeckDataList.Count == 12)
             {
+                PlayerConfig.Deck.Clear();//デッキにデータがあれば消す
+                PlayerConfig.Deck = DeckDataList;
                 Debug.Log("カードを保存することができました");
                 PlayerConfig.SetData();
                 return;

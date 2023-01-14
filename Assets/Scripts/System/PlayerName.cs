@@ -9,9 +9,9 @@ namespace system
         private TMP_InputField name;
         void Start()
         {
-            if (PlayerConfig.IsTutorial != 0)
+            if (PlayerConfig.PlayerName != "Player")
             {
-                //gameObject.SetActive(false);
+                gameObject.SetActive(false);
             }
         }
 

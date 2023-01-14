@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Audio;
 
 /// <summary>
-/// “Á’è‚ÌSE‚Ì‰¹‚ğ–Â‚ç‚·
+/// ç‰¹å®šã®SEã®éŸ³ã‚’é³´ã‚‰ã™
 /// </summary>
 public class ShotSe : MonoBehaviour
 {
