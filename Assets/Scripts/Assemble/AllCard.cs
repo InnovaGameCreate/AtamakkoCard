@@ -224,7 +224,7 @@ namespace Assemble
 
                 if ((haveCard[0] && PlayerConfig.unLockEquipment[int.Parse(cardData[0])]) || (haveCard[1] && !PlayerConfig.unLockEquipment[int.Parse(cardData[0])]))
                 {
-                if (Equipments[0] && cardData[2] == "上部") return true;
+                    if (Equipments[0] && cardData[2] == "上部") return true;
                     if (Equipments[1] && cardData[2] == "中央") return true;
                     if (Equipments[2] && cardData[2] == "下部") return true;
                     if (Equipments[3] && cardData[2] == "アクセサリ") return true;

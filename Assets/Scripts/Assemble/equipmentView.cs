@@ -1,4 +1,3 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +8,7 @@ namespace Assemble
     {
         [SerializeField] private TextMeshProUGUI nameText;
         [SerializeField] private Image cardSprite;
+        public GameObject backCard; // ÉJÅ[ÉhÇÃó†ë§
 
         public void Show(equipmentModel cardModel)
         {

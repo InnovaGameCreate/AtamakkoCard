@@ -61,23 +61,27 @@ public class PlayerConfig : MonoBehaviour
             Deck.Clear();
             unLockCard.Clear();
             unLockEquipment.Clear();
+            DevelopModeEquipmentNum = Resources.Load<equipmentIcon>("EquipmentIcon").equipmentIconList.Count;
+            DevelopModeCardNum = Resources.Load<CardIcon>("CardIcon").cardIconList.Count;
             for (int i = 0; i < DevelopModeCardNum; i++)
             {
-                unLockCard.Add(true);
+                unLockCard.Add(false);
             }
             for (int i = 0; i < DevelopModeEquipmentNum; i++)
             {
-                unLockEquipment.Add(true);
-            }
-            /*
-            for (int i = 26; i < 48; i++)
-            {
                 unLockEquipment.Add(false);
             }
-            for (int i = 48; i < DevelopModeEquipmentNum; i++)
+            for (int i = 0; i < 8; i++)
             {
-                unLockEquipment.Add(true);
-            }*/
+                unLockCard[i] = true;
+            }
+            unLockEquipment[0] = true;
+            unLockEquipment[1] = true;
+            unLockEquipment[2] = true;
+            unLockEquipment[48] = true;
+            unLockEquipment[49] = true;
+            unLockEquipment[50] = true;
+
             Equipmnet.Add(1);
             Equipmnet.Add(0);
             Equipmnet.Add(2);
@@ -111,24 +115,7 @@ public class PlayerConfig : MonoBehaviour
 
             Debug.Log("unLockCardの要素数は" + unLockCard.Count + "です");
             Debug.Log("unLockEquipmentの要素数は" + unLockEquipment.Count + "です");
-            unLockCard.Clear();
-            unLockEquipment.Clear();
-            for (int i = 0; i < 10; i++)
-            {
-                unLockCard.Add(true);
-            }
-            for (int i = 20; i < DevelopModeCardNum; i++)
-            {
-                unLockCard.Add(false);
-            }
-            for (int i = 0; i < 40; i++)
-            {
-                unLockEquipment.Add(true);
-            }
-            for (int i = 40; i < DevelopModeEquipmentNum; i++)
-            {
-                unLockEquipment.Add(true);
-            }
+            
             DevelopMode = false;
         }
     }

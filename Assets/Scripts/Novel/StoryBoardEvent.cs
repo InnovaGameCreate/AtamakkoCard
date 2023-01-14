@@ -554,6 +554,7 @@ namespace storyMode
                         break;
                     case 5:
                         //野生生物と戦闘
+                        encountEnemy(51);
                         break;
                     case 6:
                         activeText(4);
@@ -563,6 +564,7 @@ namespace storyMode
                         break;
                     case 8:
                         //魔物との戦闘
+                        encountEnemy(50);
                         break;
                     case 9:
                         activeText(6);
@@ -590,12 +592,15 @@ namespace storyMode
                         break;
                     case 17:
                         //魔物との戦闘
+                        encountEnemy(52);
                         break;
                     case 18:
                         activeText(14);
                         break;
                     case 19:
                         //ボス戦
+                        encountEnemy(53);
+
                         StartCoroutine(changeStage(1, 19));//戦闘が終わると表示する
                         break;
                     case 20:
@@ -612,6 +617,7 @@ namespace storyMode
                         break;
                     case 24:
                         //邪神の加護を受けた魔物との戦闘
+                        encountEnemy(54);
                         break;
                     case 25:
                         activeText(19);
