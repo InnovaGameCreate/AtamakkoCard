@@ -102,6 +102,7 @@ namespace Manager
         /// <param name="result">勝敗</param>
         public async void ResultFadeIn(bool result)
         {
+            FindObjectOfType<BattleResult>().setResult(result);
             _winner = result;
             backgroundPanel.SetActive(true);
             await UniTask.DelayFrame(1);

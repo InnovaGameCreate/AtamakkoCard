@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class PastSceneManager : MonoBehaviour
 {
-    public  static PastSceneManager Instance { get; private set; }
+    public static PastSceneManager Instance { get; private set; }
     public string CurrentScene;
     private static string PastScene = "Title";
     private void Awake()
@@ -60,5 +60,10 @@ public class PastSceneManager : MonoBehaviour
     public void BackScene()
     {
         SceneManager.LoadScene(PastScene);
+    }
+
+    public string getPastScene()
+    {
+        return PastScene;
     }
 }

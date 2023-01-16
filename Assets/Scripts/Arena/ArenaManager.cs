@@ -6,10 +6,10 @@ public class ArenaManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] ranker;
     [SerializeField] private GameObject Player;
-    [SerializeField]private int PlayerArenaRank;
+    private int PlayerArenaRank;
     void Start()
     {
-        //PlayerArenaRank = PlayerConfig.ArenaRank;
+        PlayerArenaRank = PlayerConfig.ArenaRank;
         RankerPosition();
     }
     private void RankerPosition()

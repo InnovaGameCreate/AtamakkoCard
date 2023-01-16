@@ -51,6 +51,7 @@ namespace System.Audio
             {
                 case "Title":
                 case "MatchingManager":
+                case "Arena":
                     PlayBGM(CurrentScene.Title);
                     break;
                 case "Battle":
