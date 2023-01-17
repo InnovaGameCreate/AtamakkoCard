@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using storyMode;
 
 public class BattleResult : MonoBehaviour
 {
@@ -57,7 +58,7 @@ public class BattleResult : MonoBehaviour
             case PastSceneType.scenario:
                 if(!isWinGame)
                 {
-                    PlayerConfig.StoryProgress--;
+                    ProgressRecorder.BattleDefeated = true;
                 }
                 break;
             case PastSceneType.arena:
