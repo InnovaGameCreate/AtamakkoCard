@@ -1048,6 +1048,7 @@ MonoBehaviour:
   Comment: {fileID: 1192624337}
   NovelCanvas: {fileID: 1978721720}
   scenario: 11
+  instantTextPrefab: {fileID: 7604296190008030566, guid: 02c4dc84e292fad489589180d6fa0f70, type: 3}
   Scene:
   - {fileID: 316170888}
   - {fileID: 1894872067}

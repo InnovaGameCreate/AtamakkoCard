@@ -48,8 +48,8 @@ namespace Assemble
         private void Awake()
         {
             Debug.Log("カードと装備データの読み込み");
-            StartCoroutine(CardData.GetData());
-            StartCoroutine(equipmentData.GetData());
+            //StartCoroutine(CardData.GetData());
+            //StartCoroutine(equipmentData.GetData());
         }
         void Start()
         {

@@ -8,8 +8,8 @@ namespace Assemble
 {
     public class equipmentData : MonoBehaviour
     {
-        private const string SHEET_ID = "1f9xmA85qHljNzkYmeSnCOzjkew2X2Zm62UhThCvnssk";
-        private const string SHEET_NAME = "ÉVÅ[Ég1";
+        private const string SHEET_ID = "1laAr4f3RgQRTD1ySSnLHooyNnRByMtzh-oqSSYV9LtM";
+        private const string SHEET_NAME = "EquipmentData";
 
         public static List<string[]> CardDataArrayList;
 

@@ -53,6 +53,7 @@ public class BattleResult : MonoBehaviour
 
     public void setResult(bool isWinGame)
     {
+        PlayerConfig.SetData();
         switch (ResultType)
         {
             case PastSceneType.scenario:

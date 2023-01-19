@@ -14,7 +14,7 @@ namespace Arena
         public static int _enemyID;
 
         private const string SHEET_ID = "1laAr4f3RgQRTD1ySSnLHooyNnRByMtzh-oqSSYV9LtM";
-        private const string SHEET_NAME = "ÉVÅ[Ég1";
+        private const string SHEET_NAME = "DeckData";
 
         public static List<string[]> CardDataArrayList;
         public static void setDeckData(int enemyID)
