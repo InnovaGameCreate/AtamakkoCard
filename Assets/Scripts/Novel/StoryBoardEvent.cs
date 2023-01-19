@@ -31,6 +31,7 @@ namespace storyMode
         [SerializeField] NovelComment Comment;
         [SerializeField] private GameObject NovelCanvas;
         [SerializeField] private scenarioType scenario;//どのシナリオの章に対応するか
+        [SerializeField] private GameObject instantTextPrefab;//文字表示用のプレファブ
         [SerializeField] private GameObject[] Scene;//シナリオに登場するステージ
         [SerializeField] private GameObject NextStageCheckPanel;//次のステージへ進むか確認用パネル
         private void Start()
@@ -714,16 +715,20 @@ namespace storyMode
                         break;
                     case 27:
                         //大きな魔物との戦闘
+                        encountEnemy(60);
                         break;
                     case 28:
                         activeText(22);
                         break;
                     case 29:
                         //ローブの男との戦闘
+                        encountEnemy(61);
                         break;
                     case 30:
                         //低級の邪神との戦闘
-
+                        encountEnemy(62);
+                        break;
+                    case 31:
                         NextStageCheckPanel.SetActive(true);//戦闘が終わると表示する
                         break;
 
@@ -746,6 +751,7 @@ namespace storyMode
                         break;
                     case 4:
                         //魔物との戦闘
+                        encountEnemy(63);
                         break;
                     case 5:
                         activeText(3);
@@ -761,6 +767,7 @@ namespace storyMode
                         break;
                     case 9:
                         //煌々の使徒と模擬戦
+                        encountEnemy(3);
                         break;
                     case 10:
                         activeText(7);
@@ -773,6 +780,7 @@ namespace storyMode
                         break;
                     case 13:
                         //湖の魔物との戦闘
+                        encountEnemy(64);
                         break;
                     case 14:
                         activeText(10);
@@ -796,6 +804,7 @@ namespace storyMode
                         break;
                     case 21:
                         //魔物との戦闘
+                        encountEnemy(65);
                         break;
                     case 22:
                         activeText(17);
@@ -805,6 +814,7 @@ namespace storyMode
                         break;
                     case 24:
                         //魔物との戦闘
+                        encountEnemy(66);
                         break;
                     case 25:
                         activeText(19);
@@ -817,12 +827,16 @@ namespace storyMode
                         break;
                     case 28:
                         //邪神との戦闘
+                        encountEnemy(67);
                         break;
                     case 29:
                         activeText(22);
                         break;
                     case 30:
                         //完全体煌々の使徒との戦闘
+                        encountEnemy(68);
+                        break;
+                    case 31:
                         NextStageCheckPanel.SetActive(true);//戦闘が終わると表示する
                         break;
 
@@ -939,6 +953,7 @@ namespace storyMode
                         break;
                     case 18:
                         //大男との戦闘、勝利すると報酬
+                        encountEnemy(14);
                         break;
                     case 19:
                         activeText(15);
@@ -1098,24 +1113,29 @@ namespace storyMode
                         break;
                     case 6:
                         //敵との戦闘
+                        encountEnemy(69);
                         break;
                     case 7:
                         //敵との戦闘
+                        encountEnemy(70);
                         break;
                     case 8:
                         activeText(5);
                         break;
                     case 9:
                         //敵との戦闘
+                        encountEnemy(71);
                         break;
                     case 10:
                         activeText(6);
                         break;
                     case 11:
                         //敵との戦闘
+                        encountEnemy(72);
                         break;
                     case 12:
                         //ボスとの戦闘
+                        encountEnemy(73);
                         break;
                     case 13:
                         activeText(7);
@@ -1140,6 +1160,7 @@ namespace storyMode
                         break;
                     case 22:
                         //魔物との戦闘
+                        encountEnemy(74);
                         break;
                     case 23:
                         activeText(16);
@@ -1149,6 +1170,7 @@ namespace storyMode
                         break;
                     case 25:
                         //ラスボスとの戦闘
+                        encountEnemy(75);
                         break;
                     case 26:
                         activeText(18);
@@ -1179,6 +1201,7 @@ namespace storyMode
                         break;
                     case 6:
                         //敵との戦闘
+                        encountEnemy(76);
                         break;
                     case 7:
                         activeText(5);
@@ -1188,6 +1211,7 @@ namespace storyMode
                         break;
                     case 9:
                         //敵との戦闘
+                        encountEnemy(77);
                         break;
                     case 10:
                         activeText(7);
@@ -1197,6 +1221,7 @@ namespace storyMode
                         break;
                     case 12:
                         //湧水の使徒との戦闘
+                        encountEnemy(5);
                         break;
                     case 13:
                         activeText(9);
@@ -1221,21 +1246,25 @@ namespace storyMode
                         break;
                     case 21:
                         //魔物との戦闘
+                        encountEnemy(78);
                         break;
                     case 22:
                         activeText(17);
                         break;
                     case 23:
                         //魔物との戦闘
+                        encountEnemy(79);
                         break;
                     case 24:
                         //魔物との戦闘
+                        encountEnemy(80);
                         break;
                     case 25:
                         activeText(18);
                         break;
                     case 27:
                         //時の門番との戦闘
+                        encountEnemy(81);
                         break;
                     case 28:
                         activeText(20);
@@ -1276,12 +1305,14 @@ namespace storyMode
                         break;
                     case 9:
                         //戦闘
+                        encountEnemy(82);
                         break;
                     case 10:
                         activeText(8);
                         break;
                     case 11:
                         //戦闘
+                        encountEnemy(83);
                         break;
                     case 12:
                         activeText(9);
@@ -1297,6 +1328,7 @@ namespace storyMode
                         break;
                     case 16:
                         //湧水の使徒と戦闘
+                        encountEnemy(5);
                         break;
                     case 17:
                         activeText(12);
@@ -1400,6 +1432,13 @@ namespace storyMode
         {
             enemyDeckData.setDeckData(EnemyID);
             SceneManager.LoadScene("BattleCPU");
+        }
+
+        private void displayText(string Text,float FadeInTime,float FadeOutTime)
+        {
+            var InstantiatePosition = NextStageCheckPanel.transform.parent.gameObject;
+            var instantPrefab = Instantiate(instantTextPrefab, InstantiatePosition.transform);
+            instantPrefab.GetComponent<InstantTMP>().Init(Text, FadeInTime, FadeOutTime);
         }
         /// <summary>
         /// eventNumの会話が終わった後に動作する。

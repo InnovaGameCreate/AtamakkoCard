@@ -11,8 +11,8 @@ namespace Card
     /// </summary>
     public class CardData : MonoBehaviour
     {
-        private const string SheetID = "10ffaXstejMSgOXv8xDcLqIRntThBsr5R76YawNDt4uM";
-        private const string SheetName = "シート1";
+        private const string SheetID = "1laAr4f3RgQRTD1ySSnLHooyNnRByMtzh-oqSSYV9LtM";
+        private const string SheetName = "CardData";
     
         public static List<string[]> CardDataArrayList;
 
