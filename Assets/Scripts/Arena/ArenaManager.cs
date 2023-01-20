@@ -6,6 +6,7 @@ public class ArenaManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] ranker;
     [SerializeField] private GameObject Player;
+    [SerializeField] ArenaText Texts;
     private int PlayerArenaRank;
     void Start()
     {
@@ -35,5 +36,10 @@ public class ArenaManager : MonoBehaviour
             //Debug.Log("•À‚×‘Ö‚¦" + i);
             allRanker[i].transform.SetSiblingIndex(i);
         }
+    }
+
+    public void InitData(int num)
+    {
+        Texts.SetText(num);
     }
 }
