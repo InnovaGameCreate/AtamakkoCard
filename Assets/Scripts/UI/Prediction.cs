@@ -1,4 +1,5 @@
 using Atamakko;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,7 @@ namespace UI
     /// <summary>
     /// 間合いの予測表示を管理するクラス
     /// </summary>
-    public class PredictionManager : MonoBehaviour
+    public class Prediction : MonoBehaviour
     {
         [SerializeField] private GameObject areaUI; // 予測表示するUI
         [SerializeField] private PlayerCore player; // プレイヤー

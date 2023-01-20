@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace Atamakko
         public ReactiveProperty<int> MyHp { get; set; } = new ReactiveProperty<int>(6); // HP
 
         [SerializeField] private int position; // 位置
+        [SerializeField] private PlayerCharacterVisual equipment;
 
         public int MyPosition // 外部からアクセス可能な位置
         {
@@ -32,6 +34,11 @@ namespace Atamakko
                     if (hp <= 0) MyHp.Value = 0;
                 })
                 .AddTo(this);
+        }
+
+        public void SetImage(int[] equipments)
+        {
+            equipment.SetImage(equipments);
         }
     }
 }

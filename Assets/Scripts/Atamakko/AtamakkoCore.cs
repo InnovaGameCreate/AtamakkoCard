@@ -13,7 +13,7 @@ namespace Atamakko
         protected DeckData DeckData { get; private set; } // デッキ情報
         [SerializeField] private GameObject[] sSlot; // スロット　移動に使う
         
-        public bool UsedUltimate { get; set; } // 必殺技が使用済みかどうか
+        public bool UsedUltimate { get; protected set; } // 必殺技が使用済みかどうか
 
         /// <summary>
         /// アタマッコの初期化。デッキ情報を格納する。

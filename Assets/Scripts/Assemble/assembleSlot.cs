@@ -96,7 +96,7 @@ namespace Assemble
                 itemImage.sprite = item.MyItemImage;
                 itemShowImage.color = new Color(1, 1, 1, 1);
 
-                Visual.setImage();
+                Visual.SetImage(PlayerConfig.Equipmnet.ToArray());
                 //itemShowImage.sprite = item.MyItemImage;
             }
             else
