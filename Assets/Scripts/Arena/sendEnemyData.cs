@@ -5,9 +5,11 @@ namespace Arena
 
     public class sendEnemyData : MonoBehaviour
     {
+        [SerializeField] RankerImage Images;
         private int enemyID = 0;
         public void SetEnemyData(int ID)
         {
+            Images.Init(ID);
             enemyID = ID;
         }
         public void SendData()

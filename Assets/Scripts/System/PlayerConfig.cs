@@ -32,7 +32,7 @@ public class PlayerConfig : MonoBehaviour
         Equipmnet = PlayerPrefsUtility.LoadList<int>("MyEquipmnet");//自分の装備を読み込む
         IsTutorial = PlayerPrefs.GetInt("Tutorial", 0);
         StoryProgress = PlayerPrefs.GetInt("StoryProgress", 0);
-        ArenaRank = PlayerPrefs.GetInt("ArenaRank", 12);
+        ArenaRank = PlayerPrefs.GetInt("ArenaRank", 21);
         LastPlayStory = PlayerPrefs.GetString("LastPlayStory", "null");
         PlayerRate = PlayerPrefs.GetInt("PlayerRate", 100);
     }

@@ -1322,6 +1322,7 @@ namespace storyMode
                         break;
                     case 14:
                         //í“¬
+                        encountEnemy(92);
                         break;
                     case 15:
                         activeText(11);
@@ -1335,6 +1336,7 @@ namespace storyMode
                         break;
                     case 18:
                         //ÅŒÃ‚Ìƒhƒ‰ƒSƒ“‚Æí“¬
+                        encountEnemy(89);
                         break;
                     case 19:
                         activeText(13);
@@ -1356,30 +1358,36 @@ namespace storyMode
                         break;
                     case 26:
                         //í“¬
+                        encountEnemy(84);
                         break;
                     case 27:
                         //í“¬
+                        encountEnemy(85);
                         break;
                     case 28:
                         activeText(20);
                         break;
                     case 29:
                         //í“¬
+                        encountEnemy(86);
                         break;
                     case 30:
                         //í“¬
+                        encountEnemy(87);
                         break;
                     case 31:
                         activeText(21);
                         break;
                     case 32:
                         //í“¬
+                        encountEnemy(88);
                         break;
                     case 33:
                         activeText(22);
                         break;
                     case 34:
                         //í“¬
+                        encountEnemy(90);
                         break;
                     case 35:
                         activeText(23);
