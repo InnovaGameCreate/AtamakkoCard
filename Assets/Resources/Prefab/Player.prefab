@@ -403,6 +403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   position: 0
+  equipment: {fileID: 358597823893247846}
 --- !u!114 &6082172408367007906
 MonoBehaviour:
   m_ObjectHideFlags: 0

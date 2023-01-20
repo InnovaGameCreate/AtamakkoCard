@@ -36,6 +36,7 @@ namespace Manager
             //自分と相手のプレイヤーネームを表示
             playerName.text = PlayerConfig.PlayerName;
             photonView.RPC(nameof(SetEnemyName), RpcTarget.Others, playerName.text);
+            
 
             await TimeCounter.Instance.CountDown(3);
             // スタートフェイズへ
@@ -62,6 +63,8 @@ namespace Manager
             // プレイヤーの初期設定
             Player.Initialize(playerDeck);
             Enemy.Initialize(_enemyDeck);
+            Player.AtamakkoData.SetImage(PlayerConfig.Equipmnet.ToArray());
+            photonView.RPC(nameof(SetEnemyEquipment), RpcTarget.Others, PlayerConfig.Equipmnet.ToArray());
             
             decisionButton.MyInteractable = false;
             
@@ -421,6 +424,12 @@ namespace Manager
             var list = deck.ToList();
             _enemyDeck = new List<int>(list);
             _getData = true;
+        }
+
+        [PunRPC]
+        private void SetEnemyEquipment(int[] equipments)
+        {
+            Enemy.AtamakkoData.SetImage(equipments);
         }
 
         /// <summary>

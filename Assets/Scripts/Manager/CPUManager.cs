@@ -50,7 +50,8 @@ namespace Manager
             // プレイヤーの初期設定
             Player.Initialize(playerDeck);
             Enemy.Initialize(enemyDeck ?? playerDeck);
-            
+            Player.AtamakkoData.SetImage(PlayerConfig.Equipmnet.ToArray());
+
             // ゲーム終了の設定
             Player.AtamakkoData.MyHp
                 .Where(hp => hp == 0)

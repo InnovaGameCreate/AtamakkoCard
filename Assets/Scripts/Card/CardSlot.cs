@@ -20,12 +20,12 @@ namespace Card
         [SerializeField] private GameObject cardPrefab; // カードのプレハブ
         public CardController MyCard { get; private set; } // スロット内のカード
         public int MyCardID { get; private set; } = -1; // 持っているカードID
-        private PredictionManager _predictionManager; // 予測間合い
+        private Prediction _prediction; // 予測間合い
         
         void Start()
         {
             _selectImage = gameObject.GetComponent<Image>();
-            _predictionManager = FindObjectOfType<PredictionManager>();
+            _prediction = FindObjectOfType<Prediction>();
             // 使用するスロットの色を変える
             MySelect.Subscribe(b => { _selectImage.color = b ? SelectColor : Color.clear; }).AddTo(this);
             // 戦闘フェイズ時に空のスロットを消す
@@ -102,7 +102,7 @@ namespace Card
                     {
                         if (MyCard.Model.Attack[i] == "〇")
                         {
-                            _predictionManager.Show(i, true);
+                            _prediction.Show(i, true);
                         }
                     }
 
@@ -114,7 +114,7 @@ namespace Card
                     {
                         if (MyCard.Model.Move[i] == "〇")
                         {
-                            _predictionManager.Show(i, false);
+                            _prediction.Show(i, false);
                         }
                     }
 
@@ -131,7 +131,7 @@ namespace Card
         {
             if (MyCardID < 0 || MyCard == null) return;
             if (BattleManager.Instance.CurrentState.Value != GameState.Select) return;
-            _predictionManager.Hide();
+            _prediction.Hide();
         }
     }
 }
