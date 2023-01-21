@@ -12,7 +12,8 @@ namespace Card
         [SerializeField] private TextMeshProUGUI nameText, iniText, expText; // 名前，先制度，説明文
         [SerializeField] private Image cardSprite; // カードアイコン
         [SerializeField] private CardTypeIcon cardTypeIcon; // カードの種類アイコン
-        [SerializeField] private GameObject place; // カードの間合い
+        [SerializeField] private GameObject firstPlace; // カードの第一間合い
+        [SerializeField] private GameObject secondPlace; // カードの第二間合い
         public GameObject backCard; // カードの裏側
         public GameObject shadow; // 影
 
@@ -29,35 +30,51 @@ namespace Card
             cardSprite.sprite = cardIcon.cardIconList[cardModel.ID];
             cardTypeIcon.setImage(cardModel.Kind);
 
-            if (cardModel.Kind == "攻撃")
+            switch (cardModel.Kind)
             {
-                int i = 0;
-                foreach (var str in cardModel.Attack)
+                case "攻撃":
                 {
-                    if (str == "〇")
+                    for (var i = 0; i < cardModel.Attack.Length; i++)
                     {
-                        var attackPlace = place.transform.GetChild(i).gameObject;
+                        if (cardModel.Attack[i] != "〇") continue;
+                        var attackPlace = firstPlace.transform.GetChild(i).gameObject;
                         attackPlace.SetActive(true);
                         attackPlace.GetComponent<Image>().color = Color.red;
                     }
 
-                    i++;
-                }
-            }
-
-            if (cardModel.Kind == "移動")
-            {
-                int j = 0;
-                foreach (var str in cardModel.Move)
-                {
-                    if (str == "〇")
+                    if (cardModel.Additional == "◎")
                     {
-                        var movePlace = place.transform.GetChild(j).gameObject;
+                        for (var i = 1; i < cardModel.Move.Length; i++)
+                        {
+                            if (cardModel.Move[i] != "〇") continue;
+                            var movePlace = secondPlace.transform.GetChild(i).gameObject;
+                            movePlace.SetActive(true);
+                            movePlace.GetComponent<Image>().color = Color.green;
+                        }
+                    }
+                    break;
+                }
+                case "移動":
+                {
+                    for (var i = 0; i < cardModel.Move.Length; i++)
+                    {
+                        if (cardModel.Move[i] != "〇") continue;
+                        var movePlace = firstPlace.transform.GetChild(i).gameObject;
                         movePlace.SetActive(true);
-                        movePlace.GetComponent<Image>().color = new Color(0f, 1f, 0f);
+                        movePlace.GetComponent<Image>().color = Color.green;
                     }
 
-                    j++;
+                    if (cardModel.Additional == "◎")
+                    {
+                        for (var i = 1; i < cardModel.Attack.Length; i++)
+                        {
+                            if (cardModel.Attack[i] != "〇") continue;
+                            var attackPlace = secondPlace.transform.GetChild(i).gameObject;
+                            attackPlace.SetActive(true);
+                            attackPlace.GetComponent<Image>().color = Color.red;
+                        }
+                    }
+                    break;
                 }
             }
         }
