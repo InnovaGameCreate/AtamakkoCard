@@ -240,6 +240,7 @@ namespace Manager
 
                 battleSlots[i].DeleteCard();
                 enemySlots[i].DeleteCard();
+                await UniTask.Delay(500);
             }
             
             // 使用済みカードへ
@@ -401,10 +402,12 @@ namespace Manager
                     {
                         case "射撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Enemy.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             Debug.Log("射撃エフェクトを再生:" + Enemy.gameObject.name);
                             break;
                         case "斬撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
                             break;
                         default:
@@ -414,6 +417,7 @@ namespace Manager
                 if (card.Additional == "〇")
                 {
                     Player.Move(attackPosition);
+                    SeManager.Instance.ShotSe(SeType.MoveCard);
                 }
             }
 
@@ -438,6 +442,7 @@ namespace Manager
 
                 await TimeCounter.Instance.CountDown(30);
                 Player.Move(movePosition);
+                SeManager.Instance.ShotSe(SeType.MoveCard);
                 if (card.Additional == "〇" && Enemy.AtamakkoData.MyPosition == movePosition)
                 {
                     int myDamage = Player.GetDamage(card.Damage);
@@ -446,9 +451,11 @@ namespace Manager
                     {
                         case "射撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Enemy.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             break;
                         case "斬撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             break;
                         default:
                             break;
@@ -475,10 +482,12 @@ namespace Manager
                     {
                         case "射撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             Debug.Log("射撃エフェクトを再生:" + Enemy.gameObject.name);
                             break;
                         case "斬撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
                             break;
                         default:
@@ -488,6 +497,7 @@ namespace Manager
                 if (card.Additional == "〇")
                 {
                     Enemy.Move(attackPosition);
+                    SeManager.Instance.ShotSe(SeType.MoveCard);
                 }
             }
 
@@ -496,6 +506,7 @@ namespace Manager
                 int movePosition = Enemy.MoveSelect(Player.AtamakkoData.MyPosition, card);
                 await UniTask.Delay(10);
                 Enemy.Move(movePosition);
+                SeManager.Instance.ShotSe(SeType.MoveCard);
                 if (card.Additional == "〇" && Player.AtamakkoData.MyPosition == movePosition)
                 {
                     int enemyDamage = Enemy.GetDamage(card.Damage);
@@ -504,10 +515,12 @@ namespace Manager
                     {
                         case "射撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             Debug.Log("射撃エフェクトを再生:" + Enemy.gameObject.name);
                             break;
                         case "斬撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
                             break;
                         default:

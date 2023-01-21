@@ -37,12 +37,12 @@ namespace Assemble
             base.Start();
             Hand = FindObjectOfType<hand>();
             Myassemble = FindObjectOfType<AssembleDeck>();
-            StartCoroutine(SetUp());
+            SetUp();
         }
 
-        IEnumerator SetUp()//スプレットシートからデータを読み取る時間停止
+        private void SetUp()//スプレットシートからデータを読み取る時間停止
         {
-            yield return new WaitForSeconds(0.5f);
+            //yield return new WaitForSeconds(0.5f);
             setUpItem();
         }
         private void setUpItem()//データから初期の装備カードをセットする
@@ -58,6 +58,23 @@ namespace Assemble
             item.MyItemImage = cardIcon.equipmentIconList[int.Parse(quipmentData[0])];
             item.MyCardNum1 = int.Parse(quipmentData[4]);
             item.MyCardNum2 = int.Parse(quipmentData[5]);
+            switch (quipmentData[2])
+            {
+                case "上部":
+                    item.MyPartsType = Item.slotType.upper;
+                    break;
+                case "中央":
+                    item.MyPartsType = Item.slotType.mid;
+                    break;
+                case "下部":
+                    item.MyPartsType = Item.slotType.lower;
+                    break;
+                case "アクセサリ":
+                    item.MyPartsType = Item.slotType.accessory;
+                    break;
+                default:
+                    break;
+            }
             Debug.Log("装備"+ PositionNum + "に設置されている装備のIDは："+ item.MyCardID +"です\n" +
                 "アイテムのイメージ画像は"+ item.MyItemImage+ "です\n" + 
                 "item.MyCardIDの設定されているカードは" + item.MyCardNum1 + "と" + item.MyCardNum2 + "です");
