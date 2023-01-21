@@ -496,9 +496,11 @@ namespace Manager
                     {
                         case "射撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Enemy.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             break;
                         case "斬撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             break;
                         default:
                             break;
@@ -507,6 +509,7 @@ namespace Manager
                 if (card.Additional == "〇")
                 {
                     Player.Move(attackPosition);
+                    SeManager.Instance.ShotSe(SeType.MoveCard);
                 }
             }
 
@@ -533,6 +536,7 @@ namespace Manager
                 photonView.RPC(nameof(SendAction), RpcTarget.Others, 0, movePosition);
 
                 Player.Move(movePosition);
+                SeManager.Instance.ShotSe(SeType.MoveCard);
                 if (card.Additional == "〇" && Enemy.AtamakkoData.MyPosition == movePosition)
                 {
                     int myDamage = Player.GetDamage(card.Damage);
@@ -540,9 +544,11 @@ namespace Manager
                     {
                         case "射撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             break;
                         case "斬撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             break;
                         default:
                             break;
@@ -570,9 +576,11 @@ namespace Manager
                     {
                         case "射撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             break;
                         case "斬撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             break;
                         default:
                             break;
@@ -581,12 +589,14 @@ namespace Manager
                 if (card.Additional == "〇")
                 {
                     Enemy.Move(_enemyPlace);
+                    SeManager.Instance.ShotSe(SeType.MoveCard);
                 }
             }
 
             if (card.Kind == "移動")
             {
                 Enemy.Move(_enemyPlace);
+                SeManager.Instance.ShotSe(SeType.MoveCard);
                 if (card.Additional == "〇" && Player.AtamakkoData.MyPosition == _enemyPlace)
                 {
                     int enemyDamage = Enemy.GetDamage(card.Damage);
@@ -595,9 +605,11 @@ namespace Manager
                     {
                         case "射撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Enemy.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             break;
                         case "斬撃":
                             EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
+                            SeManager.Instance.ShotSe(SeType.AttackCard);
                             break;
                         default:
                             break;
