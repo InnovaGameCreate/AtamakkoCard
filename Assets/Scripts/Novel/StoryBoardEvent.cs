@@ -108,7 +108,7 @@ namespace storyMode
                         activeText(16);
                         break;
                     case 20:
-                        encountEnemy(11);
+                        encountEnemy(24);
                         //É{ÉXêÌ
                         break;
                     case 21:
@@ -1322,6 +1322,7 @@ namespace storyMode
                         break;
                     case 14:
                         //êÌì¨
+                        encountEnemy(92);
                         break;
                     case 15:
                         activeText(11);
@@ -1335,6 +1336,7 @@ namespace storyMode
                         break;
                     case 18:
                         //ç≈å√ÇÃÉhÉâÉSÉìÇ∆êÌì¨
+                        encountEnemy(89);
                         break;
                     case 19:
                         activeText(13);
@@ -1356,30 +1358,36 @@ namespace storyMode
                         break;
                     case 26:
                         //êÌì¨
+                        encountEnemy(84);
                         break;
                     case 27:
                         //êÌì¨
+                        encountEnemy(85);
                         break;
                     case 28:
                         activeText(20);
                         break;
                     case 29:
                         //êÌì¨
+                        encountEnemy(86);
                         break;
                     case 30:
                         //êÌì¨
+                        encountEnemy(87);
                         break;
                     case 31:
                         activeText(21);
                         break;
                     case 32:
                         //êÌì¨
+                        encountEnemy(88);
                         break;
                     case 33:
                         activeText(22);
                         break;
                     case 34:
                         //êÌì¨
+                        encountEnemy(90);
                         break;
                     case 35:
                         activeText(23);
