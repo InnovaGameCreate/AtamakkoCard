@@ -108,7 +108,7 @@ namespace storyMode
                         activeText(16);
                         break;
                     case 20:
-                        encountEnemy(11);
+                        encountEnemy(24);
                         //É{ÉXêÌ
                         break;
                     case 21:

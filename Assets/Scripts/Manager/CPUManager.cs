@@ -139,7 +139,7 @@ namespace Manager
                 var card = Instantiate(cardPrefab, playerContent.transform);
                 card.GetComponent<CardController>().Init(cardID);
             }
-            Enemy.DebugHand();
+            //Enemy.DebugHand();
             Enemy.DebugDeck();
             foreach (var cardID in enemyList)
             {
@@ -396,6 +396,20 @@ namespace Manager
                 if (Enemy.AtamakkoData.MyPosition == attackPosition)
                 {
                     Enemy.AddDamage(myDamage);
+
+                    switch (card.Effect)
+                    {
+                        case "射撃":
+                            EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Enemy.transform);
+                            Debug.Log("射撃エフェクトを再生:" + Enemy.gameObject.name);
+                            break;
+                        case "斬撃":
+                            EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
+                            Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 if (card.Additional == "〇")
                 {
@@ -428,6 +442,17 @@ namespace Manager
                 {
                     int myDamage = Player.GetDamage(card.Damage);
                     Enemy.AddDamage(myDamage);
+                    switch (card.Effect)
+                    {
+                        case "射撃":
+                            EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Enemy.transform);
+                            break;
+                        case "斬撃":
+                            EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
@@ -446,6 +471,19 @@ namespace Manager
                 if (Player.AtamakkoData.MyPosition == attackPosition)
                 {
                     Player.AddDamage(enemyDamage);
+                    switch (card.Effect)
+                    {
+                        case "射撃":
+                            EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
+                            Debug.Log("射撃エフェクトを再生:" + Enemy.gameObject.name);
+                            break;
+                        case "斬撃":
+                            EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
+                            Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 if (card.Additional == "〇")
                 {
@@ -462,6 +500,19 @@ namespace Manager
                 {
                     int enemyDamage = Enemy.GetDamage(card.Damage);
                     Player.AddDamage(enemyDamage);
+                    switch (card.Effect)
+                    {
+                        case "射撃":
+                            EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
+                            Debug.Log("射撃エフェクトを再生:" + Enemy.gameObject.name);
+                            break;
+                        case "斬撃":
+                            EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
+                            Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
