@@ -264,90 +264,172 @@ namespace Manager
             var myCard = new CardModel(CardData.CardDataArrayList[Player.GetNowCardID(slotNum)]);
             var enemyCard = new CardModel(CardData.CardDataArrayList[Enemy.GetNowCardID(slotNum)]);
             // 先制度取得
-            int myInitiative = Player.GetInitiative(myCard.Initiative);
-            int enemyInitiative = Enemy.GetInitiative(enemyCard.Initiative);
+            var myInitiative = Player.GetInitiative(myCard.Initiative);
+            var enemyInitiative = Enemy.GetInitiative(enemyCard.Initiative);
             await UniTask.Delay(10);
 
             // 優先度の処理
             if (myInitiative == enemyInitiative && myCard.Kind == enemyCard.Kind)
             {
-                if (myCard.Kind == "攻撃")
+                switch (myCard.Kind)
                 {
-                    var canAttack = Player.CanAttack(myCard);
-                    int playerAttack = 0;
-                    foreach (var t in canAttack)
+                    case "攻撃":
                     {
-                        var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
-                        playerAttack = t;
-                        attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * playerAttack);
-                        attackArea.AttackPlace = playerAttack;
+                        var canAttack = Player.CanAttack(myCard);
+                        var playerAttack = 0;
+                        foreach (var t in canAttack)
+                        {
+                            var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
+                            playerAttack = t;
+                            attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * playerAttack);
+                            attackArea.AttackPlace = playerAttack;
 
-                        attackArea.Selected
-                            .Subscribe(i =>
-                            {
-                                playerAttack = i;
-                                TimeCounter.Instance.EndTimer();
-                            })
-                            .AddTo(attackArea);
-                    }
+                            attackArea.Selected
+                                .Subscribe(i =>
+                                {
+                                    playerAttack = i;
+                                    TimeCounter.Instance.EndTimer();
+                                })
+                                .AddTo(attackArea);
+                        }
 
-                    await TimeCounter.Instance.CountDown(30);
+                        await TimeCounter.Instance.CountDown(30);
                     
-                    int myDamage = Player.GetDamage(myCard.Damage);
-                    int enemyDamage = Enemy.GetDamage(enemyCard.Damage);
-                    int enemyAttack = Enemy.AttackSelect(Player.AtamakkoData.MyPosition, enemyCard);
+                        var myDamage = Player.GetDamage(myCard.Damage);
+                        var enemyDamage = Enemy.GetDamage(enemyCard.Damage);
+                        var enemyAttack = Enemy.AttackSelect(Player.AtamakkoData.MyPosition, enemyCard);
 
-                    if (Enemy.AtamakkoData.MyPosition == playerAttack)
-                    {
-                        Enemy.AddDamage(myDamage);
-                    }
-                    if (myCard.Additional == "〇")
-                    {
-                        Player.Move(playerAttack);
-                    }
-                    if (Player.AtamakkoData.MyPosition == enemyAttack)
-                    {
-                        Player.AddDamage(enemyDamage);
-                    }
-                    if (enemyCard.Additional == "〇")
-                    {
-                        Enemy.Move(enemyAttack);
-                    }
-                }
+                        if (Enemy.AtamakkoData.MyPosition == playerAttack)
+                        {
+                            Enemy.AddDamage(myDamage);
+                        }
+                        switch (myCard.Additional)
+                        {
+                            case "〇":
+                                Player.Move(playerAttack);
+                                break;
+                            case "◎":
+                                var canMove = Player.CanMove(myCard);
+                                var playerMove = 0;
+                                foreach (var t in canMove)
+                                {
+                                    playerMove = t;
+                                    var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[playerMove].transform);
+                                    moveArea.MovePlace = playerMove;
 
-                if (myCard.Kind == "移動")
-                {
-                    var canMove = Player.CanMove(myCard);
-                    int playerMove = 0;
-                    foreach (var t in canMove)
-                    {
-                        playerMove = t;
-                        var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[playerMove].transform);
-                        moveArea.MovePlace = playerMove;
+                                    moveArea.Selected
+                                        .Subscribe(i =>
+                                        {
+                                            playerMove = i;
+                                            TimeCounter.Instance.EndTimer();
+                                        })
+                                        .AddTo(moveArea);
+                                }
+                                await TimeCounter.Instance.CountDown(30);
+                                Player.Move(playerMove);
+                                break;
+                        }
 
-                        moveArea.Selected
-                            .Subscribe(i =>
-                            {
-                                playerMove = i;
-                                TimeCounter.Instance.EndTimer();
-                            })
-                            .AddTo(moveArea);
+                        if (Player.AtamakkoData.MyPosition == enemyAttack)
+                        {
+                            Player.AddDamage(enemyDamage);
+                        }
+                        switch (enemyCard.Additional)
+                        {
+                            case "〇":
+                                Enemy.Move(enemyAttack);
+                                break;
+                            case "◎":
+                                var enemyMove = Enemy.MoveSelect(Player.AtamakkoData.MyPosition, enemyCard);
+                                Enemy.Move(enemyMove);
+                                break;
+                        }
+
+                        break;
                     }
+                    case "移動":
+                    {
+                        var canMove = Player.CanMove(myCard);
+                        var playerMove = 0;
+                        foreach (var t in canMove)
+                        {
+                            playerMove = t;
+                            var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[playerMove].transform);
+                            moveArea.MovePlace = playerMove;
 
-                    await TimeCounter.Instance.CountDown(30);
-                    int enemyMove = Enemy.MoveSelect(Player.AtamakkoData.MyPosition, enemyCard);
+                            moveArea.Selected
+                                .Subscribe(i =>
+                                {
+                                    playerMove = i;
+                                    TimeCounter.Instance.EndTimer();
+                                })
+                                .AddTo(moveArea);
+                        }
+
+                        await TimeCounter.Instance.CountDown(30);
+                        var enemyMove = Enemy.MoveSelect(Player.AtamakkoData.MyPosition, enemyCard);
                     
-                    Player.Move(playerMove);
-                    if (myCard.Additional == "〇" && Enemy.AtamakkoData.MyPosition == playerMove)
-                    {
-                        int myDamage = Player.GetDamage(myCard.Damage);
-                        Enemy.AddDamage(myDamage);
-                    }
-                    Enemy.Move(enemyMove);
-                    if (enemyCard.Additional == "〇" && Player.AtamakkoData.MyPosition == enemyMove)
-                    {
-                        int enemyDamage = Enemy.GetDamage(enemyCard.Damage);
-                        Player.AddDamage(enemyDamage);
+                        Player.Move(playerMove);
+                        int myDamage;
+                        switch (myCard.Additional)
+                        {
+                            case "〇" when Enemy.AtamakkoData.MyPosition == playerMove:
+                            {
+                                myDamage = Player.GetDamage(myCard.Damage);
+                                Enemy.AddDamage(myDamage);
+                                break;
+                            }
+                            case "◎":
+                                var canAttack = Player.CanAttack(myCard);
+                                var playerAttack = 0;
+                                foreach (var t in canAttack)
+                                {
+                                    var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
+                                    playerAttack = t;
+                                    attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * playerAttack);
+                                    attackArea.AttackPlace = playerAttack;
+
+                                    attackArea.Selected
+                                        .Subscribe(i =>
+                                        {
+                                            playerAttack = i;
+                                            TimeCounter.Instance.EndTimer();
+                                        })
+                                        .AddTo(attackArea);
+                                }
+
+                                await TimeCounter.Instance.CountDown(30);
+                                myDamage = Player.GetDamage(myCard.Damage);
+
+                                if (Enemy.AtamakkoData.MyPosition == playerAttack)
+                                {
+                                    Enemy.AddDamage(myDamage);
+                                }
+                                break;
+                        }
+                    
+                        Enemy.Move(enemyMove);
+                        int enemyDamage;
+                        switch (enemyCard.Additional)
+                        {
+                            case "〇" when Player.AtamakkoData.MyPosition == enemyMove:
+                            {
+                                enemyDamage = Enemy.GetDamage(enemyCard.Damage);
+                                Player.AddDamage(enemyDamage);
+                                break;
+                            }
+                            case "◎":
+                                enemyDamage = Enemy.GetDamage(enemyCard.Damage);
+                                var enemyAttack = Enemy.AttackSelect(Player.AtamakkoData.MyPosition, enemyCard);
+
+                                if (Player.AtamakkoData.MyPosition == enemyAttack)
+                                {
+                                    Player.AddDamage(enemyDamage);
+                                }
+                                break;
+                        }
+
+                        break;
                     }
                 }
             }
@@ -371,63 +453,122 @@ namespace Manager
         /// <param name="card">使用したカード</param>
         private async UniTask PlayerTurn(CardModel card)
         {
-            if (card.Kind == "攻撃")
+            switch (card.Kind)
             {
-                var canAttack = Player.CanAttack(card);
-                int attackPosition = 0;
-                foreach (var t in canAttack)
+                case "攻撃":
                 {
-                    var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
-                    attackPosition = t;
-                    attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * attackPosition);
-                    attackArea.AttackPlace = attackPosition;
+                    var canAttack = Player.CanAttack(card);
+                    var attackPosition = 0;
+                    foreach (var t in canAttack)
+                    {
+                        var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
+                        attackPosition = t;
+                        attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * attackPosition);
+                        attackArea.AttackPlace = attackPosition;
 
-                    attackArea.Selected
-                        .Subscribe(i =>
+                        attackArea.Selected
+                            .Subscribe(i =>
+                            {
+                                attackPosition = i;
+                                TimeCounter.Instance.EndTimer();
+                            })
+                            .AddTo(attackArea);
+                    }
+
+                    await TimeCounter.Instance.CountDown(30);
+                    var myDamage = Player.GetDamage(card.Damage);
+                    if (Enemy.AtamakkoData.MyPosition == attackPosition)
+                    {
+                        Enemy.AddDamage(myDamage);
+                    }
+                    switch (card.Additional)
+                    {
+                        case "〇":
+                            Player.Move(attackPosition);
+                            break;
+                        case "◎":
+                            var canMove = Player.CanMove(card);
+                            var movePosition = 0;
+                            foreach (var t in canMove)
+                            {
+                                movePosition = t;
+                                var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[movePosition].transform);
+                                moveArea.MovePlace = movePosition;
+
+                                moveArea.Selected
+                                    .Subscribe(i =>
+                                    {
+                                        movePosition = i;
+                                        TimeCounter.Instance.EndTimer();
+                                    })
+                                    .AddTo(moveArea);
+                            }
+
+                            await TimeCounter.Instance.CountDown(30);
+                            Player.Move(movePosition);
+                            break;
+                    }
+                    break;
+                }
+                case "移動":
+                {
+                    var canMove = Player.CanMove(card);
+                    var movePosition = 0;
+                    foreach (var t in canMove)
+                    {
+                        movePosition = t;
+                        var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[movePosition].transform);
+                        moveArea.MovePlace = movePosition;
+
+                        moveArea.Selected
+                            .Subscribe(i =>
+                            {
+                                movePosition = i;
+                                TimeCounter.Instance.EndTimer();
+                            })
+                            .AddTo(moveArea);
+                    }
+
+                    await TimeCounter.Instance.CountDown(30);
+                    Player.Move(movePosition);
+                    int myDamage;
+                    switch (card.Additional)
+                    {
+                        case "〇" when Enemy.AtamakkoData.MyPosition == movePosition:
                         {
-                            attackPosition = i;
-                            TimeCounter.Instance.EndTimer();
-                        })
-                        .AddTo(attackArea);
-                }
+                            myDamage = Player.GetDamage(card.Damage);
+                            Enemy.AddDamage(myDamage);
+                            break;
+                        }
+                        case "◎":
+                            var canAttack = Player.CanAttack(card);
+                            var attackPosition = 0;
+                            foreach (var t in canAttack)
+                            {
+                                var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
+                                attackPosition = t;
+                                attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * attackPosition);
+                                attackArea.AttackPlace = attackPosition;
 
-                await TimeCounter.Instance.CountDown(30);
-                int myDamage = Player.GetDamage(card.Damage);
-                if (Enemy.AtamakkoData.MyPosition == attackPosition)
-                {
-                    Enemy.AddDamage(myDamage);
-                }
-                if (card.Additional == "〇")
-                {
-                    Player.Move(attackPosition);
-                }
-            }
+                                attackArea.Selected
+                                    .Subscribe(i =>
+                                    {
+                                        attackPosition = i;
+                                        TimeCounter.Instance.EndTimer();
+                                    })
+                                    .AddTo(attackArea);
+                            }
 
-            if (card.Kind == "移動")
-            {
-                var canMove = Player.CanMove(card);
-                int movePosition = 0;
-                foreach (var t in canMove)
-                {
-                    movePosition = t;
-                    var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[movePosition].transform);
-                    moveArea.MovePlace = movePosition;
+                            await TimeCounter.Instance.CountDown(30);
+                            myDamage = Player.GetDamage(card.Damage);
+                            if (Enemy.AtamakkoData.MyPosition == attackPosition)
+                            {
+                                Enemy.AddDamage(myDamage);
+                            }
+                            break;
+                    }
 
-                    moveArea.Selected
-                        .Subscribe(i =>
-                        {
-                            movePosition = i;
-                            TimeCounter.Instance.EndTimer();
-                        })
-                        .AddTo(moveArea);
-                }
-
-                await TimeCounter.Instance.CountDown(30);
-                Player.Move(movePosition);
-                if (card.Additional == "〇" && Enemy.AtamakkoData.MyPosition == movePosition)
-                {
-                    int myDamage = Player.GetDamage(card.Damage);
-                    Enemy.AddDamage(myDamage);
+                    break;
                 }
             }
         }
@@ -438,30 +579,57 @@ namespace Manager
         /// <param name="card">使用したカード</param>
         private async UniTask EnemyTurn(CardModel card)
         {
-            if (card.Kind == "攻撃")
+            switch (card.Kind)
             {
-                int enemyDamage = Enemy.GetDamage(card.Damage);
-                int attackPosition = Enemy.AttackSelect(Player.AtamakkoData.MyPosition, card);
-                await UniTask.Delay(10);
-                if (Player.AtamakkoData.MyPosition == attackPosition)
+                case "攻撃":
                 {
-                    Player.AddDamage(enemyDamage);
-                }
-                if (card.Additional == "〇")
-                {
-                    Enemy.Move(attackPosition);
-                }
-            }
+                    var enemyDamage = Enemy.GetDamage(card.Damage);
+                    var attackPosition = Enemy.AttackSelect(Player.AtamakkoData.MyPosition, card);
+                    await UniTask.Delay(10);
+                    if (Player.AtamakkoData.MyPosition == attackPosition)
+                    {
+                        Player.AddDamage(enemyDamage);
+                    }
+                    switch (card.Additional)
+                    {
+                        case "〇":
+                            Enemy.Move(attackPosition);
+                            break;
+                        case "◎":
+                            var movePosition = Enemy.MoveSelect(Player.AtamakkoData.MyPosition, card);
+                            await UniTask.Delay(10);
+                            Enemy.Move(movePosition);
+                            break;
+                    }
 
-            if (card.Kind == "移動")
-            {
-                int movePosition = Enemy.MoveSelect(Player.AtamakkoData.MyPosition, card);
-                await UniTask.Delay(10);
-                Enemy.Move(movePosition);
-                if (card.Additional == "〇" && Player.AtamakkoData.MyPosition == movePosition)
+                    break;
+                }
+                case "移動":
                 {
-                    int enemyDamage = Enemy.GetDamage(card.Damage);
-                    Player.AddDamage(enemyDamage);
+                    var movePosition = Enemy.MoveSelect(Player.AtamakkoData.MyPosition, card);
+                    await UniTask.Delay(10);
+                    Enemy.Move(movePosition);
+                    int enemyDamage;
+                    switch (card.Additional)
+                    {
+                        case "〇" when Player.AtamakkoData.MyPosition == movePosition:
+                        {
+                            enemyDamage = Enemy.GetDamage(card.Damage);
+                            Player.AddDamage(enemyDamage);
+                            break;
+                        }
+                        case "◎":
+                            enemyDamage = Enemy.GetDamage(card.Damage);
+                            var attackPosition = Enemy.AttackSelect(Player.AtamakkoData.MyPosition, card);
+                            await UniTask.Delay(10);
+                            if (Player.AtamakkoData.MyPosition == attackPosition)
+                            {
+                                Player.AddDamage(enemyDamage);
+                            }
+                            break;
+                    }
+
+                    break;
                 }
             }
         }
