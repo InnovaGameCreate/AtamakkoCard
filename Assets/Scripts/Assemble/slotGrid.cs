@@ -15,13 +15,11 @@ namespace Assemble
         private int slotNumber;
         void Start()
         {
-            StartCoroutine(SetUp());
+            SetUp();
         }
 
-        IEnumerator SetUp()//スロットにカードをセットする
+        private void SetUp()//スロットにカードをセットする
         {
-            yield return new WaitForSeconds(0.5f);
-
             for (int i = 0; i < Resources.Load<equipmentIcon>("EquipmentIcon").equipmentIconList.Count; i++)
             {
                 if(i != PlayerConfig.Equipmnet[0] 

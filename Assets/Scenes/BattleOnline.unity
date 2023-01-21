@@ -2384,6 +2384,7 @@ GameObject:
   - component: {fileID: 397918048}
   - component: {fileID: 397918052}
   - component: {fileID: 397918050}
+  - component: {fileID: 397918053}
   m_Layer: 0
   m_Name: ClientManager
   m_TagString: Untagged
@@ -2472,6 +2473,18 @@ MonoBehaviour:
   settingPlace: {fileID: 2894617331635650425}
   playerName: {fileID: 3101103556073227716}
   enemyName: {fileID: 1657947240}
+--- !u!114 &397918053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397918046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a6728e07c08cbd4c8744e35a7d56702, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &399115894
 GameObject:
   m_ObjectHideFlags: 0
