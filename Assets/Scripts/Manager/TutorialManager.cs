@@ -9,10 +9,11 @@ using UI;
 using UniRx;
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 namespace Manager
 {
-    public class CPUManager : BattleManager
+    public class TutorialManager : BattleManager
     {
         // 名前
         [SerializeField] private TextMeshProUGUI playerName;
@@ -38,11 +39,35 @@ namespace Manager
             //Debug.Log("過去のシーン：" + PastSceneManager.Instance.);
             // カードデータを取得
             await StartCoroutine(CardData.GetData());
-            
+
             // デッキのインスタンス生成
-            var playerDeck = PlayerConfig.Deck;
-            var enemyDeck = enemyDeckData.enemyDeck;
-            
+            var playerDeck = new List<int>();
+            playerDeck.Add(0);
+            playerDeck.Add(2);
+            playerDeck.Add(5);
+            playerDeck.Add(7);
+            playerDeck.Add(8);
+            playerDeck.Add(1);
+            playerDeck.Add(6);
+            playerDeck.Add(1);
+            playerDeck.Add(0);
+            playerDeck.Add(2);
+            playerDeck.Add(5);
+            playerDeck.Add(6);
+            var enemyDeck = new List<int>();
+            enemyDeck.Add(1);
+            enemyDeck.Add(1);
+            enemyDeck.Add(0);
+            enemyDeck.Add(0);
+            enemyDeck.Add(2);
+            enemyDeck.Add(2);
+            enemyDeck.Add(5);
+            enemyDeck.Add(5);
+            enemyDeck.Add(6);
+            enemyDeck.Add(6);
+            enemyDeck.Add(7);
+            enemyDeck.Add(8);
+
             decisionButton.MyInteractable = false;
 
             await UniTask.Delay(10);
@@ -69,13 +94,7 @@ namespace Manager
                     AnimationManager.Instance.ResultFadeIn(true);
                 })
                 .AddTo(this);
-            Option.Instance.Surrender
-                .Subscribe(_ =>
-                {
-                    _CurrentState.Value = GameState.End;
-                    AnimationManager.Instance.ResultFadeIn(false);
-                })
-                .AddTo(this);
+            
             
             // ドローフェーズへ
             _CurrentState.Value = GameState.Draw;
@@ -86,14 +105,6 @@ namespace Manager
         /// </summary>
         protected override async void DrawFaze()
         {
-            if (Player.CheckDeck()) // 自デッキにカードがないなら
-            {
-                Player.RefillDeck(); // デッキを補充する
-            }
-            if (Enemy.CheckDeck()) // 敵デッキにカードがないなら
-            {
-                Enemy.RefillDeck(); // デッキを補充する
-            }
 
             await UniTask.Delay(10);
 
@@ -240,7 +251,7 @@ namespace Manager
 
                 battleSlots[i].DeleteCard();
                 enemySlots[i].DeleteCard();
-                await UniTask.Delay(800);
+                await UniTask.Delay(500);
             }
             
             // 使用済みカードへ
