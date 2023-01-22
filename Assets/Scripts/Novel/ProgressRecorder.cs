@@ -72,11 +72,11 @@ namespace storyMode
 
         private void TileColorGray()
         {
-            for (int i = 2; i < PlayerLastProgressed; i++)
+            for (int i = 2; i <= PlayerLastProgressed; i++)
             {
                 if(Progressed[i])
                 {
-                    string ObjectName = "tile(" + i + ")";
+                    string ObjectName = "tile (" + i + ")";
                     var Object = GameObject.Find(ObjectName);
                     Object.GetComponent<Image>().color = Color.gray;
                 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace storyMode
 {
@@ -23,12 +24,16 @@ namespace storyMode
             for (int i = 0; i < Stages.Length; i++)
             {
                 var ChildCount = Stages[i].transform.childCount - 1;
-                if (LastProgressed <= (ChildCount + total) && LastProgressed >= total)
+                if (LastProgressed <= (ChildCount + total -1) && LastProgressed >= total)
                 {
                     Stages[i].SetActive(true);
+                    Debug.Log("ChildCount + total:" + (ChildCount + total - 1) + ":total:" + total);
+                   
                 }
                 total += ChildCount;
+ 
             }
+
         }
     }
 }
