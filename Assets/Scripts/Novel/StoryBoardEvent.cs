@@ -1468,7 +1468,7 @@ namespace storyMode
                     case 18:
                         StartCoroutine(changeStage(1, 18));//現在のステージ数：現在のチャプターを送って次のステー
                         break;
-                    case 28:
+                    case 33:
                         NextStageCheckPanel.SetActive(true);
                         break;
                     default:
