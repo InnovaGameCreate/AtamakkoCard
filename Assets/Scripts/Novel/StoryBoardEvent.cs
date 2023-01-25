@@ -58,29 +58,29 @@ namespace storyMode
                         break;
                     case 4:
                         activeText(3);
-                        break;
+                        break;//case5の削除
                     case 5:
-                        activeText(4);
+                        //5の終了時イベントに以降
                         break;
                     case 6:
-                        //5の終了時イベントに以降
+                        activeText(5);
                         break;
                     case 7:
                         activeText(6);
                         break;
                     case 8:
-                        activeText(7);
-                        break;
-                    case 9:
                         //ジャイアントマンティスとの戦闘
                         encountEnemy(23);
                         break;
+                    case 9:
+                        activeText(7);
+                        break;
                     case 10:
                         activeText(8);
+                        //会話終了時dragonとの戦闘
                         break;
                     case 11:
                         activeText(9);
-                        //会話終了時dragonとの戦闘
                         break;
                     case 12:
                         activeText(10);
@@ -98,77 +98,65 @@ namespace storyMode
                         activeText(14);
                         break;
                     case 17:
-                        activeText(15);
-                        break;
-                    case 18:
                         //戦闘鬼との戦闘
                         encountEnemy(11);
                         break;
-                    case 19:
-                        activeText(16);
+                    case 18:
+                        activeText(15);
                         break;
-                    case 20:
+                    case 19:
                         encountEnemy(24);
                         //ボス戦
                         break;
-                    case 21:
-                        activeText(17);
+                    case 20:
+                        activeText(16);
+                        break;
+                    case 22:
+                        activeText(18);
                         break;
                     case 23:
                         activeText(19);
                         break;
-                    case 24:
-                        activeText(20);
-                        break;
-                    case 25:
+                    case 24://仲間と合流
                         activeText(21);
                         break;
-                    case 26://仲間と合流
-                        activeText(22);
-                        break;
-                    case 27:
+                    case 25:
                         //キマイラとの戦闘
                         encountEnemy(24);
                         break;
-                    case 28:
+                    case 26:
+                        activeText(22);
+                        break;
+                    case 27:
                         activeText(23);
                         break;
-                    case 29:
+                    case 28:
                         activeText(24);
+                        break;
+                    case 29:
+                        //ボス戦:monster05
+                        encountEnemy(25);
                         break;
                     case 30:
                         activeText(25);
                         break;
                     case 31:
-                        //ボス戦:monster05
-                        encountEnemy(25);
-                        break;
-                    case 32:
-                        activeText(32);
-                        break;
-                    case 33:
                         activeText(26);
                         break;
-                    case 34:
+                    case 32:
                         //手ごろな魔物との戦闘
                         encountEnemy(26);
                         break;
-                    case 35:
+                    case 33:
                         activeText(27);
                         break;
-                    case 36:
+                    case 34:
                         activeText(28);
                         break;
-                    case 37:
+                    case 35:
                         activeText(29);
                         break;
-                    case 38:
-                        activeText(30);
-                        break;
-                    case 39:
-                        activeText(31);
-                        break;
-                    case 40:
+                    case 36:
                         //幼体ドラゴンとの戦闘
                         encountEnemy(27);
                         break;
@@ -186,9 +174,6 @@ namespace storyMode
                         break;
                     case 2:
                         activeText(1);
-                        break;
-                    case 3:
-                        activeText(2);
                         break;
                     case 4:
                         activeText(3);
@@ -1458,15 +1443,15 @@ namespace storyMode
             {
                 switch (eventNum)
                 {
-                    case 5:
-                        StartCoroutine(changeStage(0, 5));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                    case 4:
+                        StartCoroutine(changeStage(0, 4));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
-                    case 10:
+                    case 9:
                         //ドラゴンとの戦闘:monster02
                         encountEnemy(10);
                         break;
-                    case 18:
-                        StartCoroutine(changeStage(1, 18));//現在のステージ数：現在のチャプターを送って次のステー
+                    case 17:
+                        StartCoroutine(changeStage(1, 17));//現在のステージ数：現在のチャプターを送って次のステー
                         break;
                     case 33:
                         NextStageCheckPanel.SetActive(true);
@@ -1483,6 +1468,10 @@ namespace storyMode
                     case 8:
                         //アタマッコの新しい装備を手に入れる
                         Debug.Log("終了イベント8");
+                        break;
+                    case 10:
+                        displayText("ショートボウのアクセサリを手に入れた",2f,2f);
+                        PlayerConfig.unLockEquipment[63] = true;
                         break;
                     case 13:
                         Scene[1].SetActive(true);
@@ -1518,12 +1507,16 @@ namespace storyMode
                     case 7:
                         StartCoroutine(changeStage(0, 7));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
+                    case 14:
+                        displayText("六角玉石のアクセサリを手に入れた", 2f, 2f);
+                        PlayerConfig.unLockEquipment[54] = true;
+                        break;
                     case 16:
                         //教導の使徒と戦闘
                         break;
                     case 15:
                         //ごろつきと戦闘
-                        //encountEnemy(23);
+                        encountEnemy(93);
                         break;
                     case 26:
                         //ボス戦闘
@@ -1551,7 +1544,6 @@ namespace storyMode
                     case 24:
                         NextStageCheckPanel.SetActive(true);
                         break;
-
                     default:
                         break;
                 }
@@ -1562,15 +1554,10 @@ namespace storyMode
                 {
                     case 10:
                         //護国の使徒との戦闘
+                        encountEnemy(91);
                         break;
                     case 12:
                         StartCoroutine(changeStage(0, 12));//現在のステージ数：現在のチャプターを送って次のステージへ移る
-                        break;
-                    case 17:
-                        //ボス戦
-                        break;
-                    case 19:
-                        //ボス戦
                         break;
                     case 20:
                         activeText(21);
@@ -1586,9 +1573,6 @@ namespace storyMode
                 {
                     case 8:
                         StartCoroutine(changeStage(0, 8));//現在のステージ数：現在のチャプターを送って次のステージへ移る
-                        break;
-                    case 14:
-                        //小鹿を襲う魔物と戦闘
                         break;
                     case 19:
                         NextStageCheckPanel.SetActive(true);
@@ -1607,6 +1591,9 @@ namespace storyMode
                     case 15:
                         StartCoroutine(changeStage(1, 15));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
+                    case 21:
+                        NextStageCheckPanel.SetActive(true);
+                        break;
                     default:
                         break;
                 }
@@ -1620,6 +1607,9 @@ namespace storyMode
                         break;
                     case 13:
                         StartCoroutine(changeStage(1, 13));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                        break;
+                    case 24:
+                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;

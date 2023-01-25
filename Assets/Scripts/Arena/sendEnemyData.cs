@@ -7,6 +7,10 @@ namespace Arena
     {
         [SerializeField] RankerImage Images;
         private int enemyID = 0;
+        private void Start()
+        {
+            SetEnemyData(20);
+        }
         public void SetEnemyData(int ID)
         {
             Images.Init(ID);
