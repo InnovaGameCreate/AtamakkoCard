@@ -13,7 +13,7 @@ public class PlayerConfig : MonoBehaviour
     public static List<int> Equipmnet = new List<int>();//(上部、中央、下部、アクセサリ)
     [SerializeField]private bool DevelopMode = true;//開発モードかどうか（常に初期化される)
     public static bool IsOnline = false;
-    public static int StoryProgress;//ストーリーの進行具合
+    public static int StoryProgress =0;//ストーリーの進行具合
     public static int ArenaRank;//アリーナのランク
     public static string LastPlayStory;//最後に遊んだ章を記録する
     public static int PlayerRate;//オンラインのプレイヤーのレート
@@ -21,6 +21,7 @@ public class PlayerConfig : MonoBehaviour
     private int DevelopModeEquipmentNum;//equipmentの個数
     private static int isTutorial;//0の時はチュートリアルをまだ受けていない
     private static bool isDevelopMode = true;//デバックモードを行ったかどうか
+    [SerializeField] private bool DataReset;
 
     public static int IsTutorial { get => isTutorial; set => isTutorial = value; }
 
@@ -32,7 +33,7 @@ public class PlayerConfig : MonoBehaviour
         Deck = PlayerPrefsUtility.LoadList<int>("MyDeck");//自分のデッキを読み込む
         Equipmnet = PlayerPrefsUtility.LoadList<int>("MyEquipmnet");//自分の装備を読み込む
         IsTutorial = PlayerPrefs.GetInt("Tutorial", 0);
-        StoryProgress = PlayerPrefs.GetInt("StoryProgress", 0);
+        StoryProgress = PlayerPrefs.GetInt("StoryProgress", 1);
         ArenaRank = PlayerPrefs.GetInt("ArenaRank", 21);
         LastPlayStory = PlayerPrefs.GetString("LastPlayStory", "null");
         PlayerRate = PlayerPrefs.GetInt("PlayerRate", 100);
@@ -120,5 +121,14 @@ public class PlayerConfig : MonoBehaviour
 
             isDevelopMode = false;
         }
+        if (DataReset) Reset();
+    }
+
+    public void Reset()
+    {
+        LastPlayStory = "null";
+        PlayerRate = 100;
+        StoryProgress = 1;
+        DataReset = false;
     }
 }

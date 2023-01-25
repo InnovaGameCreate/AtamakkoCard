@@ -10,10 +10,6 @@ namespace System.story
         /// </summary>
 
         [SerializeField] private SceneObject nextScene;
-        private void Start()
-        {
-            gameObject.SetActive(false);
-        }
 
         public void goNestStage()
         {
