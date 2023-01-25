@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ArenaManager : MonoBehaviour
 {
@@ -12,6 +13,14 @@ public class ArenaManager : MonoBehaviour
     {
         PlayerArenaRank = PlayerConfig.ArenaRank;
         RankerPosition();
+        Init();
+    }
+    private void Init()
+    {
+        for (int i = 0; i < (PlayerArenaRank - 2); i++)
+        {
+            ranker[i].GetComponent<Button>().interactable = false;
+        }
     }
     private void RankerPosition()
     {

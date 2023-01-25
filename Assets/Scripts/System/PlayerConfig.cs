@@ -11,7 +11,7 @@ public class PlayerConfig : MonoBehaviour
     public static string PlayerName;//プレイヤーの名前
     public static List<int> Deck = new List<int>();
     public static List<int> Equipmnet = new List<int>();//(上部、中央、下部、アクセサリ)
-    public static bool DevelopMode = true;//開発モードかどうか（常に初期化される)
+    [SerializeField]private bool DevelopMode = true;//開発モードかどうか（常に初期化される)
     public static bool IsOnline = false;
     public static int StoryProgress =0;//ストーリーの進行具合
     public static int ArenaRank;//アリーナのランク
@@ -20,6 +20,7 @@ public class PlayerConfig : MonoBehaviour
     private int DevelopModeCardNum;//cardの個数
     private int DevelopModeEquipmentNum;//equipmentの個数
     private static int isTutorial;//0の時はチュートリアルをまだ受けていない
+    private static bool isDevelopMode = true;//デバックモードを行ったかどうか
     [SerializeField] private bool DataReset;
 
     public static int IsTutorial { get => isTutorial; set => isTutorial = value; }
@@ -111,16 +112,14 @@ public class PlayerConfig : MonoBehaviour
         {
             //Debug.Log(i+"番目に設定されている数は"+Equipmnet[i]);
         }
-        if (DevelopMode)
+        if (DevelopMode && isDevelopMode)
         {
             Debug.Log("デバック処理を行いました。");
-            DevelopModeEquipmentNum = Resources.Load<equipmentIcon>("EquipmentIcon").equipmentIconList.Count;
-            DevelopModeCardNum = Resources.Load<CardIcon>("CardIcon").cardIconList.Count;
-
+            ArenaRank = 21;
             //Debug.Log("unLockCardの要素数は" + unLockCard.Count + "です");
             //Debug.Log("unLockEquipmentの要素数は" + unLockEquipment.Count + "です");
-            
-            DevelopMode = false;
+
+            isDevelopMode = false;
         }
         if (DataReset) Reset();
     }
