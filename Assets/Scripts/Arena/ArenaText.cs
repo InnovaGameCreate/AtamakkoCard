@@ -104,9 +104,9 @@ public class ArenaText : MonoBehaviour
                 break;
             case 16:
                 Text.text = "アリーナランク" + RankCheck(16) + "\n" +
-                            "テスートワン\n" +
+                            "無法の使徒\n" +
                             "\n" +
-                            "デバックのために生まれた。正式版では登場しないが開発陣は彼のことを忘れることはない。\n";
+                            "青の国が保有する暗殺部隊の一員。部隊内でもお互いの素顔は知らない。\n";
                 break;
             case 17:
                 Text.text = "アリーナランク" + RankCheck(17) + "\n" +
