@@ -3,9 +3,10 @@ namespace Atamakko
     /// <summary>
     /// 敵の種類
     /// </summary>
-    public enum EnemyState
+    public enum EnemyType
     {
         Player,
-        EasyCPU
+        EasyCPU,
+        Tutorial
     }
 }

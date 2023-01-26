@@ -39,6 +39,7 @@ namespace Manager
             
 
             await TimeCounter.Instance.CountDown(3);
+            _next.Value = false;
             // スタートフェイズへ
             _CurrentState.Value = GameState.Init;
         }
@@ -63,6 +64,8 @@ namespace Manager
             // プレイヤーの初期設定
             Player.Initialize(playerDeck);
             Enemy.Initialize(_enemyDeck);
+            Player.ShuffleDeck();
+            Enemy.ShuffleDeck();
             Player.AtamakkoData.SetImage(PlayerConfig.Equipmnet.ToArray());
             photonView.RPC(nameof(SetEnemyEquipment), RpcTarget.Others, PlayerConfig.Equipmnet.ToArray());
             
@@ -91,6 +94,10 @@ namespace Manager
                     _CurrentState.Value = GameState.End;
                     AnimationManager.Instance.ResultFadeIn(false);
                 })
+                .AddTo(this);
+            TimeCounter.Instance.CountNow
+                .Where(b => !b)
+                .Subscribe(_ => _next.Value = true)
                 .AddTo(this);
             
             // ドローフェイズへ
@@ -191,6 +198,7 @@ namespace Manager
                 .AddTo(this);
 
             await TimeCounter.Instance.CountDown(120);    // カウントタイマー起動（120s）
+            _next.Value = false;
             CardMobile = false;
             settingPlace.SetActive(false);
             ultimateButton.MyInteractable = false;  // 必殺技ボタンのOFF
@@ -336,6 +344,7 @@ namespace Manager
                                 .AddTo(attackArea);
                         }
                         await TimeCounter.Instance.CountDown(30);
+                        _next.Value = false;
 
                         var myDamage = Player.GetDamage(myCard.Damage);
                         photonView.RPC(nameof(SendAction), RpcTarget.Others, myDamage, playerAttack);
@@ -356,8 +365,6 @@ namespace Manager
                                 case "斬撃":
                                     EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
                                     SeManager.Instance.ShotSe(SeType.AttackCard);
-                                    break;
-                                default:
                                     break;
                             }
                         }
@@ -385,6 +392,7 @@ namespace Manager
                                         .AddTo(moveArea);
                                 }
                                 await TimeCounter.Instance.CountDown(30);
+                                _next.Value = false;
                                 photonView.RPC(nameof(SendAction), RpcTarget.Others, 0, playerMove);
                                 Player.Move(playerMove);
                                 SeManager.Instance.ShotSe(SeType.MoveCard);
@@ -403,8 +411,6 @@ namespace Manager
                                 case "斬撃":
                                     EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
                                     SeManager.Instance.ShotSe(SeType.AttackCard);
-                                    break;
-                                default:
                                     break;
                             }
                         }
@@ -443,6 +449,7 @@ namespace Manager
                                 .AddTo(moveArea);
                         }
                         await TimeCounter.Instance.CountDown(30);
+                        _next.Value = false;
                         photonView.RPC(nameof(SendAction), RpcTarget.Others, 0, playerMove);
 
                         await UniTask.WaitUntil(() => _getData);
@@ -469,8 +476,6 @@ namespace Manager
                                         EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
                                         SeManager.Instance.ShotSe(SeType.AttackCard);
                                         break;
-                                    default:
-                                        break;
                                 }
                                 break;
                             }
@@ -493,6 +498,7 @@ namespace Manager
                                         .AddTo(attackArea);
                                 }
                                 await TimeCounter.Instance.CountDown(30);
+                                _next.Value = false;
 
                                 myDamage = Player.GetDamage(myCard.Damage);
                                 photonView.RPC(nameof(SendAction), RpcTarget.Others, myDamage, playerAttack);
@@ -509,8 +515,6 @@ namespace Manager
                                         case "斬撃":
                                             EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
                                             SeManager.Instance.ShotSe(SeType.AttackCard);
-                                            break;
-                                        default:
                                             break;
                                     }
                                 }
@@ -536,8 +540,6 @@ namespace Manager
                                         EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
                                         SeManager.Instance.ShotSe(SeType.AttackCard);
                                         break;
-                                    default:
-                                        break;
                                 }
                                 break;
                             }
@@ -558,8 +560,6 @@ namespace Manager
                                         case "斬撃":
                                             EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
                                             SeManager.Instance.ShotSe(SeType.AttackCard);
-                                            break;
-                                        default:
                                             break;
                                     }
                                 }
@@ -658,6 +658,7 @@ namespace Manager
                     }
 
                     await TimeCounter.Instance.CountDown(30);
+                    _next.Value = false;
                     var myDamage = Player.GetDamage(card.Damage);
                     photonView.RPC(nameof(SendAction), RpcTarget.Others, myDamage, attackPosition);
 
@@ -673,8 +674,6 @@ namespace Manager
                             case "斬撃":
                                 EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
                                 SeManager.Instance.ShotSe(SeType.AttackCard);
-                                break;
-                            default:
                                 break;
                         }
                     }
@@ -703,6 +702,7 @@ namespace Manager
                             }
 
                             await TimeCounter.Instance.CountDown(30);
+                            _next.Value = false;
                             photonView.RPC(nameof(SendAction), RpcTarget.Others, 0, movePosition);
 
                             Player.Move(movePosition);
@@ -731,6 +731,7 @@ namespace Manager
                     }
 
                     await TimeCounter.Instance.CountDown(30);
+                    _next.Value = false;
                     photonView.RPC(nameof(SendAction), RpcTarget.Others, 0, movePosition);
 
                     Player.Move(movePosition);
@@ -752,8 +753,6 @@ namespace Manager
                                 case "斬撃":
                                     EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
                                     SeManager.Instance.ShotSe(SeType.AttackCard);
-                                    break;
-                                default:
                                     break;
                             }
                             break;
@@ -778,6 +777,7 @@ namespace Manager
                             }
 
                             await TimeCounter.Instance.CountDown(30);
+                            _next.Value = false;
                             myDamage = Player.GetDamage(card.Damage);
                             photonView.RPC(nameof(SendAction), RpcTarget.Others, myDamage, attackPosition);
 
@@ -793,8 +793,6 @@ namespace Manager
                                     case "斬撃":
                                         EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
                                         SeManager.Instance.ShotSe(SeType.AttackCard);
-                                        break;
-                                    default:
                                         break;
                                 }
                             }
@@ -831,8 +829,6 @@ namespace Manager
                             case "斬撃":
                                 EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
                                 SeManager.Instance.ShotSe(SeType.AttackCard);
-                                break;
-                            default:
                                 break;
                         }
                     }
@@ -873,8 +869,6 @@ namespace Manager
                                     EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
                                     SeManager.Instance.ShotSe(SeType.AttackCard);
                                     break;
-                                default:
-                                    break;
                             }
                             break;
                         }
@@ -894,8 +888,6 @@ namespace Manager
                                     case "斬撃":
                                         EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
                                         SeManager.Instance.ShotSe(SeType.AttackCard);
-                                        break;
-                                    default:
                                         break;
                                 }
                             }

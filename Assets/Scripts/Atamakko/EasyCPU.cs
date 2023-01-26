@@ -8,20 +8,20 @@ namespace Atamakko
     /// <summary>
     /// CPU（弱い）の中身
     /// </summary>
-    public class EasyCPU : MonoBehaviour
+    public class EasyCPU : EnemyLogic
     {
         /// <summary>
         /// セットするカードを選択する。ランダムで行われる。
         /// </summary>
         /// <param name="handID">手札のカードID</param>
         /// <returns>セットするカードID</returns>
-        public List<int> SelectCardLogic(List<int> handID)
+        public override List<int> SelectCardLogic(List<int> handID)
         {
             var cards = new List<int>();
-            System.Random random = new System.Random((int) DateTime.Now.Ticks);
-            for (int i = 0; i < 3; i++)
+            var random = new System.Random((int) DateTime.Now.Ticks);
+            for (var i = 0; i < 3; i++)
             {
-                int index = (int) (random.NextDouble() * (handID.Count - 1));
+                var index = (int) (random.NextDouble() * (handID.Count - 1));
                 cards.Add(handID[index]);
                 handID.Remove(handID[index]);
             }
@@ -33,14 +33,9 @@ namespace Atamakko
         /// </summary>
         /// <param name="myDate">アタマッコの内部データ</param>
         /// <returns>使用する必殺技</returns>
-        public UltimateState SelectUltimateLogic(AtamakkoData myDate)
+        public override UltimateState SelectUltimateLogic(AtamakkoData myDate)
         {
-            if (myDate.MyHp.Value <= 3)
-            {
-                return UltimateState.Recover;
-            }
-
-            return UltimateState.Normal;
+            return myDate.MyHp.Value <= 3 ? UltimateState.Recover : UltimateState.Normal;
         }
 
         /// <summary>
@@ -50,12 +45,12 @@ namespace Atamakko
         /// <param name="player">プレイヤーの位置</param>
         /// <param name="card">使用するカード</param>
         /// <returns>攻撃する位置</returns>
-        public int SelectAttackLogic(int enemy, int player, CardModel card)
+        public override int SelectAttackLogic(int enemy, int player, CardModel card)
         {
-            int select = -1;
+            var select = -1;
             var canSelect = new List<int>();
-            System.Random random = new System.Random((int) DateTime.Now.Ticks);
-            for (int i = 0; i < card.Attack.Length; i++)
+            var random = new System.Random((int) DateTime.Now.Ticks);
+            for (var i = 0; i < card.Attack.Length; i++)
             {
                 if (card.Attack[i] == "〇")
                 {
@@ -68,7 +63,7 @@ namespace Atamakko
             }
             if (select < 0)
             {
-                select = (int) (random.NextDouble() * (canSelect.Count - 1));
+                select = (int) (random.NextDouble() * canSelect.Count - 1);
             }
 
             return select;
@@ -81,11 +76,11 @@ namespace Atamakko
         /// <param name="player">プレイヤーの位置</param>
         /// <param name="card">使用するカード</param>
         /// <returns>移動する位置</returns>
-        public int SelectMoveLogic(int enemy, int player, CardModel card)
+        public override int SelectMoveLogic(int enemy, int player, CardModel card)
         {
             var canSelect = new List<int>();
-            System.Random random = new System.Random((int) DateTime.Now.Ticks);
-            for (int i = 0; i < card.Move.Length; i++)
+            var random = new System.Random((int) DateTime.Now.Ticks);
+            for (var i = 0; i < card.Move.Length; i++)
             {
                 if (card.Move[i] == "〇")
                 {
@@ -93,7 +88,7 @@ namespace Atamakko
                 }
             }
             
-            return (enemy + canSelect[(int) (random.NextDouble() * (canSelect.Count - 1))]) % 6;
+            return (enemy + canSelect[(int) (random.NextDouble() * canSelect.Count)]) % 6;
         }
     }
 }
