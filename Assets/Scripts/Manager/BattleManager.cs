@@ -16,10 +16,13 @@ namespace Manager
         public IReadOnlyReactiveProperty<GameState> CurrentState => _CurrentState;
         protected readonly ReactiveProperty<GameState> _CurrentState = new ReactiveProperty<GameState>(GameState.Waiting);
 
+        public IReadOnlyReactiveProperty<bool> Next => _next;
+        protected readonly ReactiveProperty<bool> _next = new ReactiveProperty<bool>(false);
+
         [SerializeField] protected CardSlot slotPrefab; // スロットのプレハブ
         [SerializeField] protected Transform cardManager; // スロットの親
         [SerializeField] protected ButtonController decisionButton; // 決定ボタン
-        [SerializeField] protected UltimateButton ultimateButton; // 必殺技ボタン
+        [SerializeField] protected ButtonController ultimateButton; // 必殺技ボタン
         [SerializeField] protected CardSlot[] battleSlots; // セット先のスロット
         [SerializeField] protected CardSlot[] enemySlots; // 敵のスロット
         [SerializeField] protected GameObject playerHand; // プレイヤーの手札

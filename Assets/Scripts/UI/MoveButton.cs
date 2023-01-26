@@ -1,5 +1,6 @@
 using System;
 using System.Audio;
+using Manager;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,8 +34,8 @@ namespace UI
                 .AddTo(this);
 
             // タイマーが0になったら消す
-            TimeCounter.Instance.CountNow
-                .Where(b => !b)
+            BattleManager.Instance.Next
+                .Where(b => b)
                 .Subscribe(_ => Destroy(gameObject))
                 .AddTo(this);
         }

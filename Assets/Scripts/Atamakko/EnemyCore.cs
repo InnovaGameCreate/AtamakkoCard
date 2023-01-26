@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Card;
 
@@ -8,11 +9,23 @@ namespace Atamakko
     /// </summary>
     public class EnemyCore : AtamakkoCore
     {
-        private EasyCPU _enemy; // 敵の中身
+        private EnemyLogic _enemy; // 敵の中身
 
-        private void Start()
+        public void SetCPU(EnemyType enemyType)
         {
-            _enemy = gameObject.AddComponent<EasyCPU>();
+            switch (enemyType)
+            {
+                case EnemyType.Player:
+                    break;
+                case EnemyType.EasyCPU:
+                    _enemy = gameObject.AddComponent<EasyCPU>();
+                    break;
+                case EnemyType.Tutorial:
+                    _enemy = gameObject.AddComponent<TutorialCPU>();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(enemyType), enemyType, null);
+            }
         }
 
         /// <summary>

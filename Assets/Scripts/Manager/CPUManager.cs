@@ -27,6 +27,7 @@ namespace Manager
             enemyName.text = enemyDeckData._enemyName;
             PhotonNetwork.OfflineMode = true;
             await TimeCounter.Instance.CountDown(3);
+            _next.Value = false;
             _CurrentState.Value = GameState.Init;
         }
 
@@ -48,8 +49,11 @@ namespace Manager
             await UniTask.Delay(10);
             
             // プレイヤーの初期設定
+            Enemy.SetCPU(EnemyType.EasyCPU);
             Player.Initialize(playerDeck);
             Enemy.Initialize(enemyDeck ?? playerDeck);
+            Player.ShuffleDeck();
+            Enemy.ShuffleDeck();
             Player.AtamakkoData.SetImage(PlayerConfig.Equipmnet.ToArray());
 
             // ゲーム終了の設定
@@ -75,6 +79,10 @@ namespace Manager
                     _CurrentState.Value = GameState.End;
                     AnimationManager.Instance.ResultFadeIn(false);
                 })
+                .AddTo(this);
+            TimeCounter.Instance.CountNow
+                .Where(b => !b)
+                .Subscribe(_ => _next.Value = true)
                 .AddTo(this);
             
             // ドローフェーズへ
@@ -140,7 +148,7 @@ namespace Manager
                 card.GetComponent<CardController>().Init(cardID);
             }
             //Enemy.DebugHand();
-            Enemy.DebugDeck();
+            //Enemy.DebugDeck();
             foreach (var cardID in enemyList)
             {
                 var card = Instantiate(cardPrefab, enemyContent.transform);
@@ -161,6 +169,7 @@ namespace Manager
                 .AddTo(this);
 
             await TimeCounter.Instance.CountDown(120);    // カウントタイマー起動（120s）
+            _next.Value = false;
             CardMobile = false;
             ultimateButton.MyInteractable = false;  // 必殺技ボタンのOFF
             settingPlace.SetActive(false);
@@ -295,6 +304,7 @@ namespace Manager
                         }
 
                         await TimeCounter.Instance.CountDown(30);
+                        _next.Value = false;
                     
                         var myDamage = Player.GetDamage(myCard.Damage);
                         var enemyDamage = Enemy.GetDamage(enemyCard.Damage);
@@ -314,8 +324,6 @@ namespace Manager
                                     EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
                                     SeManager.Instance.ShotSe(SeType.AttackCard);
                                     Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
-                                    break;
-                                default:
                                     break;
                             }
                         }
@@ -343,6 +351,7 @@ namespace Manager
                                         .AddTo(moveArea);
                                 }
                                 await TimeCounter.Instance.CountDown(30);
+                                _next.Value = false;
                                 Player.Move(playerMove);
                                 SeManager.Instance.ShotSe(SeType.MoveCard);
                                 break;
@@ -362,8 +371,6 @@ namespace Manager
                                     EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
                                     SeManager.Instance.ShotSe(SeType.AttackCard);
                                     Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
-                                    break;
-                                default:
                                     break;
                             }
                         }
@@ -425,8 +432,6 @@ namespace Manager
                                         SeManager.Instance.ShotSe(SeType.AttackCard);
                                         Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
                                         break;
-                                    default:
-                                        break;
                                 }
                                 break;
                             }
@@ -450,6 +455,7 @@ namespace Manager
                                 }
 
                                 await TimeCounter.Instance.CountDown(30);
+                                _next.Value = false;
                                 myDamage = Player.GetDamage(myCard.Damage);
 
                                 if (Enemy.AtamakkoData.MyPosition == playerAttack)
@@ -466,8 +472,6 @@ namespace Manager
                                             EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
                                             SeManager.Instance.ShotSe(SeType.AttackCard);
                                             Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
-                                            break;
-                                        default:
                                             break;
                                     }
                                 }
@@ -496,8 +500,6 @@ namespace Manager
                                         SeManager.Instance.ShotSe(SeType.AttackCard);
                                         Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
                                         break;
-                                    default:
-                                        break;
                                 }
                                 break;
                             }
@@ -518,8 +520,6 @@ namespace Manager
                                             EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
                                             SeManager.Instance.ShotSe(SeType.AttackCard);
                                             Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
-                                            break;
-                                        default:
                                             break;
                                     }
                                 }
@@ -573,6 +573,7 @@ namespace Manager
                     }
 
                     await TimeCounter.Instance.CountDown(30);
+                    _next.Value = false;
                     var myDamage = Player.GetDamage(card.Damage);
                     if (Enemy.AtamakkoData.MyPosition == attackPosition)
                     {
@@ -588,8 +589,6 @@ namespace Manager
                                 EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
                                 SeManager.Instance.ShotSe(SeType.AttackCard);
                                 Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
-                                break;
-                            default:
                                 break;
                         }
                     }
@@ -645,6 +644,7 @@ namespace Manager
                     }
 
                     await TimeCounter.Instance.CountDown(30);
+                    _next.Value = false;
                     Player.Move(movePosition);
                     SeManager.Instance.ShotSe(SeType.MoveCard);
                     
@@ -664,8 +664,6 @@ namespace Manager
                                 case "斬撃":
                                     EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
                                     SeManager.Instance.ShotSe(SeType.AttackCard);
-                                    break;
-                                default:
                                     break;
                             }
                             break;
@@ -690,6 +688,7 @@ namespace Manager
                             }
 
                             await TimeCounter.Instance.CountDown(30);
+                            _next.Value = false;
                             myDamage = Player.GetDamage(card.Damage);
                             if (Enemy.AtamakkoData.MyPosition == attackPosition)
                             {
@@ -703,8 +702,6 @@ namespace Manager
                                     case "斬撃":
                                         EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
                                         SeManager.Instance.ShotSe(SeType.AttackCard);
-                                        break;
-                                    default:
                                         break;
                                 }
                             }
@@ -742,8 +739,6 @@ namespace Manager
                                 EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
                                 SeManager.Instance.ShotSe(SeType.AttackCard);
                                 Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
-                                break;
-                            default:
                                 break;
                         }
                     }
@@ -788,8 +783,6 @@ namespace Manager
                                     SeManager.Instance.ShotSe(SeType.AttackCard);
                                     Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
                                     break;
-                                default:
-                                    break;
                             }
                             break;
                         }
@@ -811,8 +804,6 @@ namespace Manager
                                         EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
                                         SeManager.Instance.ShotSe(SeType.AttackCard);
                                         Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
-                                        break;
-                                    default:
                                         break;
                                 }
                             }

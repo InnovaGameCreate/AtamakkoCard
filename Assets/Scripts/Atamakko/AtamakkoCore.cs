@@ -25,7 +25,6 @@ namespace Atamakko
             DeckData = GetComponent<DeckData>();
             DeckData.MyDeck = deck;
             DeckData.DeckCards = new List<int>(DeckData.MyDeck);
-            ShuffleDeck();
         }
 
         public void DebugDeck()
@@ -56,7 +55,7 @@ namespace Atamakko
         /// <summary>
         /// デッキをシャッフルする。
         /// </summary>
-        private void ShuffleDeck()
+        public void ShuffleDeck()
         {
             System.Random random = new System.Random((int) DateTime.Now.Ticks);
             for (int i = 0; i < DeckData.DeckCards.Count; i++)
