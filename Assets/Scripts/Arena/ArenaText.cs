@@ -6,6 +6,10 @@ using TMPro;
 public class ArenaText : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI Text;
+    private void Start()
+    {
+        SetText(20);
+    }
 
     public void SetText(int Num)
     {
@@ -74,39 +78,42 @@ public class ArenaText : MonoBehaviour
                 break;
             case 11:
                 Text.text = "アリーナランク" + RankCheck(11) + "\n" +
-                            "テスートワン\n" +
+                            "崩壊の使徒\n" +
                             "\n" +
-                            "デバックのために生まれた。正式版では登場しないが開発陣は彼のことを忘れることはない。\n";
+                            "黒翼の使徒の幼馴染であり、幼い頃将来を約束した仲。白の国の国家転覆を目論んでおり、その機会を伺っている。\n" +
+                            "世界を混沌と崩壊に導くことを信条としている。\n";
                 break;
             case 12:
                 Text.text = "アリーナランク" + RankCheck(12) + "\n" +
-                            "テスートワン\n" +
+                            "テレスト\n" +
                             "\n" +
-                            "デバックのために生まれた。正式版では登場しないが開発陣は彼のことを忘れることはない。\n";
+                            "各国でクーデターを行っている国家犯罪者。国も手を焼いており度々討伐作戦が行われるが全て失敗に終わっている。\n";
                 break;
             case 13:
                 Text.text = "アリーナランク" + RankCheck(13) + "\n" +
-                            "テスートワン\n" +
+                            "黒翼の使徒\n" +
                             "\n" +
-                            "デバックのために生まれた。正式版では登場しないが開発陣は彼のことを忘れることはない。\n";
+                            "白の国に住むステーキ屋の看板娘。美味しい食材を手に入れるために身に着けた力は凄まじく有事の際は国から声が掛かる。\n" +
+                            "お客さんを笑顔にすることを信条としており、彼女の店では笑顔が絶えない幸せな空間がある。\n";
                 break;
             case 14:
                 Text.text = "アリーナランク" + RankCheck(14) + "\n" +
-                            "テスートワン\n" +
+                            "夕立の使徒\n" +
                             "\n" +
-                            "デバックのために生まれた。正式版では登場しないが開発陣は彼のことを忘れることはない。\n";
+                            "治安部隊に所属する優秀な隊員。基本に従った銭湯スタイルを好み堅実な正確をいしている。\n";
                 break;
             case 15:
                 Text.text = "アリーナランク" + RankCheck(15) + "\n" +
-                            "テスートワン\n" +
+                            "道標の使徒\n" +
                             "\n" +
-                            "デバックのために生まれた。正式版では登場しないが開発陣は彼のことを忘れることはない。\n";
+                            "赤の国の切り込み隊長。誰よりも先に立ち進んでいく姿は戦場で味方の支えとなっている。\n" +
+                            "戦争の最初の犠牲者は自分であると心に決め、大きな戦場には必ずその姿がある。\n";
                 break;
             case 16:
                 Text.text = "アリーナランク" + RankCheck(16) + "\n" +
-                            "テスートワン\n" +
+                            "無法の使徒\n" +
                             "\n" +
-                            "デバックのために生まれた。正式版では登場しないが開発陣は彼のことを忘れることはない。\n";
+                            "青の国が保有する暗殺部隊の一員。部隊内でもお互いの素顔は知らない。\n";
                 break;
             case 17:
                 Text.text = "アリーナランク" + RankCheck(17) + "\n" +
@@ -140,7 +147,7 @@ public class ArenaText : MonoBehaviour
 
     private int RankCheck(int baseRank)
     {
-        if (baseRank > PlayerConfig.ArenaRank) return baseRank;
+        if (baseRank >= PlayerConfig.ArenaRank) return baseRank;
         else return (baseRank + 1);
     }
 }
