@@ -9,7 +9,7 @@ namespace Arena
         private int enemyID = 0;
         private void Start()
         {
-            SetEnemyData(20);
+            SetEnemyData(36);
         }
         public void SetEnemyData(int ID)
         {
