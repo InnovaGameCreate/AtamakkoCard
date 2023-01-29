@@ -147,7 +147,7 @@ public class ArenaText : MonoBehaviour
 
     private int RankCheck(int baseRank)
     {
-        if (baseRank >= PlayerConfig.ArenaRank) return baseRank;
+        if (baseRank < PlayerConfig.ArenaRank) return baseRank;
         else return (baseRank + 1);
     }
 }

@@ -17,6 +17,7 @@ public class ArenaManager : MonoBehaviour
     }
     private void Init()
     {
+        Debug.Log("解放されるランクは" + (PlayerArenaRank - 2));
         for (int i = 0; i < (PlayerArenaRank - 2); i++)
         {
             ranker[i].GetComponent<Button>().interactable = false;
@@ -24,26 +25,15 @@ public class ArenaManager : MonoBehaviour
     }
     private void RankerPosition()
     {
-        var _allRankerNum = ranker.Length;
-        Debug.Log("_allRankerNum" + _allRankerNum);
-        var allRanker = new GameObject[_allRankerNum + 1];
-        int Index = 0;
-        for (int i = 0; i < _allRankerNum; i++)
+        int playerRankData = PlayerArenaRank - 2;
+        for (int i = 0; i < 20; i++)
         {
-            Debug.Log("アリーナ順位" + Index+"："+ ranker[i].name);
-            allRanker[Index] = ranker[i];
-            Index++;
-            if (PlayerArenaRank == Index + 1)
+            ranker[i].transform.SetAsLastSibling();
+            if (i == playerRankData)//現在の位置がプレイヤーのランクと同じかどうか
             {
-                Debug.Log("アリーナ順位" + Index + "：" + Player.name);
-                allRanker[Index] = Player;
-                Index++;
+                Debug.Log("プレイヤーのランクは" + (playerRankData) +"現在の位置は"+i);
+                Player.transform.SetAsLastSibling();
             }
-        }
-        for (int i = 0; i < _allRankerNum; i++)
-        {
-            //Debug.Log("並べ替え" + i);
-            allRanker[i].transform.SetSiblingIndex(i);
         }
     }
 

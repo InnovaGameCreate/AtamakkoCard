@@ -49,7 +49,7 @@ namespace Assemble
                         elements[i] = elements[i].TrimStart('"').TrimEnd('"');
                     }
                     equipmentDataStringsList.Add(elements);
-                    Debug.Log(elements[0]);
+                    //Debug.Log(elements[0]);
                 }
             }
 
