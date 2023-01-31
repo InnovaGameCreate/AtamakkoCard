@@ -40,6 +40,9 @@ namespace Card
                 })
                 .AddTo(this);
             
+            BattleManager.Instance.CardMobile
+                .Subscribe(b => gameObject.GetComponent<Graphic>().raycastTarget = b)
+                .AddTo(this);
         }
 
         /// <summary>

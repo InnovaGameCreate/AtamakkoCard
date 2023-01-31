@@ -40,7 +40,7 @@ namespace Manager
         // アタマッコ
         protected PlayerCore Player;
         protected EnemyCore Enemy;
-        public bool CardMobile { get; protected set; } // カードを移動可能かどうか
+        public ReactiveProperty<bool> CardMobile { get; protected set; } = new ReactiveProperty<bool>(false); // カードを移動可能かどうか
 
         protected bool YouWin; // 勝敗判定
 

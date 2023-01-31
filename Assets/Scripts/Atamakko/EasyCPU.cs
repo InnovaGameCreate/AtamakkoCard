@@ -54,16 +54,17 @@ namespace Atamakko
             {
                 if (card.Attack[i] == "〇")
                 {
+                    var pos = (i + enemy) % 6;
                     if (select < 0)
                     {
-                        select = player == (i + enemy) % 6 ? player : -1;
+                        select = player == pos ? player : -1;
                     }
-                    canSelect.Add(i);
+                    canSelect.Add(pos);
                 }
             }
             if (select < 0)
             {
-                select = (int) (random.NextDouble() * canSelect.Count - 1);
+                select = canSelect[(int) (random.NextDouble() * canSelect.Count)];
             }
 
             return select;

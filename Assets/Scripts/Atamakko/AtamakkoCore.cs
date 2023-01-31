@@ -1,4 +1,5 @@
 using System;
+using System.Audio;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -184,6 +185,7 @@ namespace Atamakko
         public void Move(int slotNum)
         {
             gameObject.transform.SetParent(sSlot[slotNum].transform);
+            SeManager.Instance.ShotSe(SeType.MoveCard);
             AtamakkoData.MyPosition = slotNum;
         }
         
