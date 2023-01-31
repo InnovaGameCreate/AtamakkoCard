@@ -111,7 +111,7 @@ namespace Manager
                 .Subscribe(_ =>
                 {
                     decisionButton.MyInteractable = false;
-                    CardMobile = false;
+                    CardMobile.Value = false;
                     _next.Value = true;
                 })
                 .AddTo(this);
@@ -198,7 +198,7 @@ namespace Manager
                 card.GetComponent<CardController>().Init(cardID);
             }
 
-            CardMobile = true;
+            CardMobile.Value = true;
             settingPlace.SetActive(true);
             
             ultimateButton.MyInteractable = !Player.UsedUltimate; // 必殺技を使っているかどうかを判断
@@ -237,7 +237,7 @@ namespace Manager
             tutorialUI.HideUI();
             _graphicDecision.raycastTarget = false;
             _next.Value = false;
-            CardMobile = false;
+            CardMobile.Value = false;
             ultimateButton.MyInteractable = false;  // 必殺技ボタンのOFF
             settingPlace.SetActive(false);
             
@@ -353,12 +353,10 @@ namespace Manager
                     playerPlace = await SelectPlayer(myCard);
                     ApplyPlayer(myCard, playerPlace);
                     enemyPlace = await SelectEnemy(enemyCard);
-                    Debug.Log("敵の行動："+ enemyPlace);
                     ApplyEnemy(enemyCard, enemyPlace);
                     break;
                 case 3:
                     enemyPlace = await SelectEnemy(enemyCard);
-                    Debug.Log("敵の行動："+ enemyPlace);
                     ApplyEnemy(enemyCard, enemyPlace);
                     playerPlace = await SelectPlayer(myCard);
                     ApplyPlayer(myCard, playerPlace);
@@ -366,7 +364,6 @@ namespace Manager
                 case 4:
                     playerPlace = await SelectPlayer(myCard);
                     enemyPlace = await SelectEnemy(enemyCard);
-                    Debug.Log("敵の行動："+ enemyPlace);
                     ApplyPlayer(myCard, playerPlace);
                     ApplyEnemy(enemyCard, enemyPlace);
                     break;

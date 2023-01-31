@@ -36,7 +36,7 @@ namespace Card
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (!BattleManager.Instance.CardMobile) return;
+            if (!BattleManager.Instance.CardMobile.Value) return;
 
             _draggingCard = Instantiate(cardPrefab, _canvasTransform);
             _draggingCard.GetComponent<CardController>().Init(_slot.MyCardID);
@@ -54,7 +54,7 @@ namespace Card
         public void OnDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (!BattleManager.Instance.CardMobile) return;
+            if (!BattleManager.Instance.CardMobile.Value) return;
             _draggingCard.transform.position = _hand.transform.position;
         }
         
@@ -65,7 +65,7 @@ namespace Card
         public void OnDrop(PointerEventData eventData)
         {
             if (!_hand.IsHavingCardID()) return;
-            if (!BattleManager.Instance.CardMobile) return;
+            if (!BattleManager.Instance.CardMobile.Value) return;
             
             int gotCardID = _hand.GetGrabbingCardID();
             
@@ -83,7 +83,7 @@ namespace Card
         public void OnEndDrag(PointerEventData eventData)
         {
             if (_slot.MyCardID == -1) return;
-            if (!BattleManager.Instance.CardMobile) return;
+            if (!BattleManager.Instance.CardMobile.Value) return;
             
             _slot.MyCard.view.shadow.SetActive(false);
             Destroy(_draggingCard);

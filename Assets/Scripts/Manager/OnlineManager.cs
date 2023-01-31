@@ -184,7 +184,7 @@ namespace Manager
                 card.GetComponent<CardController>().Init(cardID);
             }
 
-            CardMobile = true; // カードを移動可能に
+            CardMobile.Value = true; // カードを移動可能に
             settingPlace.SetActive(true); // セットエフェクトを表示
             
             ultimateButton.MyInteractable = !Player.UsedUltimate; // 必殺技を使っているかどうかを判断
@@ -192,14 +192,14 @@ namespace Manager
                 .Subscribe(_ =>
                 {
                     decisionButton.MyInteractable = false;
-                    CardMobile = false;
+                    CardMobile.Value = false;
                     TimeCounter.Instance.EndTimer(); // タイマーを0にする
                 })
                 .AddTo(this);
 
             await TimeCounter.Instance.CountDown(120);    // カウントタイマー起動（120s）
             _next.Value = false;
-            CardMobile = false;
+            CardMobile.Value = false;
             settingPlace.SetActive(false);
             ultimateButton.MyInteractable = false;  // 必殺技ボタンのOFF
 
