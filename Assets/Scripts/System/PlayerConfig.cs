@@ -20,8 +20,9 @@ public class PlayerConfig : MonoBehaviour
     private int DevelopModeCardNum;//cardの個数
     private int DevelopModeEquipmentNum;//equipmentの個数
     private static int isTutorial;//0の時はチュートリアルをまだ受けていない
-    private static bool isDevelopMode = true;//デバックモードを行ったかどうか
-    [SerializeField] private bool DataReset;
+    public static bool afterBattle = false;//戦闘後かどうか
+    [SerializeField] private bool isDataReset;
+    private static bool DataReset = true;
 
     public static int IsTutorial { get => isTutorial; set => isTutorial = value; }
 
@@ -108,24 +109,17 @@ public class PlayerConfig : MonoBehaviour
             SetData();
 
         }
-        for (int i = 0; i < Equipmnet.Count; i++)
+        for (int i = 0; i < DevelopModeEquipmentNum; i++)
         {
-            //Debug.Log(i+"番目に設定されている数は"+Equipmnet[i]);
+            //Debug.Log(i+"番目に設定されているカードが使用可能か"+ unLockEquipment[i]);
         }
-        if (DevelopMode && isDevelopMode)
-        {
-            Debug.Log("デバック処理を行いました。");
-            ArenaRank = 21;
-            //Debug.Log("unLockCardの要素数は" + unLockCard.Count + "です");
-            //Debug.Log("unLockEquipmentの要素数は" + unLockEquipment.Count + "です");
-
-            isDevelopMode = false;
-        }
-        if (DataReset) Reset();
+        if (isDataReset && DataReset) Reset();
     }
 
     public void Reset()
     {
+        Debug.Log("デバック処理を行いました。");
+        ArenaRank = 21;
         LastPlayStory = "null";
         PlayerRate = 100;
         StoryProgress = 1;

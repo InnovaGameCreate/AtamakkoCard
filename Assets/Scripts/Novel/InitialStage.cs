@@ -31,9 +31,7 @@ namespace storyMode
                    
                 }
                 total += ChildCount;
- 
             }
-
         }
     }
 }

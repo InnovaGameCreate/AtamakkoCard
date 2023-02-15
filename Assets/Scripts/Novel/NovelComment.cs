@@ -40,6 +40,7 @@ namespace storyMode
         private string comment;                                         //書かれる内容
         private string diff;                                            //表情差分
         private bool readEnd = false;                                   //読み込み完了しているか
+        
 
 
         [SerializeField] private Sprite[] Still;        //スチル画像
@@ -206,6 +207,11 @@ namespace storyMode
 
         IEnumerator next()
         {
+            if (PlayerConfig.afterBattle)
+            {
+                transform.parent.gameObject.SetActive(false);
+                Debug.Log("戦闘画面から戻りました");
+            }
             while (true)
             {
                 yield return new WaitUntil(() => readEnd && Input.GetKey(KeyCode.Mouse0));
