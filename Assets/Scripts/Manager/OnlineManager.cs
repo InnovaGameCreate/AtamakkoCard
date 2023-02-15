@@ -36,7 +36,6 @@ namespace Manager
             //自分と相手のプレイヤーネームを表示
             playerName.text = PlayerConfig.PlayerName;
             photonView.RPC(nameof(SetEnemyName), RpcTarget.Others, playerName.text);
-            
 
             await TimeCounter.Instance.CountDown(3);
             _next.Value = false;
@@ -99,6 +98,15 @@ namespace Manager
                 .Where(b => !b)
                 .Subscribe(_ => _next.Value = true)
                 .AddTo(this);
+            decisionButton.Pushed // 決定ボタンが押されたとき
+                .Subscribe(_ =>
+                {
+                    decisionButton.MyInteractable = false;
+                    CardMobile.Value = false;
+                    ultimateButton.MyInteractable = false;  // 必殺技ボタンのOFF
+                    TimeCounter.Instance.EndTimer(); // タイマーを0にする
+                })
+                .AddTo(this);
             
             // ドローフェイズへ
             _CurrentState.Value = GameState.Draw;
@@ -136,18 +144,19 @@ namespace Manager
             if (playerHand.transform.childCount <= 0)   // 手持ちにカードがないなら
             {
                 // 自身の手札補充＆スロット生成
-                for (int i = 0; i < 6; i++)
+                for (var i = 0; i < 6; i++)
                 {
                     CreateSlot(Player.DrawCard());
                 }
                 // エネミーの手札補充
-                for (int i = 0; i < 6; i++)
+                for (var i = 0; i < 6; i++)
                 {
                     Enemy.DrawCard();
                 }
             }
 
             // 選択フェイズへ
+            if (_CurrentState.Value == GameState.End) return;
             _CurrentState.Value = GameState.Select;
         }
 
@@ -188,16 +197,9 @@ namespace Manager
             settingPlace.SetActive(true); // セットエフェクトを表示
             
             ultimateButton.MyInteractable = !Player.UsedUltimate; // 必殺技を使っているかどうかを判断
-            decisionButton.Pushed // 決定ボタンが押されたとき
-                .Subscribe(_ =>
-                {
-                    decisionButton.MyInteractable = false;
-                    CardMobile.Value = false;
-                    TimeCounter.Instance.EndTimer(); // タイマーを0にする
-                })
-                .AddTo(this);
+            StartCoroutine(TimeCounter.Instance.CountDown(120));
 
-            await TimeCounter.Instance.CountDown(120);    // カウントタイマー起動（120s）
+            await Next.Where(b => b).ToUniTask(true);
             _next.Value = false;
             CardMobile.Value = false;
             settingPlace.SetActive(false);
@@ -221,12 +223,13 @@ namespace Manager
             await UniTask.Delay(10);
 
             // 敵のカードを表示する
-            for (int i = 0; i < enemySlots.Length; i++)
+            for (var i = 0; i < enemySlots.Length; i++)
             {
                 EnemyCard(i, Enemy.GetNowCardID(i));
             }
             
             // 戦闘フェイズへ
+            if (_CurrentState.Value == GameState.End) return;
             _CurrentState.Value = GameState.Battle;
         }
 
@@ -277,7 +280,7 @@ namespace Manager
             Enemy.UseUltimate();
 
             // スロットごとに戦闘処理を行う
-            for (int i = 0; i < battleSlots.Length; i++)
+            for (var i = 0; i < battleSlots.Length; i++)
             {
                 enemySlots[i].FlipOver();   // 相手カードを見えるように
                 
@@ -291,6 +294,8 @@ namespace Manager
 
                 battleSlots[i].DeleteCard();
                 enemySlots[i].DeleteCard();
+                if (_CurrentState.Value == GameState.End) return;
+                await UniTask.Delay(800);
             }
             
             // 使用済みカードへ
@@ -315,272 +320,65 @@ namespace Manager
             var myCard = new CardModel(CardData.CardDataArrayList[Player.GetNowCardID(slotNum)]);
             var enemyCard = new CardModel(CardData.CardDataArrayList[Enemy.GetNowCardID(slotNum)]);
             // 先制度取得
-            int myInitiative = Player.GetInitiative(myCard.Initiative);
-            int enemyInitiative = Enemy.GetInitiative(enemyCard.Initiative);
+            var myInitiative = Player.GetInitiative(myCard.Initiative);
+            var enemyInitiative = Enemy.GetInitiative(enemyCard.Initiative);
+
+            int playerPosition, enemyPosition;
             await UniTask.Delay(10);
 
             // 優先度の処理
             if (myInitiative == enemyInitiative && myCard.Kind == enemyCard.Kind)
             {
-                switch (myCard.Kind)
-                {
-                    case "攻撃":
-                    {
-                        var canAttack = Player.CanAttack(myCard);
-                        var playerAttack = 0;
-                        foreach (var t in canAttack)
-                        {
-                            var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
-                            playerAttack = t;
-                            attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * playerAttack);
-                            attackArea.AttackPlace = playerAttack;
-
-                            attackArea.Selected
-                                .Subscribe(i =>
-                                {
-                                    playerAttack = i;
-                                    TimeCounter.Instance.EndTimer();
-                                })
-                                .AddTo(attackArea);
-                        }
-                        await TimeCounter.Instance.CountDown(30);
-                        _next.Value = false;
-
-                        var myDamage = Player.GetDamage(myCard.Damage);
-                        photonView.RPC(nameof(SendAction), RpcTarget.Others, myDamage, playerAttack);
-
-                        await UniTask.WaitUntil(() => _getData);
-                        _getData = false;
-                        await UniTask.Delay(10);
-
-                        if (Enemy.AtamakkoData.MyPosition == playerAttack)
-                        {
-                            Enemy.AddDamage(myDamage);
-                            switch (myCard.Effect)
-                            {
-                                case "射撃":
-                                    EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
-                                    SeManager.Instance.ShotSe(SeType.AttackCard);
-                                    break;
-                                case "斬撃":
-                                    EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
-                                    SeManager.Instance.ShotSe(SeType.AttackCard);
-                                    break;
-                            }
-                        }
-                        switch (myCard.Additional)
-                        {
-                            case "〇":
-                                Player.Move(playerAttack);
-                                SeManager.Instance.ShotSe(SeType.MoveCard);
-                                break;
-                            case "◎":
-                                var canMove = Player.CanMove(myCard);
-                                var playerMove = 0;
-                                foreach (var t in canMove)
-                                {
-                                    playerMove = t;
-                                    var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[playerMove].transform);
-                                    moveArea.MovePlace = playerMove;
-
-                                    moveArea.Selected
-                                        .Subscribe(i =>
-                                        {
-                                            playerMove = i;
-                                            TimeCounter.Instance.EndTimer();
-                                        })
-                                        .AddTo(moveArea);
-                                }
-                                await TimeCounter.Instance.CountDown(30);
-                                _next.Value = false;
-                                photonView.RPC(nameof(SendAction), RpcTarget.Others, 0, playerMove);
-                                Player.Move(playerMove);
-                                SeManager.Instance.ShotSe(SeType.MoveCard);
-                                break;
-                        }
-
-                        if (Player.AtamakkoData.MyPosition == _enemyPlace)
-                        {
-                            Player.AddDamage(_enemyDamage);
-                            switch (enemyCard.Effect)
-                            {
-                                case "射撃":
-                                    EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
-                                    SeManager.Instance.ShotSe(SeType.AttackCard);
-                                    break;
-                                case "斬撃":
-                                    EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
-                                    SeManager.Instance.ShotSe(SeType.AttackCard);
-                                    break;
-                            }
-                        }
-                        switch (enemyCard.Additional)
-                        {
-                            case "〇":
-                                Enemy.Move(_enemyPlace);
-                                SeManager.Instance.ShotSe(SeType.MoveCard);
-                                break;
-                            case "◎":
-                                await UniTask.WaitUntil(() => _getData);
-                                _getData = false;
-                                await UniTask.Delay(10);
-                                Enemy.Move(_enemyPlace);
-                                SeManager.Instance.ShotSe(SeType.MoveCard);
-                                break;
-                        }
-                        break;
-                    }
-                    case "移動":
-                    {
-                        var canMove = Player.CanMove(myCard);
-                        var playerMove = 0;
-                        foreach (var t in canMove)
-                        {
-                            playerMove = t;
-                            var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[playerMove].transform);
-                            moveArea.MovePlace = playerMove;
-
-                            moveArea.Selected
-                                .Subscribe(i =>
-                                {
-                                    playerMove = i;
-                                    TimeCounter.Instance.EndTimer();
-                                })
-                                .AddTo(moveArea);
-                        }
-                        await TimeCounter.Instance.CountDown(30);
-                        _next.Value = false;
-                        photonView.RPC(nameof(SendAction), RpcTarget.Others, 0, playerMove);
-
-                        await UniTask.WaitUntil(() => _getData);
-                        _getData = false;
-                        await UniTask.Delay(10);
-
-                        Player.Move(playerMove);
-                        SeManager.Instance.ShotSe(SeType.MoveCard);
-                        
-                        int myDamage;
-                        switch (myCard.Additional)
-                        {
-                            case "〇" when Enemy.AtamakkoData.MyPosition == playerMove:
-                            {
-                                myDamage = Player.GetDamage(myCard.Damage);
-                                Enemy.AddDamage(myDamage);
-                                switch (myCard.Effect)
-                                {
-                                    case "射撃":
-                                        EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
-                                        SeManager.Instance.ShotSe(SeType.AttackCard);
-                                        break;
-                                    case "斬撃":
-                                        EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
-                                        SeManager.Instance.ShotSe(SeType.AttackCard);
-                                        break;
-                                }
-                                break;
-                            }
-                            case "◎":
-                                var canAttack = Player.CanAttack(myCard);
-                                var playerAttack = 0;
-                                foreach (var t in canAttack)
-                                {
-                                    var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
-                                    playerAttack = t;
-                                    attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * playerAttack);
-                                    attackArea.AttackPlace = playerAttack;
-
-                                    attackArea.Selected
-                                        .Subscribe(i =>
-                                        {
-                                            playerAttack = i;
-                                            TimeCounter.Instance.EndTimer();
-                                        })
-                                        .AddTo(attackArea);
-                                }
-                                await TimeCounter.Instance.CountDown(30);
-                                _next.Value = false;
-
-                                myDamage = Player.GetDamage(myCard.Damage);
-                                photonView.RPC(nameof(SendAction), RpcTarget.Others, myDamage, playerAttack);
-
-                                if (Enemy.AtamakkoData.MyPosition == playerAttack)
-                                {
-                                    Enemy.AddDamage(myDamage);
-                                    switch (myCard.Effect)
-                                    {
-                                        case "射撃":
-                                            EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
-                                            SeManager.Instance.ShotSe(SeType.AttackCard);
-                                            break;
-                                        case "斬撃":
-                                            EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
-                                            SeManager.Instance.ShotSe(SeType.AttackCard);
-                                            break;
-                                    }
-                                }
-                                break;
-                        }
-
-                        Enemy.Move(_enemyPlace);
-                        SeManager.Instance.ShotSe(SeType.MoveCard);
-                        
-                        switch (enemyCard.Additional)
-                        {
-                            case "〇" when Player.AtamakkoData.MyPosition == _enemyPlace:
-                            {
-                                var enemyDamage = Enemy.GetDamage(enemyCard.Damage);
-                                Player.AddDamage(enemyDamage);
-                                switch (enemyCard.Effect)
-                                {
-                                    case "射撃":
-                                        EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
-                                        SeManager.Instance.ShotSe(SeType.AttackCard);
-                                        break;
-                                    case "斬撃":
-                                        EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
-                                        SeManager.Instance.ShotSe(SeType.AttackCard);
-                                        break;
-                                }
-                                break;
-                            }
-                            case "◎":
-                                await UniTask.WaitUntil(() => _getData);
-                                _getData = false;
-                                await UniTask.Delay(10);
-
-                                if (Player.AtamakkoData.MyPosition == _enemyPlace)
-                                {
-                                    Player.AddDamage(_enemyDamage);
-                                    switch (enemyCard.Effect)
-                                    {
-                                        case "射撃":
-                                            EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
-                                            SeManager.Instance.ShotSe(SeType.AttackCard);
-                                            break;
-                                        case "斬撃":
-                                            EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
-                                            SeManager.Instance.ShotSe(SeType.AttackCard);
-                                            break;
-                                    }
-                                }
-                                break;
-                        }
-
-                        break;
-                    }
-                }
+                Debug.Log("同時処理");
+                playerPosition = await SelectAction(myCard, true);
+                enemyPosition = await SelectAction(enemyCard, false);
+                ApplyAction(myCard, playerPosition, true);
+                await UniTask.Delay(800);
+                ApplyAction(enemyCard, enemyPosition, false);
+                await UniTask.Delay(800);
+                
+                playerPosition = await AdditionalEffect(myCard, playerPosition, true);
+                enemyPosition = await AdditionalEffect(enemyCard, enemyPosition, false);
+                ApplyAdditional(myCard, playerPosition, true);
+                await UniTask.Delay(800);
+                ApplyAdditional(enemyCard, enemyPosition, false);
+                await UniTask.Delay(800);
             }
             else if (myInitiative > enemyInitiative || (myInitiative == enemyInitiative && myCard.Kind == "攻撃"))
             {
-                await PlayerTurn(myCard);
-                await EnemyTurn(enemyCard);
+                Debug.Log("プレイヤー先攻");
+                playerPosition = await SelectAction(myCard, true);
+                ApplyAction(myCard, playerPosition, true);
+                await UniTask.Delay(800);
+                playerPosition = await AdditionalEffect(myCard, playerPosition, true);
+                ApplyAdditional(myCard, playerPosition, true);
+                await UniTask.Delay(800);
+                
+                enemyPosition = await SelectAction(enemyCard, false);
+                ApplyAction(enemyCard, enemyPosition, false);
+                await UniTask.Delay(800);
+                enemyPosition = await AdditionalEffect(enemyCard, enemyPosition, false);
+                ApplyAdditional(enemyCard, enemyPosition, false);
+                await UniTask.Delay(800);
             }
             else if (myInitiative < enemyInitiative || (myInitiative == enemyInitiative && myCard.Kind == "移動"))
             {
-                await EnemyTurn(enemyCard);
-                await PlayerTurn(myCard);
+                Debug.Log("プレイヤー後攻");
+                enemyPosition = await SelectAction(enemyCard, false);
+                ApplyAction(enemyCard, enemyPosition, false);
+                await UniTask.Delay(800);
+                enemyPosition = await AdditionalEffect(enemyCard, enemyPosition, false);
+                ApplyAdditional(enemyCard, enemyPosition, false);
+                await UniTask.Delay(800);
+                
+                playerPosition = await SelectAction(myCard, true);
+                ApplyAction(myCard, playerPosition, true);
+                await UniTask.Delay(800);
+                playerPosition = await AdditionalEffect(myCard, playerPosition, true);
+                ApplyAdditional(myCard, playerPosition, true);
+                await UniTask.Delay(800);
             }
-        
+
             await UniTask.Delay(10);
         }
 
@@ -619,282 +417,238 @@ namespace Manager
         /// <summary>
         /// 選択した行動のデータを送る
         /// </summary>
-        /// <param name="damage">ダメージ</param>
         /// <param name="place">選択した位置</param>
         [PunRPC]
-        private void SendAction(int damage, int place)
+        private void SendPosition(int place)
         {
-            _enemyDamage = damage;
             _enemyPlace = (place + 3) % 6;
             _getData = true;
         }
 
         /// <summary>
-        /// プレイヤーの行動を処理する
+        /// 選択したカードから行動を決定する。
         /// </summary>
-        /// <param name="card">使用したカード</param>
-        private async UniTask PlayerTurn(CardModel card)
+        /// <param name="card">選択したカード</param>
+        /// <param name="isPlayer">プレイヤーかどうか</param>
+        /// <returns>選択したポジション</returns>
+        private async UniTask<int> SelectAction(CardModel card, bool isPlayer)
+        {
+            var position = 0;
+            if (isPlayer)
+            {
+                StartCoroutine(TimeCounter.Instance.CountDown(30));
+                switch (card.Kind)
+                {
+                    case "攻撃":
+                        var canAttack = Player.CanAttack(card);
+                        foreach (var t in canAttack)
+                        {
+                            var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
+                            position = t;
+                            attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * position);
+                            attackArea.AttackPlace = position;
+
+                            attackArea.Selected
+                                .Subscribe(i =>
+                                {
+                                    position = i;
+                                    TimeCounter.Instance.EndTimer(); // タイマーを0にする
+                                })
+                                .AddTo(attackArea);
+                        }
+                        break;
+                    case "移動":
+                        var canMove = Player.CanMove(card);
+                        foreach (var t in canMove)
+                        {
+                            position = t;
+                            var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[position].transform);
+                            moveArea.MovePlace = position;
+
+                            moveArea.Selected
+                                .Subscribe(i =>
+                                {
+                                    position = i;
+                                    TimeCounter.Instance.EndTimer(); // タイマーを0にする
+                                })
+                                .AddTo(moveArea);
+                        }
+                        break;
+                }
+                await Next.Where(b => b).ToUniTask(true);
+                _next.Value = false;
+                photonView.RPC(nameof(SendPosition), RpcTarget.Others, position);
+            }
+            else
+            {
+                await UniTask.WaitUntil(() => _getData);
+                _getData = false;
+
+                position = _enemyPlace;
+            }
+            await UniTask.Delay(10);
+            return position;
+        }
+
+        /// <summary>
+        /// 選択したカードの追加効果を処理する。
+        /// </summary>
+        /// <param name="card">選択したカード</param>
+        /// <param name="position">自身のポジション</param>
+        /// <param name="isPlayer">プレイヤーかどうか</param>
+        /// <returns>選択したポジション</returns>
+        private async UniTask<int> AdditionalEffect(CardModel card, int position, bool isPlayer)
+        {
+            if (card.Additional == "×") return position;
+            if (isPlayer)
+            {
+                switch (card.Additional)
+                {
+                    case "追行動":
+                        break;
+                    case "再行動":
+                        StartCoroutine(TimeCounter.Instance.CountDown(30));
+                        switch (card.Kind)
+                        {
+                            case "攻撃":
+                                var canMove = Player.CanMove(card);
+                                foreach (var t in canMove)
+                                {
+                                    position = t;
+                                    var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[position].transform);
+                                    moveArea.MovePlace = position;
+
+                                    moveArea.Selected
+                                        .Subscribe(i =>
+                                        {
+                                            position = i;
+                                            TimeCounter.Instance.EndTimer(); // タイマーを0にする
+                                        })
+                                        .AddTo(moveArea);
+                                }
+                                break;
+                            case "移動":
+                                var canAttack = Player.CanAttack(card);
+                                foreach (var t in canAttack)
+                                {
+                                    var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
+                                    position = t;
+                                    attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * position);
+                                    attackArea.AttackPlace = position;
+
+                                    attackArea.Selected
+                                        .Subscribe(i =>
+                                        {
+                                            position = i;
+                                            TimeCounter.Instance.EndTimer(); // タイマーを0にする
+                                        })
+                                        .AddTo(attackArea);
+                                }
+                                break;
+                        }
+                        await Next.Where(b => b).ToUniTask(true);
+                        _next.Value = false;
+                        photonView.RPC(nameof(SendPosition), RpcTarget.Others, position);
+                        break;
+                }
+            }
+            else
+            {
+                switch (card.Additional)
+                {
+                    case "追行動":
+                        break;
+                    case "再行動":
+                        await UniTask.WaitUntil(() => _getData);
+                        _getData = false;
+
+                        position = _enemyPlace;
+                        break;
+                }
+            }
+            await UniTask.Delay(10);
+            return position;
+        }
+        
+        /// <summary>
+        /// 選択したアクションを適用する。
+        /// </summary>
+        /// <param name="card">選択したカード</param>
+        /// <param name="position">自身のポジション</param>
+        /// <param name="isPlayer">プレイヤーかどうか</param>
+        private void ApplyAction(CardModel card, int position, bool isPlayer)
         {
             switch (card.Kind)
             {
                 case "攻撃":
-                {
-                    var canAttack = Player.CanAttack(card);
-                    var attackPosition = 0;
-                    foreach (var t in canAttack)
-                    {
-                        var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
-                        attackPosition = t;
-                        attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * attackPosition);
-                        attackArea.AttackPlace = attackPosition;
-
-                        attackArea.Selected
-                            .Subscribe(i =>
-                            {
-                                attackPosition = i;
-                                TimeCounter.Instance.EndTimer();
-                            })
-                            .AddTo(attackArea);
-                    }
-
-                    await TimeCounter.Instance.CountDown(30);
-                    _next.Value = false;
-                    var myDamage = Player.GetDamage(card.Damage);
-                    photonView.RPC(nameof(SendAction), RpcTarget.Others, myDamage, attackPosition);
-
-                    if (Enemy.AtamakkoData.MyPosition == attackPosition)
-                    {
-                        Enemy.AddDamage(myDamage);
-                        switch (card.Effect)
-                        {
-                            case "射撃":
-                                EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Enemy.transform);
-                                SeManager.Instance.ShotSe(SeType.AttackCard);
-                                break;
-                            case "斬撃":
-                                EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
-                                SeManager.Instance.ShotSe(SeType.AttackCard);
-                                break;
-                        }
-                    }
-                    switch (card.Additional)
-                    {
-                        case "〇":
-                            Player.Move(attackPosition);
-                            SeManager.Instance.ShotSe(SeType.MoveCard);
-                            break;
-                        case "◎":
-                            var canMove = Player.CanMove(card);
-                            var movePosition = 0;
-                            foreach (var t in canMove)
-                            {
-                                movePosition = t;
-                                var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[movePosition].transform);
-                                moveArea.MovePlace = movePosition;
-
-                                moveArea.Selected
-                                    .Subscribe(i =>
-                                    {
-                                        movePosition = i;
-                                        TimeCounter.Instance.EndTimer();
-                                    })
-                                    .AddTo(moveArea);
-                            }
-
-                            await TimeCounter.Instance.CountDown(30);
-                            _next.Value = false;
-                            photonView.RPC(nameof(SendAction), RpcTarget.Others, 0, movePosition);
-
-                            Player.Move(movePosition);
-                            SeManager.Instance.ShotSe(SeType.MoveCard);
-                            break;
-                    }
+                    AttackAction(card, position, isPlayer);
                     break;
-                }
                 case "移動":
-                {
-                    var canMove = Player.CanMove(card);
-                    var movePosition = 0;
-                    foreach (var t in canMove)
-                    {
-                        movePosition = t;
-                        var moveArea = Instantiate(moveButton, transform.position, Quaternion.identity, sSlot[movePosition].transform);
-                        moveArea.MovePlace = movePosition;
-
-                        moveArea.Selected
-                            .Subscribe(i =>
-                            {
-                                movePosition = i;
-                                TimeCounter.Instance.EndTimer();
-                            })
-                            .AddTo(moveArea);
-                    }
-
-                    await TimeCounter.Instance.CountDown(30);
-                    _next.Value = false;
-                    photonView.RPC(nameof(SendAction), RpcTarget.Others, 0, movePosition);
-
-                    Player.Move(movePosition);
-                    SeManager.Instance.ShotSe(SeType.MoveCard);
-                    
-                    int myDamage;
-                    switch (card.Additional)
-                    {
-                        case "〇" when Enemy.AtamakkoData.MyPosition == movePosition:
-                        {
-                            myDamage = Player.GetDamage(card.Damage);
-                            Enemy.AddDamage(myDamage);
-                            switch (card.Effect)
-                            {
-                                case "射撃":
-                                    EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
-                                    SeManager.Instance.ShotSe(SeType.AttackCard);
-                                    break;
-                                case "斬撃":
-                                    EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
-                                    SeManager.Instance.ShotSe(SeType.AttackCard);
-                                    break;
-                            }
-                            break;
-                        }
-                        case "◎":
-                            var canAttack = Player.CanAttack(card);
-                            var attackPosition = 0;
-                            foreach (var t in canAttack)
-                            {
-                                var attackArea = Instantiate(attackButton, stage.transform.position, Quaternion.identity, stage.transform);
-                                attackPosition = t;
-                                attackArea.transform.rotation = Quaternion.Euler(0f, 0f, 180 + -60 * attackPosition);
-                                attackArea.AttackPlace = attackPosition;
-
-                                attackArea.Selected
-                                    .Subscribe(i =>
-                                    {
-                                        attackPosition = i;
-                                        TimeCounter.Instance.EndTimer();
-                                    })
-                                    .AddTo(attackArea);
-                            }
-
-                            await TimeCounter.Instance.CountDown(30);
-                            _next.Value = false;
-                            myDamage = Player.GetDamage(card.Damage);
-                            photonView.RPC(nameof(SendAction), RpcTarget.Others, myDamage, attackPosition);
-
-                            if (Enemy.AtamakkoData.MyPosition == attackPosition)
-                            {
-                                Enemy.AddDamage(myDamage);
-                                switch (card.Effect)
-                                {
-                                    case "射撃":
-                                        EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
-                                        SeManager.Instance.ShotSe(SeType.AttackCard);
-                                        break;
-                                    case "斬撃":
-                                        EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
-                                        SeManager.Instance.ShotSe(SeType.AttackCard);
-                                        break;
-                                }
-                            }
-                            break;
-                    }
+                    if (isPlayer) Player.Move(position);
+                    else Enemy.Move(position);
                     break;
-                }
             }
         }
 
         /// <summary>
-        /// 敵の行動を処理する。
+        /// 追加効果を適用する。
         /// </summary>
-        /// <param name="card">使用したカード</param>
-        private async UniTask EnemyTurn(CardModel card)
+        /// <param name="card">選択したカード</param>
+        /// <param name="position">自身のポジション</param>
+        /// <param name="isPlayer">プレイヤーかどうか</param>
+        private void ApplyAdditional(CardModel card, int position, bool isPlayer)
         {
-            await UniTask.WaitUntil(() => _getData);
-            _getData = false;
-            await UniTask.Delay(10);
-            
+            if (card.Additional == "×") return;
             switch (card.Kind)
             {
                 case "攻撃":
-                {
-                    if (Player.AtamakkoData.MyPosition == _enemyPlace)
-                    {
-                        Player.AddDamage(_enemyDamage);
-                        switch (card.Effect)
-                        {
-                            case "射撃":
-                                EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Player.transform);
-                                SeManager.Instance.ShotSe(SeType.AttackCard);
-                                break;
-                            case "斬撃":
-                                EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Player.transform);
-                                SeManager.Instance.ShotSe(SeType.AttackCard);
-                                break;
-                        }
-                    }
-                    switch (card.Additional)
-                    {
-                        case "〇":
-                            Enemy.Move(_enemyPlace);
-                            SeManager.Instance.ShotSe(SeType.MoveCard);
-                            break;
-                        case "◎":
-                            await UniTask.WaitUntil(() => _getData);
-                            _getData = false;
-                            await UniTask.Delay(10);
-                            Enemy.Move(_enemyPlace);
-                            SeManager.Instance.ShotSe(SeType.MoveCard);
-                            break;
-                    }
+                    if (isPlayer) Player.Move(position);
+                    else Enemy.Move(position);
                     break;
-                }
                 case "移動":
-                {
-                    Enemy.Move(_enemyPlace);
-                    SeManager.Instance.ShotSe(SeType.MoveCard);
-                    
-                    switch (card.Additional)
-                    {
-                        case "〇" when Player.AtamakkoData.MyPosition == _enemyPlace:
-                        {
-                            var enemyDamage = Enemy.GetDamage(card.Damage);
-                            Player.AddDamage(enemyDamage);
-                            switch (card.Effect)
-                            {
-                                case "射撃":
-                                    EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Enemy.transform);
-                                    SeManager.Instance.ShotSe(SeType.AttackCard);
-                                    break;
-                                case "斬撃":
-                                    EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
-                                    SeManager.Instance.ShotSe(SeType.AttackCard);
-                                    break;
-                            }
-                            break;
-                        }
-                        case "◎":
-                            await UniTask.WaitUntil(() => _getData);
-                            _getData = false;
-                            await UniTask.Delay(10);
-                            if (Player.AtamakkoData.MyPosition == _enemyPlace)
-                            {
-                                Player.AddDamage(_enemyDamage);
-                                switch (card.Effect)
-                                {
-                                    case "射撃":
-                                        EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, Enemy.transform);
-                                        SeManager.Instance.ShotSe(SeType.AttackCard);
-                                        break;
-                                    case "斬撃":
-                                        EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, Enemy.transform);
-                                        SeManager.Instance.ShotSe(SeType.AttackCard);
-                                        break;
-                                }
-                            }
-                            break;
-                    }
+                    AttackAction(card, position, isPlayer);
                     break;
+            }
+        }
+
+        /// <summary>
+        /// 攻撃アクションを行う。
+        /// </summary>
+        /// <param name="card">選択したカード</param>
+        /// <param name="position">自身のポジション</param>
+        /// <param name="isPlayer">プレイヤーかどうか</param>
+        private void AttackAction(CardModel card, int position, bool isPlayer)
+        {
+            int damage;
+            if (isPlayer)
+            {
+                damage = Player.GetDamage(card.Damage);
+                if (Enemy.AtamakkoData.MyPosition == position)
+                {
+                    Enemy.AddDamage(damage);
                 }
+            }
+            else
+            {
+                damage = Enemy.GetDamage(card.Damage);
+                if (Player.AtamakkoData.MyPosition == position)
+                {
+                    Player.AddDamage(damage);
+                }
+            }
+            
+            switch (card.Effect)
+            {
+                case "射撃":
+                    EffectManager.Instance.InstantiateEffect(EffectType.magicAttackEffet, sSlot[position].transform);
+                    SeManager.Instance.ShotSe(SeType.AttackCard);
+                    //Debug.Log("射撃エフェクトを再生:" + Enemy.gameObject.name);
+                    break;
+                case "斬撃":
+                    EffectManager.Instance.InstantiateEffect(EffectType.slashAttackEffet, sSlot[position].transform);
+                    SeManager.Instance.ShotSe(SeType.AttackCard);
+                    //Debug.Log("斬撃エフェクトを再生:" + Enemy.gameObject.name);
+                    break;
             }
         }
 
@@ -913,7 +667,7 @@ namespace Manager
         /// カードスロットを生成する。
         /// </summary>
         /// <param name="cData">カードID</param>
-        void CreateSlot(int cData)
+        private void CreateSlot(int cData)
         {
             var slot = Instantiate(slotPrefab, cardManager);
             slot.CreateCard(cData);
@@ -928,6 +682,7 @@ namespace Manager
             if (_CurrentState.Value != GameState.End)
             {
                 _CurrentState.Value = GameState.End;
+                TimeCounter.Instance.EndTimer();
                 AnimationManager.Instance.ResultFadeIn(true);
             }
         }
