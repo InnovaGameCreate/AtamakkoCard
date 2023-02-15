@@ -80,9 +80,14 @@ namespace Manager
                     AnimationManager.Instance.ResultFadeIn(false);
                 })
                 .AddTo(this);
-            TimeCounter.Instance.CountNow
-                .Where(b => !b)
-                .Subscribe(_ => _next.Value = true)
+            decisionButton.Pushed // 決定ボタンが押されたとき
+                .Subscribe(_ =>
+                {
+                    decisionButton.MyInteractable = false;
+                    CardMobile.Value = false;
+                    ultimateButton.MyInteractable = false;  // 必殺技ボタンのOFF
+                    _next.Value = true;
+                })
                 .AddTo(this);
             
             // ドローフェーズへ
@@ -120,6 +125,7 @@ namespace Manager
             }
 
             // 選択フェイズへ
+            if (_CurrentState.Value == GameState.End) return;
             _CurrentState.Value = GameState.Select;
         }
 
@@ -159,16 +165,8 @@ namespace Manager
             settingPlace.SetActive(true);
             
             ultimateButton.MyInteractable = !Player.UsedUltimate; // 必殺技を使っているかどうかを判断
-            decisionButton.Pushed // 決定ボタンが押されたとき
-                .Subscribe(_ =>
-                {
-                    decisionButton.MyInteractable = false;
-                    CardMobile.Value = false;
-                    TimeCounter.Instance.EndTimer(); // タイマーを0にする
-                })
-                .AddTo(this);
 
-            await TimeCounter.Instance.CountDown(120);    // カウントタイマー起動（120s）
+            await Next.Where(b => b).ToUniTask(true);
             _next.Value = false;
             CardMobile.Value = false;
             ultimateButton.MyInteractable = false;  // 必殺技ボタンのOFF
@@ -186,6 +184,7 @@ namespace Manager
             }
             
             // 戦闘フェイズへ
+            if (_CurrentState.Value == GameState.End) return;
             _CurrentState.Value = GameState.Battle;
         }
 
@@ -249,10 +248,7 @@ namespace Manager
 
                 battleSlots[i].DeleteCard();
                 enemySlots[i].DeleteCard();
-                if (CurrentState.Value == GameState.End)
-                {
-                    return;
-                }
+                if (_CurrentState.Value == GameState.End) return;
                 await UniTask.Delay(800);
             }
             
@@ -341,6 +337,12 @@ namespace Manager
             await UniTask.Delay(10);
         }
 
+        /// <summary>
+        /// 選択したカードから行動を決定する。
+        /// </summary>
+        /// <param name="card">選択したカード</param>
+        /// <param name="isPlayer">プレイヤーかどうか</param>
+        /// <returns>選択したポジション</returns>
         private async UniTask<int> SelectAction(CardModel card, bool isPlayer)
         {
             var position = 0;
@@ -395,12 +397,18 @@ namespace Manager
                     "移動" => Enemy.MoveSelect(Player.AtamakkoData.MyPosition, card),
                     _ => 0
                 };
-                Debug.Log("敵の指定先" + position);
                 await UniTask.Delay(10);
             }
             return position;
         }
 
+        /// <summary>
+        /// 選択したカードの追加効果を処理する。
+        /// </summary>
+        /// <param name="card">選択したカード</param>
+        /// <param name="position">自身のポジション</param>
+        /// <param name="isPlayer">プレイヤーかどうか</param>
+        /// <returns>選択したポジション</returns>
         private async UniTask<int> AdditionalEffect(CardModel card, int position, bool isPlayer)
         {
             if (card.Additional == "×") return position;
@@ -409,7 +417,6 @@ namespace Manager
                 switch (card.Additional)
                 {
                     case "追行動":
-                        await UniTask.Delay(10);
                         break;
                     case "再行動":
                         switch (card.Kind)
@@ -470,11 +477,17 @@ namespace Manager
                         };
                         break;
                 }
-                await UniTask.Delay(10);
             }
+            await UniTask.Delay(10);
             return position;
         }
         
+        /// <summary>
+        /// 選択したアクションを適用する。
+        /// </summary>
+        /// <param name="card">選択したカード</param>
+        /// <param name="position">自身のポジション</param>
+        /// <param name="isPlayer">プレイヤーかどうか</param>
         private void ApplyAction(CardModel card, int position, bool isPlayer)
         {
             switch (card.Kind)
@@ -489,6 +502,12 @@ namespace Manager
             }
         }
 
+        /// <summary>
+        /// 追加効果を適用する。
+        /// </summary>
+        /// <param name="card">選択したカード</param>
+        /// <param name="position">自身のポジション</param>
+        /// <param name="isPlayer">プレイヤーかどうか</param>
         private void ApplyAdditional(CardModel card, int position, bool isPlayer)
         {
             if (card.Additional == "×") return;
@@ -504,6 +523,12 @@ namespace Manager
             }
         }
 
+        /// <summary>
+        /// 攻撃アクションを行う。
+        /// </summary>
+        /// <param name="card">選択したカード</param>
+        /// <param name="position">自身のポジション</param>
+        /// <param name="isPlayer">プレイヤーかどうか</param>
         private void AttackAction(CardModel card, int position, bool isPlayer)
         {
             int damage;
