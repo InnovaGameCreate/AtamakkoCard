@@ -1389,6 +1389,7 @@ namespace storyMode
         /// </summary>
         private void activeText(int eventTextNumber)
         {
+            PlayerConfig.afterBattle = false;
             Comment.currentChapter = eventTextNumber;
             NovelCanvas.SetActive(true);
             Comment.nextText();
@@ -1423,6 +1424,7 @@ namespace storyMode
         /// </summary>
         private void encountEnemy(int EnemyID)
         {
+            PlayerConfig.afterBattle = true;
             enemyDeckData.setDeckData(EnemyID);
             SceneManager.LoadScene("BattleCPU");
         }

@@ -13,8 +13,8 @@ namespace storyMode
         /// </summary>
         private static bool Init = false;
         private static bool[] Progressed = new bool[100];
-        private static int LastProgressed;
-        private static int PlayerLastProgressed;
+        private static int LastProgressed = 1;
+        private static int PlayerLastProgressed = 1;
 
         public static bool BattleDefeated = false;
 
