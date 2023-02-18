@@ -17,12 +17,15 @@ namespace storyMode
         private static int PlayerLastProgressed = 1;
 
         public static bool BattleDefeated = false;
+        StoryBoardEvent eventSystem;
 
         public int GetPlayerLastProgressed { get => PlayerLastProgressed; }
         public bool[] GetProgressed { get => Progressed; }
 
         void Awake()
         {
+
+            eventSystem = FindObjectOfType<StoryBoardEvent>().GetComponent<StoryBoardEvent>();
             if (PlayerConfig.LastPlayStory != SceneManager.GetActiveScene().name)
             {
                 setResetProgressed();//前回遊んでいたストーリーシーンと違う場合は数値を初期化する。
@@ -61,12 +64,16 @@ namespace storyMode
 
         private void defeatedCheck()
         {
-            if(BattleDefeated)
+            if(BattleDefeated)          //戦闘に敗北した場合
             {
                 Debug.Log("前回の戦闘で負けていました");
                 Progressed[PlayerLastProgressed] = false;
                 PlayerLastProgressed = LastProgressed;
                 BattleDefeated = false;
+            }
+            else                        //戦闘に勝利した場合
+            {
+                eventSystem.endEvent(PlayerLastProgressed);
             }
         }
 

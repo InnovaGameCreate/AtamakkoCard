@@ -16,8 +16,9 @@ namespace storyMode
 
         public void EventUsed(int tileNum)
         {
-            FindObjectOfType<ProgressRecorder>().completeEvent(tileNum);
+            Debug.Log(tileNum + "‚Ìˆ—‚ğs‚¢‚Ü‚µ‚½");
             GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
+            FindObjectOfType<ProgressRecorder>().completeEvent(tileNum);
         }
 
     }
