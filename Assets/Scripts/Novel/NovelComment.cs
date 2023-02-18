@@ -14,8 +14,8 @@ namespace storyMode
     {
         const string SHEET_ID = "1OBn1iwK1yuuwgfM-vpQWOdmHe6XepyghLTHrdLZ4Mto";
 
-        private int TextNum = 0; [SerializeField]
-        private string SHEET_NAME;
+        private int TextNum = 0; 
+        [SerializeField] private string SHEET_NAME;
         List<string[]> characterDataArrayList;
         private float textSpeed = 0.05f;//文字送り速度
         public int currentChapter;
@@ -46,34 +46,37 @@ namespace storyMode
         [SerializeField] private Sprite[] Still;        //スチル画像
         [SerializeField] private Sprite[] BackImage;
 
-
+        [System.Obsolete]
         private void OnEnable()
         {
             autoWriting = false;
             skipWriting = false;
-            StartCoroutine(next());
             textSpeed = 0.05f;
+            loadData();
         }
 
         [System.Obsolete]
         private void Start()
         {
-            loadData();
-            eventSystem = GameObject.FindObjectOfType<StoryBoardEvent>().GetComponent<StoryBoardEvent>();
+            eventSystem = FindObjectOfType<StoryBoardEvent>().GetComponent<StoryBoardEvent>();
         }
 
         [System.Obsolete]
         private async void loadData()
         {
+            Debug.Log("LoadData");
             await Method(SHEET_NAME);
-            nextText();
+            StartCoroutine(next());
         }
 
         public void nextText()
         {
             if (isWriting) return;
             lastCapter = capter;                                        //前回のchapter数を記録
+            Debug.Log("NextTextの読み込みを開始");
+            Debug.Log(characterDataArrayList[0]);                       //デバック用
             convertData(characterDataArrayList[TextNum]);               //各データをスプレットシートから読み取る
+            Debug.Log("NextTextの読み込み完了");
 
             if (lastCapter != capter && lastCapter != null && lastCapter == currentChapter.ToString())//会話の終了
             {
@@ -96,7 +99,7 @@ namespace storyMode
 
         private void endTalk()
         {
-            Debug.Log("chapterが代わりました。lastCpaterは" + lastCapter + "：capterは" + capter);
+            //Debug.Log("chapterが代わりました。lastCpaterは" + lastCapter + "：capterは" + capter);
             eventSystem.endEvent(int.Parse(capter));
             transform.parent.gameObject.SetActive(false);
         }
@@ -211,12 +214,17 @@ namespace storyMode
             {
                 transform.parent.gameObject.SetActive(false);
                 Debug.Log("戦闘画面から戻りました");
+                PlayerConfig.afterBattle = false;
             }
-            while (true)
+            else
             {
-                yield return new WaitUntil(() => readEnd && Input.GetKey(KeyCode.Mouse0));
-                if (!onAnimation) nextText();
                 yield return new WaitForSeconds(0.5f);
+                while (true)
+                {
+                    yield return new WaitUntil(() => readEnd && Input.GetKey(KeyCode.Mouse0));
+                    if (!onAnimation) nextText();
+                    yield return new WaitForSeconds(0.5f);
+                }
             }
         }
 

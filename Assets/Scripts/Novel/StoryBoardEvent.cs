@@ -1389,7 +1389,6 @@ namespace storyMode
         /// </summary>
         private void activeText(int eventTextNumber)
         {
-            PlayerConfig.afterBattle = false;
             Comment.currentChapter = eventTextNumber;
             NovelCanvas.SetActive(true);
             Comment.nextText();

@@ -57,7 +57,7 @@ public class BattleResult : MonoBehaviour
         switch (ResultType)
         {
             case PastSceneType.scenario:
-                if(!isWinGame)
+                if (!isWinGame)
                 {
                     ProgressRecorder.BattleDefeated = true;
                 }
