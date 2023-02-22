@@ -11,12 +11,13 @@ namespace storyMode
 
         public void PlayerMove(int tileNum)
         {
+            Debug.Log("tile" + tileNum + "‚ÉˆÚ“®‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·B");
             FindObjectOfType<StoryBoardPlayerMove>().GetComponent<StoryBoardPlayerMove>().PlayerMove(tileNum);
         }
 
         public void EventUsed(int tileNum)
         {
-            Debug.Log(tileNum + "‚Ìˆ—‚ğs‚¢‚Ü‚µ‚½");
+            Debug.Log("tile" + tileNum + "‚Ìˆ—‚ğs‚¢‚Ü‚µ‚½");
             GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
             FindObjectOfType<ProgressRecorder>().completeEvent(tileNum);
         }

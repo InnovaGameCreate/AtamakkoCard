@@ -11,9 +11,10 @@ public class InstantTMP : MonoBehaviour
     public async void Init(string text,float FadeInTime,float FadeOutTime)
     {
         Text.text = text;
-        Text.DOColor(new Color(1, 1, 1), FadeInTime);
-        Text.DOColor(new Color(0, 0, 0), FadeOutTime).SetDelay(FadeInTime);
+        Text.DOColor(new Color(0.6f, 0.6f, 0.6f, 1), FadeInTime);
+        Text.DOColor(new Color(0.6f, 0.6f, 0.6f, 0), FadeOutTime).SetDelay(FadeInTime);
         float DelayTime = 1000 * (FadeInTime + FadeOutTime);
         await UniTask.Delay((int)DelayTime);
+        Destroy(gameObject);
     }
 }

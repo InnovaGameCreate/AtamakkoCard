@@ -38,6 +38,14 @@ namespace storyMode
                     Event.startEvent(tileNum);//tileのイベントを行う
                     TileObject.GetComponent<EventCheck>().EventUsed(tileNum);//タイルのイベント処理後のアクションを行う
                 }
+                else
+                {
+                    Debug.LogError("すでに処理済みのタイルです");
+                }
+            }
+            else
+            {
+                Debug.LogError("タイル間の距離が遠すぎます");
             }
         }
 
