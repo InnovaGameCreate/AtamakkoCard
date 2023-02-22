@@ -73,7 +73,7 @@ namespace storyMode
             }
             else                        //í“¬‚ÉŸ—˜‚µ‚½ê‡
             {
-                eventSystem.endEvent(PlayerLastProgressed);
+                //eventSystem.endEvent(PlayerConfig.lastChapter + 1);
             }
         }
 

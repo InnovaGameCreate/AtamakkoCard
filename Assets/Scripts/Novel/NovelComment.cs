@@ -101,6 +101,7 @@ namespace storyMode
         {
             //Debug.Log("chapterが代わりました。lastCpaterは" + lastCapter + "：capterは" + capter);
             eventSystem.endEvent(int.Parse(capter));
+            PlayerConfig.lastChapter = int.Parse(capter);
             transform.parent.gameObject.SetActive(false);
         }
 
@@ -218,7 +219,6 @@ namespace storyMode
             }
             else
             {
-                yield return new WaitForSeconds(0.5f);
                 while (true)
                 {
                     yield return new WaitUntil(() => readEnd && Input.GetKey(KeyCode.Mouse0));

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace storyMode
@@ -28,9 +29,16 @@ namespace storyMode
                 {
                     Stages[i].SetActive(true);
                     Debug.Log("ChildCount + total:" + (ChildCount + total - 1) + ":total:" + total);
-                   
                 }
                 total += ChildCount;
+            }
+
+            if(SceneManager.GetActiveScene().name == "StoryBoard2" && LastProgressed >=13)
+            {
+                for (int i = 0; i < Stages[0].transform.childCount; i++)
+                {
+                    Stages[0].transform.GetChild(i).gameObject.SetActive(true);
+                }
             }
         }
     }

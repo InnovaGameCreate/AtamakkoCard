@@ -14,6 +14,7 @@ public class PlayerConfig : MonoBehaviour
     [SerializeField]private bool DevelopMode = true;//開発モードかどうか（常に初期化される)
     public static bool IsOnline = false;
     public static int StoryProgress =0;//ストーリーの進行具合
+    public static int lastChapter = 1;
     public static int ArenaRank;//アリーナのランク
     public static string LastPlayStory;//最後に遊んだ章を記録する
     public static int PlayerRate;//オンラインのプレイヤーのレート
