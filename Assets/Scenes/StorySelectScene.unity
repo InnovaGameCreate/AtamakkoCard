@@ -1716,7 +1716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextScene:
-    m_SceneName: StoryBoard1
+    m_SceneName: StoryBoardRed1
 --- !u!114 &744092971
 MonoBehaviour:
   m_ObjectHideFlags: 0
