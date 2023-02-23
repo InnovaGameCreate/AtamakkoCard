@@ -64,7 +64,6 @@ namespace storyMode
         [System.Obsolete]
         private async void loadData()
         {
-            Debug.Log("LoadData");
             await Method(SHEET_NAME);
             StartCoroutine(next());
         }
@@ -73,10 +72,7 @@ namespace storyMode
         {
             if (isWriting) return;
             lastCapter = capter;                                        //前回のchapter数を記録
-            Debug.Log("NextTextの読み込みを開始");
-            Debug.Log(characterDataArrayList[0]);                       //デバック用
             convertData(characterDataArrayList[TextNum]);               //各データをスプレットシートから読み取る
-            Debug.Log("NextTextの読み込み完了");
 
             if (lastCapter != capter && lastCapter != null && lastCapter == currentChapter.ToString())//会話の終了
             {

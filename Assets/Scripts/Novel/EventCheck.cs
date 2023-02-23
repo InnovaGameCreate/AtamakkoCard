@@ -11,7 +11,6 @@ namespace storyMode
 
         public void PlayerMove(int tileNum)
         {
-            Debug.Log("tile" + tileNum + "‚ÉˆÚ“®‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·B");
             FindObjectOfType<StoryBoardPlayerMove>().GetComponent<StoryBoardPlayerMove>().PlayerMove(tileNum);
         }
 

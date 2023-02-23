@@ -21,7 +21,6 @@ namespace System.Audio
         }
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            Debug.Log(scene.name + " scene loaded");
             AnalysisCurrentScene();
         }
 
@@ -46,7 +45,6 @@ namespace System.Audio
         public void AnalysisCurrentScene()
         {
             var scene = SceneManager.GetActiveScene().name;
-            Debug.Log(SceneManager.GetActiveScene().name);
             switch (scene)
             {
                 case "Title":

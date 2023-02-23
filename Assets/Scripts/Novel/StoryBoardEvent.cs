@@ -36,7 +36,6 @@ namespace storyMode
         [SerializeField] private GameObject NextStageCheckPanel;//次のステージへ進むか確認用パネル
         private void Start()
         {
-            NextStageCheckPanel.SetActive(false);
             Comment.currentChapter = 0;//会話chapterを0に初期化
         }
 
@@ -285,7 +284,7 @@ namespace storyMode
                         activeText(11);
                         break;
                     case 13:
-                        activeText(12);
+                        activeText(16);
                         break;
                     case 14:
                         activeText(13);
@@ -298,7 +297,7 @@ namespace storyMode
                         activeText(15);
                         break;
                     case 17:
-                        activeText(16);
+                        activeText(12);
                         break;
                     case 18:
                         activeText(17);
@@ -319,32 +318,30 @@ namespace storyMode
                         activeText(22);
                         break;
                     case 24:
-                        break;
-                    case 25:
                         activeText(23);
                         break;
-                    case 26:
+                    case 25:
                         activeText(24);
                         break;
-                    case 27:
+                    case 26:
                         //水中の魔物との戦闘
                         encountEnemy(41);
                         break;
-                    case 28:
+                    case 27:
                         //水中の魔物との戦闘
                         encountEnemy(42);
                         break;
-                    case 29:
+                    case 28:
                         activeText(25);
                         break;
-                    case 30:
+                    case 29:
                         activeText(26);
                         break;
-                    case 31:
+                    case 30:
                         //水神との戦闘
                         encountEnemy(43);
                         break;
-                    case 32:
+                    case 31:
                         activeText(27);
                         break;
                     default:
@@ -398,10 +395,10 @@ namespace storyMode
                         activeText(13);
                         break;
                     case 15:
-                        activeText(14);
+                        activeText(15);
                         break;
                     case 16:
-                        activeText(15);
+                        activeText(14);
                         break;
                     case 17:
                         activeText(16);
@@ -510,13 +507,25 @@ namespace storyMode
                         activeText(17);
                         break;
                     case 21:
-                        activeText(18);
+                        encountEnemy(8);
                         break;
                     case 22:
-                        activeText(19);
+                        StartCoroutine(changeStage(1, 18));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 23:
+                        activeText(18);
+                        break;
+                    case 24:
+                        activeText(19);
+                        break;
+                    case 25:
                         activeText(20);
+                        break;
+                    case 26:
+                        activeText(21);
+                        break;
+                    case 27:
+                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;
@@ -716,7 +725,6 @@ namespace storyMode
                     case 31:
                         NextStageCheckPanel.SetActive(true);//戦闘が終わると表示する
                         break;
-
                     default:
                         break;
                 }
@@ -1410,7 +1418,8 @@ namespace storyMode
             Comment.ChangeBackGroundImage(1);
             Comment.deleteText();
             Comment.onAnimation = true;
-            FindObjectOfType<StoryBoardPlayerMove>().nextPosition(Scene[currentStageNum + 1].transform.GetChild(1).position);
+            Debug.Log("nextTile:" + Scene[currentStageNum + 1].transform.GetChild(1).name);
+            FindObjectOfType<StoryBoardPlayerMove>().nextPosition(Scene[currentStageNum + 1].transform.GetChild(0).position);
             yield return new WaitForSeconds(2f);
             Comment.ChangeBackGroundImage(2);
             yield return new WaitForSeconds(2f);
@@ -1470,6 +1479,7 @@ namespace storyMode
             }
             else if (scenario == scenarioType.scenario2)
             {
+                Debug.Log("終了時イベント" + eventNum);
                 switch (eventNum)
                 {
                     case 8:
@@ -1513,7 +1523,7 @@ namespace storyMode
                         StartCoroutine(changeStage(0, 7));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 14:
-                        displayText("六角玉石のアクセサリを手に入れた", 2f, 2f);
+                        displayText("六角玉石のアクセサリを手に入れた", 1f, 1f);
                         PlayerConfig.unLockEquipment[54] = true;
                         break;
                     case 16:
@@ -1523,6 +1533,9 @@ namespace storyMode
                     case 15:
                         //ごろつきと戦闘
                         encountEnemy(93);
+                        break;
+                    case 17:
+                        StartCoroutine(changeStage(1, 17));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 28:
                         NextStageCheckPanel.SetActive(true);
@@ -1539,12 +1552,12 @@ namespace storyMode
                     case 7:
                         StartCoroutine(changeStage(0, 7));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
-                    case 14:
-                        StartCoroutine(changeStage(1, 14));//現在のステージ数：現在のチャプターを送って次のステージへ移る
-                        break;
                     case 15:
                         //少年と戦闘
                         encountEnemy(46);
+                        break;
+                    case 16:
+                        StartCoroutine(changeStage(1, 16));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 24:
                         NextStageCheckPanel.SetActive(true);
@@ -1561,12 +1574,11 @@ namespace storyMode
                         //護国の使徒との戦闘
                         encountEnemy(91);
                         break;
-                    case 12:
-                        StartCoroutine(changeStage(0, 12));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                    case 11:
+                        StartCoroutine(changeStage(0, 11));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
-                    case 20:
-                        activeText(21);
-                        NextStageCheckPanel.SetActive(true);
+                    case 21:
+                        encountEnemy(5);
                         break;
                     default:
                         break;
