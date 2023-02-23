@@ -109,9 +109,6 @@ namespace Manager
             }
 
             await UniTask.Delay(10);
-            
-            Player.DebugHand();
-            //Enemy.DebugHand();
 
             if (playerHand.transform.childCount <= 0)   // 手持ちにカードがないなら
             {

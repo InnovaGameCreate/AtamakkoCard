@@ -296,6 +296,7 @@ namespace Manager
                 
                 battleSlots[i].MySelect.Value = false;
                 enemySlots[i].MySelect.Value = false;
+                Player.RemoveHand(battleSlots[i].MyCardID);
 
                 battleSlots[i].DeleteCard();
                 enemySlots[i].DeleteCard();
