@@ -1031,13 +1031,13 @@ namespace storyMode
                         activeText(7);
                         break;
                     case 9:
-                        activeText(8);//次の章へ
+                        activeText(10);//次の章へ
                         break;
                     case 10:
                         activeText(9);
                         break;
                     case 11:
-                        activeText(10);//アタマッコの装備を手に入れる。
+                        activeText(8);//アタマッコの装備を手に入れる。
                         break;
                     case 13:
                         activeText(12);
@@ -1634,11 +1634,10 @@ namespace storyMode
             {
                 switch (eventNum)
                 {
-                    case 8:
-                        //水生の魔物との戦闘
-                        StartCoroutine(changeStage(0, 8));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                    case 6:
+                        StartCoroutine(changeStage(0, 6));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
-                    case 11:
+                    case 12:
                         NextStageCheckPanel.SetActive(true);
                         break;
                     default:
@@ -1666,8 +1665,8 @@ namespace storyMode
             {
                 switch (eventNum)
                 {
-                    case 9:
-                        StartCoroutine(changeStage(0, 9));//現在のステージ数：現在のチャプターを送って次のステージへ移る
+                    case 11:
+                        StartCoroutine(changeStage(0, 11));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 21:
                         NextStageCheckPanel.SetActive(true);
