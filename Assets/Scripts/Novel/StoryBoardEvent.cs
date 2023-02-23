@@ -595,26 +595,27 @@ namespace storyMode
                     case 19:
                         //ボス戦
                         encountEnemy(53);
-
-                        StartCoroutine(changeStage(1, 19));//戦闘が終わると表示する
                         break;
                     case 20:
-                        activeText(15);
+                        StartCoroutine(changeStage(1, 15));//戦闘が終わると表示する
                         break;
                     case 21:
-                        activeText(16);
+                        activeText(15);
                         break;
                     case 22:
-                        activeText(17);
+                        activeText(16);
                         break;
                     case 23:
-                        activeText(18);
+                        activeText(17);
                         break;
                     case 24:
+                        activeText(18);
+                        break;
+                    case 25:
                         //邪神の加護を受けた魔物との戦闘
                         encountEnemy(54);
                         break;
-                    case 25:
+                    case 26:
                         activeText(19);
                         break;
                     default:
@@ -1479,7 +1480,6 @@ namespace storyMode
             }
             else if (scenario == scenarioType.scenario2)
             {
-                Debug.Log("終了時イベント" + eventNum);
                 switch (eventNum)
                 {
                     case 8:
@@ -1591,7 +1591,7 @@ namespace storyMode
                     case 8:
                         StartCoroutine(changeStage(0, 8));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
-                    case 19:
+                    case 20:
                         NextStageCheckPanel.SetActive(true);
                         break;
                     default:
@@ -1608,8 +1608,9 @@ namespace storyMode
                     case 15:
                         StartCoroutine(changeStage(1, 15));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
-                    case 21:
-                        NextStageCheckPanel.SetActive(true);
+                    case 18:
+                        displayText("追加移動のアクセサリを手に入れた", 1f, 1f);
+                        PlayerConfig.unLockEquipment[56] = true;
                         break;
                     default:
                         break;
@@ -1624,9 +1625,6 @@ namespace storyMode
                         break;
                     case 13:
                         StartCoroutine(changeStage(1, 13));//現在のステージ数：現在のチャプターを送って次のステージへ移る
-                        break;
-                    case 24:
-                        NextStageCheckPanel.SetActive(true);
                         break;
                     default:
                         break;
