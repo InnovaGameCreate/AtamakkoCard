@@ -85,7 +85,10 @@ namespace storyMode
                 {
                     string ObjectName = "tile (" + i + ")";
                     var Object = GameObject.Find(ObjectName);
-                    Object.GetComponent<Image>().color = Color.gray;
+                    if(Object != null)
+                    {
+                        Object.GetComponent<Image>().color = Color.gray;
+                    }
                 }
             }
         }
