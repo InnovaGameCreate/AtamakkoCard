@@ -20,6 +20,11 @@ namespace Atamakko
             return list;
         }
 
+        public void RemoveHand(int cardID)
+        {
+            DeckData.HandCards.Remove(cardID);
+        }
+
         /// <summary>
         /// セットしたカードIDを取得する。
         /// </summary>
