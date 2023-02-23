@@ -21,7 +21,7 @@ namespace UI
             _playerInformText.text = null;
         }
 
-        public async void setText(UltimateState UltimateType)
+        public async void setText(UltimateState UltimateType, bool isPlayer)
         {
             await Task.Delay(2000);
             string ultimateText = null;//表示用テキストの生成
@@ -40,7 +40,8 @@ namespace UI
                     Debug.LogError("未割当のアルティメットを表示しようとしています");
                     break;
             }
-            _playerInformText.text = ultimateText;
+            if (isPlayer) _playerInformText.text = ultimateText;
+            else _enemyInformText.text = ultimateText;
             if (PlayerConfig.IsOnline)
             {
                 ultimateText = "相手は" + ultimateText;
@@ -53,7 +54,8 @@ namespace UI
                 ultimateText = "相手は" + ultimateText;
                 photonView.RPC(nameof(setEnemyInformText), RpcTarget.Others, "");
             }
-            _playerInformText.text = null;
+            if (isPlayer) _playerInformText.text = null;
+            else _enemyInformText.text = null;
         }
 
         [PunRPC]

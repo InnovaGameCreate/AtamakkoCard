@@ -102,6 +102,15 @@ namespace Atamakko
         {
             return DeckData.DeckCards.Count <= 0;
         }
+        
+        /// <summary>
+        /// デッキがあるかどうかを調べる。
+        /// </summary>
+        /// <returns>デッキがあるかどうかのbool値</returns>
+        public bool CheckHand()
+        {
+            return DeckData.HandCards.Count <= 0;
+        }
 
         /// <summary>
         /// カードをドローする。

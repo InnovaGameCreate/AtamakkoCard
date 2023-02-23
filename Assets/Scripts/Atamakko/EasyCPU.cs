@@ -35,7 +35,20 @@ namespace Atamakko
         /// <returns>使用する必殺技</returns>
         public override UltimateState SelectUltimateLogic(AtamakkoData myDate)
         {
-            return myDate.MyHp.Value <= 3 ? UltimateState.Recover : UltimateState.Normal;
+            var random = new System.Random((int) DateTime.Now.Ticks);
+            var dRan = random.NextDouble();
+            switch (dRan)
+            {
+                case <= 0.2:
+                    return UltimateState.Attack;
+                case <= 0.3:
+                    return UltimateState.Speed;
+                case <= 0.6 when myDate.MyHp.Value == 4:
+                case <= 0.8 when myDate.MyHp.Value <= 3:
+                    return UltimateState.Recover;
+                default:
+                    return UltimateState.Normal;
+            }
         }
 
         /// <summary>

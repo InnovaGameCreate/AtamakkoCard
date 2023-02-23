@@ -127,7 +127,7 @@ namespace Manager
         /// </summary>
         protected override async void DrawFaze()
         {
-            if (Player.CheckDeck()) // 自デッキにカードがないなら
+            if (Player.CheckDeck() && Player.CheckHand()) // 自デッキにカードがないなら
             {
                 // デッキを補充する
                 Player.RefillDeck();
@@ -242,7 +242,7 @@ namespace Manager
             if (Player.AtamakkoData.UltimateState != UltimateState.Normal)
             {
                 AnimationManager.Instance.MyUltimateCutIn(Player.AtamakkoData.UltimateState);
-                informText.setText(Player.AtamakkoData.UltimateState);
+                informText.setText(Player.AtamakkoData.UltimateState, true);
                 switch (Player.AtamakkoData.UltimateState)
                 {
                     case UltimateState.Recover:
@@ -263,17 +263,22 @@ namespace Manager
             // 必殺技を選択している
             if (Enemy.AtamakkoData.UltimateState != UltimateState.Normal)
             {
-                await AnimationManager.Instance.EnUltimateCutIn();
+                //await AnimationManager.Instance.EnUltimateCutIn();
+                AnimationManager.Instance.MyUltimateCutIn(Enemy.AtamakkoData.UltimateState);
+                informText.setText(Enemy.AtamakkoData.UltimateState, false);
                 switch (Enemy.AtamakkoData.UltimateState)
                 {
                     case UltimateState.Recover:
-                        EffectManager.Instance.InstantiateEffect(EffectType.GreenEffect, Player.transform);
+                        EffectManager.Instance.InstantiateEffect(EffectType.GreenEffect, Enemy.transform);
+                        SeManager.Instance.ShotSe(SeType.ultimateHeal);//必殺技使用時にSEを再生
                         break;
                     case UltimateState.Attack:
                         EffectManager.Instance.InstantiateEffect(EffectType.RedEffect, Enemy.transform);
+                        SeManager.Instance.ShotSe(SeType.ultimateDamageUp);//必殺技使用時にSEを再生
                         break;
                     case UltimateState.Speed:
                         EffectManager.Instance.InstantiateEffect(EffectType.BlueEffect, Enemy.transform);
+                        SeManager.Instance.ShotSe(SeType.ultimateSpeedUp);//必殺技使用時にSEを再生
                         break;
                 }
             }
@@ -336,6 +341,7 @@ namespace Manager
                 await UniTask.Delay(800);
                 ApplyAction(enemyCard, enemyPosition, false);
                 await UniTask.Delay(800);
+                if (_CurrentState.Value == GameState.End) return;
                 
                 playerPosition = await AdditionalEffect(myCard, playerPosition, true);
                 enemyPosition = await AdditionalEffect(enemyCard, enemyPosition, false);
@@ -350,6 +356,7 @@ namespace Manager
                 playerPosition = await SelectAction(myCard, true);
                 ApplyAction(myCard, playerPosition, true);
                 await UniTask.Delay(800);
+                if (_CurrentState.Value == GameState.End) return;
                 playerPosition = await AdditionalEffect(myCard, playerPosition, true);
                 ApplyAdditional(myCard, playerPosition, true);
                 await UniTask.Delay(800);
@@ -357,6 +364,7 @@ namespace Manager
                 enemyPosition = await SelectAction(enemyCard, false);
                 ApplyAction(enemyCard, enemyPosition, false);
                 await UniTask.Delay(800);
+                if (_CurrentState.Value == GameState.End) return;
                 enemyPosition = await AdditionalEffect(enemyCard, enemyPosition, false);
                 ApplyAdditional(enemyCard, enemyPosition, false);
                 await UniTask.Delay(800);
@@ -367,13 +375,16 @@ namespace Manager
                 enemyPosition = await SelectAction(enemyCard, false);
                 ApplyAction(enemyCard, enemyPosition, false);
                 await UniTask.Delay(800);
+                if (_CurrentState.Value == GameState.End) return;
                 enemyPosition = await AdditionalEffect(enemyCard, enemyPosition, false);
                 ApplyAdditional(enemyCard, enemyPosition, false);
                 await UniTask.Delay(800);
+                if (_CurrentState.Value == GameState.End) return;
                 
                 playerPosition = await SelectAction(myCard, true);
                 ApplyAction(myCard, playerPosition, true);
                 await UniTask.Delay(800);
+                if (_CurrentState.Value == GameState.End) return;
                 playerPosition = await AdditionalEffect(myCard, playerPosition, true);
                 ApplyAdditional(myCard, playerPosition, true);
                 await UniTask.Delay(800);
