@@ -42,7 +42,7 @@ namespace Card
                         attackPlace.GetComponent<Image>().color = Color.red;
                     }
 
-                    if (cardModel.Additional == "◎")
+                    if (cardModel.Additional == "再行動")
                     {
                         for (var i = 1; i < cardModel.Move.Length; i++)
                         {
@@ -64,7 +64,7 @@ namespace Card
                         movePlace.GetComponent<Image>().color = Color.green;
                     }
 
-                    if (cardModel.Additional == "◎")
+                    if (cardModel.Additional == "再行動")
                     {
                         for (var i = 1; i < cardModel.Attack.Length; i++)
                         {
