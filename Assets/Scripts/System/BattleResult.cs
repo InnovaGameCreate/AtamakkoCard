@@ -57,6 +57,7 @@ public class BattleResult : MonoBehaviour
         switch (ResultType)
         {
             case PastSceneType.scenario:
+                OnLoadSceneFade.BackBattle = true;
                 if (!isWinGame)
                 {
                     ProgressRecorder.BattleDefeated = true;
