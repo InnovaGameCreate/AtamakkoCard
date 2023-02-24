@@ -10,9 +10,10 @@ public class OnLoadSceneFade : MonoBehaviour
     [SerializeField] TextMeshProUGUI FadeTMP;
     [SerializeField] float FadeTime;
     [SerializeField] private bool BlackStart = false;
+    public static bool BackBattle = false;
     private void OnEnable()
     {
-        if (checkFirstTime())
+        if (check())
         {
             if (BlackStart)
             {
@@ -28,14 +29,16 @@ public class OnLoadSceneFade : MonoBehaviour
         }
     }
 
-    private bool checkFirstTime()
+    private bool check()
     {
-        if(PlayerConfig.LastPlayStory != SceneManager.GetActiveScene().name)
+        if (!BackBattle || BlackStart)
         {
+            BackBattle = false;
             return true;
         }
         else
         {
+            BackBattle = false;
             return false;
         }
     }

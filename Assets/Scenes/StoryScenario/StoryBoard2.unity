@@ -8528,12 +8528,6 @@ GameObject:
   - component: {fileID: 1025592573}
   - component: {fileID: 1025592572}
   - component: {fileID: 1025592577}
-  - component: {fileID: 1025592583}
-  - component: {fileID: 1025592582}
-  - component: {fileID: 1025592581}
-  - component: {fileID: 1025592580}
-  - component: {fileID: 1025592579}
-  - component: {fileID: 1025592578}
   m_Layer: 5
   m_Name: tile (12)
   m_TagString: Untagged
@@ -8655,79 +8649,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1025592577}
-        m_TargetAssemblyTypeName: storyMode.DisplayPanel, Assembly-CSharp
-        m_MethodName: OnClick
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1025592583}
-        m_TargetAssemblyTypeName: storyMode.DisplayPanel, Assembly-CSharp
-        m_MethodName: OnClick
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1025592582}
-        m_TargetAssemblyTypeName: storyMode.DisplayPanel, Assembly-CSharp
-        m_MethodName: OnClick
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1025592581}
-        m_TargetAssemblyTypeName: storyMode.DisplayPanel, Assembly-CSharp
-        m_MethodName: OnClick
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1025592580}
-        m_TargetAssemblyTypeName: storyMode.DisplayPanel, Assembly-CSharp
-        m_MethodName: OnClick
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1025592579}
-        m_TargetAssemblyTypeName: storyMode.DisplayPanel, Assembly-CSharp
-        m_MethodName: OnClick
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1025592578}
-        m_TargetAssemblyTypeName: storyMode.DisplayPanel, Assembly-CSharp
+        m_TargetAssemblyTypeName: storyMode.HideTile, Assembly-CSharp
         m_MethodName: OnClick
         m_Mode: 6
         m_Arguments:
@@ -8785,88 +8707,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1025592570}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d45d1579ea98ab4d9203f80cc8944a7, type: 3}
+  m_Script: {fileID: 11500000, guid: 26f7cd3f25501f14f8b1fe6eb9bcfb34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetObject: {fileID: 1247893893}
---- !u!114 &1025592578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025592570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d45d1579ea98ab4d9203f80cc8944a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TargetObject: {fileID: 1763797275}
---- !u!114 &1025592579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025592570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d45d1579ea98ab4d9203f80cc8944a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TargetObject: {fileID: 1726511638}
---- !u!114 &1025592580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025592570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d45d1579ea98ab4d9203f80cc8944a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TargetObject: {fileID: 1482057135}
---- !u!114 &1025592581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025592570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d45d1579ea98ab4d9203f80cc8944a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TargetObject: {fileID: 737528707}
---- !u!114 &1025592582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025592570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d45d1579ea98ab4d9203f80cc8944a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TargetObject: {fileID: 82631000}
---- !u!114 &1025592583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025592570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d45d1579ea98ab4d9203f80cc8944a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TargetObject: {fileID: 561068825}
+  hideTile:
+  - {fileID: 1247893893}
+  - {fileID: 561068825}
+  - {fileID: 82631000}
+  - {fileID: 737528707}
+  - {fileID: 1482057135}
+  - {fileID: 1726511638}
+  - {fileID: 1763797275}
 --- !u!1 &1036210004
 GameObject:
   m_ObjectHideFlags: 0
@@ -12397,7 +12248,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1467734731}
-        m_TargetAssemblyTypeName: DisplayPanel, Assembly-CSharp
+        m_TargetAssemblyTypeName: storyMode.HideTile, Assembly-CSharp
         m_MethodName: OnClick
         m_Mode: 6
         m_Arguments:
@@ -12455,10 +12306,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1467734724}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d45d1579ea98ab4d9203f80cc8944a7, type: 3}
+  m_Script: {fileID: 11500000, guid: 26f7cd3f25501f14f8b1fe6eb9bcfb34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetObject: {fileID: 1894489257}
+  hideTile:
+  - {fileID: 1894489257}
 --- !u!1 &1482057135
 GameObject:
   m_ObjectHideFlags: 0
@@ -14792,7 +14644,7 @@ GameObject:
   - component: {fileID: 1637807021}
   m_Layer: 5
   m_Name: PlayerGameObject
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16976,7 +16828,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1894489264}
-        m_TargetAssemblyTypeName: DisplayPanel, Assembly-CSharp
+        m_TargetAssemblyTypeName: storyMode.HideTile, Assembly-CSharp
         m_MethodName: OnClick
         m_Mode: 6
         m_Arguments:
@@ -17034,10 +16886,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1894489257}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d45d1579ea98ab4d9203f80cc8944a7, type: 3}
+  m_Script: {fileID: 11500000, guid: 26f7cd3f25501f14f8b1fe6eb9bcfb34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetObject: {fileID: 1025592570}
+  hideTile:
+  - {fileID: 1025592570}
 --- !u!1001 &1899285892
 PrefabInstance:
   m_ObjectHideFlags: 0
