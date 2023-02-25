@@ -131,14 +131,5 @@ namespace Assemble
             Hand.SetGtabbingItem(MyItem);
             setItem(gotItem);
         }
-        private void dataTest()
-        {
-            for (int i = 0; i < 40; i++)
-            {
-                Debug.Log("生成したカードID：" + CardData.CardDataArrayList[i][0] 
-                    + "\n名前：" + CardData.CardDataArrayList[i][1]
-                    + "\n種類：" + CardData.CardDataArrayList[i][4]);
-            }
-        }
     }
 }
