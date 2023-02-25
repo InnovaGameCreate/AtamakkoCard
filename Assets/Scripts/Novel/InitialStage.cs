@@ -29,6 +29,7 @@ namespace storyMode
                 {
                     Stages[i].SetActive(true);
                     Debug.Log("ChildCount + total:" + (ChildCount + total - 1) + ":total:" + total);
+                    break;
                 }
                 total += ChildCount;
             }
@@ -41,7 +42,7 @@ namespace storyMode
                 }
                 for (int i = 10; i < LastProgressed; i++)
                 {
-                    Stages[0].transform.GetChild(i).gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
+                    Stages[0].transform.GetChild(i).gameObject.GetComponent<EventCheck>().Used();
                 }
             }
             else if (SceneManager.GetActiveScene().name == "StoryBoardBlue2" && LastProgressed >= 13 && LastProgressed <= 15)
@@ -52,7 +53,7 @@ namespace storyMode
                 }
                 for (int i = 6; i < LastProgressed; i++)
                 {
-                    Stages[1].transform.GetChild(i).gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
+                    Stages[1].transform.GetChild(i).gameObject.GetComponent<EventCheck>().Used();
                 }
             }
         }

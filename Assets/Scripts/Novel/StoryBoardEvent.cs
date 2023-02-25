@@ -344,6 +344,10 @@ namespace storyMode
                     case 31:
                         activeText(27);
                         break;
+                    case 32:
+                        displayText("ストライク改のアクセサリを手に入れた", 1f, 1f);
+                        PlayerConfig.unLockEquipment[53] = true;
+                        break;
                     default:
                         break;
                 }
@@ -1522,13 +1526,17 @@ namespace storyMode
                     case 7:
                         StartCoroutine(changeStage(0, 7));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
+                    case 13:
+                        displayText("ストライクのアクセサリを手に入れた", 1f, 1f);
+                        PlayerConfig.unLockEquipment[52] = true;
+                        break;
                     case 14:
                         displayText("六角玉石のアクセサリを手に入れた", 1f, 1f);
                         PlayerConfig.unLockEquipment[54] = true;
                         break;
                     case 16:
                         //教導の使徒と戦闘
-                        encountEnemy(5);
+                        encountEnemy(102);
                         break;
                     case 15:
                         //ごろつきと戦闘

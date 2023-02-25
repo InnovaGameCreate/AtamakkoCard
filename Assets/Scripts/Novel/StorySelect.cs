@@ -11,11 +11,11 @@ namespace system.story
             _StoryProgress = PlayerConfig.StoryProgress;
             for (int i = 0; i < StoryBoard.Length; i++)
             {
-                StoryBoard[i].SetActive(true);//デバック用
-                Debug.LogError("デバック用のスクリプトを走らせています。");
+                //StoryBoard[i].SetActive(true);//デバック用
+                //Debug.LogError("デバック用のスクリプトを走らせています。");
                 
-                //if (i <= _StoryProgress) StoryBoard[i].SetActive(true);
-                //else StoryBoard[i].SetActive(false);
+                if (i <= _StoryProgress) StoryBoard[i].SetActive(true);
+                else StoryBoard[i].SetActive(false);
                 
             }
         }

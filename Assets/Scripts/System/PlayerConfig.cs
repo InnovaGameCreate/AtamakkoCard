@@ -38,7 +38,7 @@ public class PlayerConfig : MonoBehaviour
         StoryProgress = PlayerPrefs.GetInt("StoryProgress", 1);
         ArenaRank = PlayerPrefs.GetInt("ArenaRank", 21);
         LastPlayStory = PlayerPrefs.GetString("LastPlayStory", "null");
-        PlayerRate = PlayerPrefs.GetInt("PlayerRate", 100);
+        PlayerRate = PlayerPrefs.GetInt("PlayerRate", 1500);
     }
 
     public static void SetData()
@@ -58,6 +58,8 @@ public class PlayerConfig : MonoBehaviour
         StartCoroutine(CardData.GetData());
         StartCoroutine(enemyDeckData.GetData());
         StartCoroutine(equipmentData.GetData());
+        Debug.Log("チュートリアル：" + IsTutorial);
+        Init();
         if (IsTutorial == 0 || DevelopMode)
         {
             Init();
@@ -87,14 +89,14 @@ public class PlayerConfig : MonoBehaviour
             unLockEquipment[2] = true;
             unLockEquipment[48] = true;
             unLockEquipment[49] = true;
-            unLockEquipment[50] = true;
+            unLockEquipment[51] = true;
 
             Equipmnet.Add(1);
             Equipmnet.Add(0);
             Equipmnet.Add(2);
             Equipmnet.Add(48);
             Equipmnet.Add(49);
-            Equipmnet.Add(50);
+            Equipmnet.Add(51);
             Deck.Add(1);
             Deck.Add(1);
             Deck.Add(0);
@@ -107,13 +109,15 @@ public class PlayerConfig : MonoBehaviour
             Deck.Add(6);
             Deck.Add(7);
             Deck.Add(8);
-            SetData();
 
+            ArenaRank = 21;
+            LastPlayStory = "null";
+            PlayerRate = 1500;
+            StoryProgress = 1;
+
+            SetData();
         }
-        for (int i = 0; i < DevelopModeEquipmentNum; i++)
-        {
-            //Debug.Log(i+"番目に設定されているカードが使用可能か"+ unLockEquipment[i]);
-        }
+        Debug.Log("チュートリアル：" + IsTutorial);
         if (isDataReset && DataReset) Reset();
     }
 
@@ -122,7 +126,7 @@ public class PlayerConfig : MonoBehaviour
         Debug.Log("デバック処理を行いました。");
         ArenaRank = 21;
         LastPlayStory = "null";
-        PlayerRate = 100;
+        PlayerRate = 1500;
         StoryProgress = 1;
         DataReset = false;
     }

@@ -87,7 +87,7 @@ namespace storyMode
                     var Object = GameObject.Find(ObjectName);
                     if(Object != null)
                     {
-                        Object.GetComponent<Image>().color = Color.gray;
+                        Object.GetComponent<EventCheck>().Used();
                     }
                 }
             }
