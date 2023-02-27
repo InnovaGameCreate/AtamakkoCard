@@ -22,6 +22,7 @@ public class PlayerConfig : MonoBehaviour
     private int DevelopModeEquipmentNum;//equipmentの個数
     private static int isTutorial;//0の時はチュートリアルをまだ受けていない
     public static bool afterBattle = false;//戦闘後かどうか
+    private static bool isInit = true;
     [SerializeField] private bool isDataReset;
     private static bool DataReset = true;
 
@@ -59,7 +60,11 @@ public class PlayerConfig : MonoBehaviour
         StartCoroutine(enemyDeckData.GetData());
         StartCoroutine(equipmentData.GetData());
         Debug.Log("チュートリアル：" + IsTutorial);
-        Init();
+        if (isInit)
+        {
+            Init();
+            isInit = false;
+        }
         if (IsTutorial == 0 || DevelopMode)
         {
             Init();
