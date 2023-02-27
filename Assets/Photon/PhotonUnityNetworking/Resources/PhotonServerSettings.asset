@@ -57,6 +57,7 @@ MonoBehaviour:
   - SetEnemyName
   - setEnemyInformText
   - SetEnemyEquipment
+  - SendPosition
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
