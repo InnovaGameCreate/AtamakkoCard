@@ -136,6 +136,10 @@ namespace Manager
             };
         }
 
+        /// <summary>
+        /// パスワードが書かれたときの処理
+        /// </summary>
+        /// <param name="value"></param>
         private void OnPasswordInputFieldValueChanged(string value)
         {
             matchingButton.MyInteractable = (value.Length == 6);
@@ -174,6 +178,8 @@ namespace Manager
             matchingButton.MyInteractable = true;
             ruleButton.MyInteractable = true;
             _cancelObject.SetActive(false);
+            passwordInputField.text = string.Empty;
+            passwordInputField.interactable = true;
         }
 
         /// <summary>
