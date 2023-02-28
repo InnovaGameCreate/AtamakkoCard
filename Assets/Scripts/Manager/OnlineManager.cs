@@ -205,9 +205,22 @@ namespace Manager
             settingPlace.SetActive(false);
             ultimateButton.MyInteractable = false;  // 必殺技ボタンのOFF
 
+            foreach (Transform slots in playerHand.transform)
+            {
+                var cardSlot = slots.gameObject.GetComponent<CardSlot>();
+                if (cardSlot.MyCardID < 0) Destroy(slots.gameObject);
+            }
+
             // セットしたカードIDを得る
             foreach (var t in battleSlots)
             {
+                if (t.MyCardID < 0)
+                {
+                    var slotObject = playerHand.transform.GetChild(0).gameObject;
+                    var slot = slotObject.GetComponent<CardSlot>();
+                    t.CreateCard(slot.MyCardID);
+                    Destroy(slotObject);
+                }
                 Player.SetSettingCard(t.MyCardID);
             }
 

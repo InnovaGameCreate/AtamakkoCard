@@ -2456,7 +2456,7 @@ MonoBehaviour:
   enemyContent: {fileID: 1825895987}
   playerObject: {fileID: 719954264}
   enemyObject: {fileID: 2005962705}
-  stage: {fileID: 399115894}
+  stage: {fileID: 970972145}
   attackButton: {fileID: 7036546511688966486, guid: 9b1a366252da8b84eb05d49a08f7606a, type: 3}
   moveButton: {fileID: 2187454101119206122, guid: 5ac8ac5be5fccf14f95fe26bca3e5776, type: 3}
   sSlot:
@@ -10546,7 +10546,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
