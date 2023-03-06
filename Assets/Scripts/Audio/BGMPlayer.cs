@@ -26,7 +26,7 @@ namespace System.Audio
 
         public void PlayBGM(CurrentScene targetBGMScene)
         {
-            BGMManager.Instance.StopSound();
+            //BGMManager.Instance.StopSound();
             switch (targetBGMScene)
             {
                 case CurrentScene.Title:

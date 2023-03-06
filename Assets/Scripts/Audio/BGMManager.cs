@@ -33,9 +33,11 @@ namespace System.Audio
             AudioClip clip = null;
             clip = seLists.FirstOrDefault(se => se.name.Equals(type.ToString()));
 
-            if (clip != null)
+            if (clip != null && AudioSource.clip != clip)
             {
-                AudioSource.PlayOneShot(clip);
+                StopSound();
+                AudioSource.clip = clip;
+                AudioSource.Play();
             }
         }
 
