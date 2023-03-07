@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace storyMode
 {
@@ -28,12 +27,12 @@ namespace storyMode
                 if (LastProgressed <= (ChildCount + total) && LastProgressed >= total)
                 {
                     Stages[i].SetActive(true);
-                    Debug.Log("ChildCount + total:" + (ChildCount + total - 1) + ":total:" + total);
                     break;
                 }
                 total += ChildCount;
             }
 
+            //隠しタイルがある特別なステージ用の処理
             if(SceneManager.GetActiveScene().name == "StoryBoard2" && LastProgressed >=13)
             {
                 for (int i = 10; i < Stages[0].transform.childCount; i++)

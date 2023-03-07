@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace storyMode
@@ -14,14 +12,20 @@ namespace storyMode
         public void OnClick(bool _bool)
         {
             var PlayerObject = GameObject.FindGameObjectWithTag("Player");
-            var distance = Vector3.Distance(gameObject.transform.position, PlayerObject.transform.position);
-            if (distance < 180)
+            if (PlayerCanMoveDistance(PlayerObject.transform.position))
             {
                 foreach (var item in hideTile)
                 {
                     item.SetActive(_bool);
                 }
             }
+        }
+        //プレイヤーが移動可能な距離の場合はtrueの値を返す
+        private bool PlayerCanMoveDistance(Vector3 moveTargetPosition)
+        {
+            var distance = Vector3.Distance(gameObject.transform.position, moveTargetPosition);
+            if (distance < 180) return true;
+            else return false;
         }
     }
 }
