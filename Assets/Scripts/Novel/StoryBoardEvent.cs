@@ -57,9 +57,6 @@ namespace storyMode
                         break;
                     case 4:
                         activeText(3);
-                        break;//case5の削除
-                    case 5:
-                        //5の終了時イベントに以降
                         break;
                     case 6:
                         activeText(5);
@@ -68,7 +65,6 @@ namespace storyMode
                         activeText(6);
                         break;
                     case 8:
-                        //ジャイアントマンティスとの戦闘
                         encountEnemy(23);
                         break;
                     case 9:
@@ -76,7 +72,6 @@ namespace storyMode
                         break;
                     case 10:
                         activeText(8);
-                        //会話終了時dragonとの戦闘
                         break;
                     case 11:
                         activeText(9);
@@ -97,7 +92,6 @@ namespace storyMode
                         activeText(14);
                         break;
                     case 17:
-                        //戦闘鬼との戦闘
                         encountEnemy(11);
                         break;
                     case 18:
@@ -105,7 +99,6 @@ namespace storyMode
                         break;
                     case 19:
                         encountEnemy(24);
-                        //ボス戦
                         break;
                     case 20:
                         activeText(16);
@@ -116,11 +109,10 @@ namespace storyMode
                     case 23:
                         activeText(19);
                         break;
-                    case 24://仲間と合流
+                    case 24:
                         activeText(21);
                         break;
                     case 25:
-                        //キマイラとの戦闘
                         encountEnemy(24);
                         break;
                     case 26:
@@ -133,7 +125,6 @@ namespace storyMode
                         activeText(24);
                         break;
                     case 29:
-                        //ボス戦:monster05
                         encountEnemy(25);
                         break;
                     case 30:
@@ -143,7 +134,6 @@ namespace storyMode
                         activeText(26);
                         break;
                     case 32:
-                        //手ごろな魔物との戦闘
                         encountEnemy(26);
                         break;
                     case 33:
@@ -156,7 +146,6 @@ namespace storyMode
                         activeText(29);
                         break;
                     case 36:
-                        //幼体ドラゴンとの戦闘
                         encountEnemy(27);
                         break;
                     default:
@@ -208,21 +197,18 @@ namespace storyMode
                         activeText(12);
                         break;
                     case 14:
-                        //戦闘:monster07
                         encountEnemy(28);
                         break;
                     case 15:
                         activeText(13);
                         break;
                     case 16:
-                        //戦闘:monster12
                         encountEnemy(30);
                         break;
                     case 17:
                         activeText(14);
                         break;
                     case 18:
-                        //ボス戦:monster13
                         encountEnemy(33);
                         break;
                     case 19:
@@ -291,7 +277,6 @@ namespace storyMode
                         break;
                     case 15:
                         activeText(14);
-                        //会話終了後に戦闘
                         break;
                     case 16:
                         activeText(15);
@@ -324,11 +309,9 @@ namespace storyMode
                         activeText(24);
                         break;
                     case 26:
-                        //水中の魔物との戦闘
                         encountEnemy(41);
                         break;
                     case 27:
-                        //水中の魔物との戦闘
                         encountEnemy(42);
                         break;
                     case 28:
@@ -338,7 +321,6 @@ namespace storyMode
                         activeText(26);
                         break;
                     case 30:
-                        //水神との戦闘
                         encountEnemy(43);
                         break;
                     case 31:
@@ -417,14 +399,12 @@ namespace storyMode
                         activeText(19);
                         break;
                     case 21:
-                        //邪教団の信者との戦闘
                         encountEnemy(44);
                         break;
                     case 22:
                         activeText(20);
                         break;
                     case 23:
-                        //邪教団の信者との戦闘
                         encountEnemy(45);
                         break;
                     case 24:
@@ -434,7 +414,6 @@ namespace storyMode
                         activeText(22);
                         break;
                     case 26:
-                        //神の従者との戦闘
                         encountEnemy(47);
                         break;
                     case 27:
@@ -461,7 +440,6 @@ namespace storyMode
                         activeText(3);
                         break;
                     case 5:
-                        //道を塞ぐ魔物との戦闘
                         encountEnemy(48);
                         break;
                     case 6:
@@ -495,7 +473,6 @@ namespace storyMode
                         activeText(13);
                         break;
                     case 16:
-                        //魔物に襲われる戦闘
                         encountEnemy(49);
                         break;
                     case 17:
@@ -552,7 +529,6 @@ namespace storyMode
                         activeText(3);
                         break;
                     case 5:
-                        //野生生物と戦闘
                         encountEnemy(51);
                         break;
                     case 6:
@@ -562,7 +538,6 @@ namespace storyMode
                         activeText(5);
                         break;
                     case 8:
-                        //魔物との戦闘
                         encountEnemy(50);
                         break;
                     case 9:
@@ -590,18 +565,16 @@ namespace storyMode
                         activeText(13);
                         break;
                     case 17:
-                        //魔物との戦闘
                         encountEnemy(52);
                         break;
                     case 18:
                         activeText(14);
                         break;
                     case 19:
-                        //ボス戦
                         encountEnemy(53);
                         break;
                     case 20:
-                        StartCoroutine(changeStage(1, 15));//戦闘が終わると表示する
+                        StartCoroutine(changeStage(1, 15));
                         break;
                     case 21:
                         activeText(15);
@@ -616,7 +589,6 @@ namespace storyMode
                         activeText(18);
                         break;
                     case 25:
-                        //邪神の加護を受けた魔物との戦闘
                         encountEnemy(54);
                         break;
                     case 26:
@@ -640,7 +612,6 @@ namespace storyMode
                         activeText(2);
                         break;
                     case 4:
-                        //魔物と戦闘
                         encountEnemy(56);
                         break;
                     case 5:
@@ -665,7 +636,6 @@ namespace storyMode
                         activeText(9);
                         break;
                     case 12:
-                        //魔物との戦闘
                         encountEnemy(57);
                         break;
                     case 13:
@@ -678,7 +648,6 @@ namespace storyMode
                         activeText(12);
                         break;
                     case 16:
-                        //余った魔物との戦闘
                         encountEnemy(58);
                         break;
                     case 17:
@@ -700,7 +669,6 @@ namespace storyMode
                         activeText(18);
                         break;
                     case 23:
-                        //道を塞いでる魔物との戦闘
                         encountEnemy(59);
                         break;
                     case 24:
@@ -713,18 +681,15 @@ namespace storyMode
                         activeText(21);
                         break;
                     case 27:
-                        //大きな魔物との戦闘
                         encountEnemy(60);
                         break;
                     case 28:
                         activeText(22);
                         break;
                     case 29:
-                        //ローブの男との戦闘
                         encountEnemy(61);
                         break;
                     case 30:
-                        //低級の邪神との戦闘
                         encountEnemy(62);
                         break;
                     case 31:
@@ -748,7 +713,6 @@ namespace storyMode
                         activeText(2);
                         break;
                     case 4:
-                        //魔物との戦闘
                         encountEnemy(63);
                         break;
                     case 5:
@@ -764,7 +728,6 @@ namespace storyMode
                         activeText(6);
                         break;
                     case 9:
-                        //煌々の使徒と模擬戦
                         encountEnemy(3);
                         break;
                     case 10:
@@ -777,7 +740,6 @@ namespace storyMode
                         activeText(9);
                         break;
                     case 13:
-                        //湖の魔物との戦闘
                         encountEnemy(64);
                         break;
                     case 14:
@@ -801,7 +763,6 @@ namespace storyMode
                         activeText(16);
                         break;
                     case 21:
-                        //魔物との戦闘
                         encountEnemy(65);
                         break;
                     case 22:
@@ -811,7 +772,6 @@ namespace storyMode
                         activeText(18);
                         break;
                     case 24:
-                        //魔物との戦闘
                         encountEnemy(66);
                         break;
                     case 25:
@@ -824,14 +784,12 @@ namespace storyMode
                         activeText(21);
                         break;
                     case 28:
-                        //邪神との戦闘
                         encountEnemy(67);
                         break;
                     case 29:
                         activeText(22);
                         break;
                     case 30:
-                        //完全体煌々の使徒との戦闘
                         encountEnemy(68);
                         break;
                     case 31:
@@ -1035,7 +993,7 @@ namespace storyMode
                         activeText(7);
                         break;
                     case 9:
-                        activeText(10);//次の章へ
+                        activeText(10);
                         break;
                     case 10:
                         activeText(9);
@@ -1047,7 +1005,6 @@ namespace storyMode
                         activeText(12);
                         break;
                     case 14:
-                        //ゴーレムとの戦闘
                         encountEnemy(32);
                         break;
                     case 15:
@@ -1057,7 +1014,6 @@ namespace storyMode
                         activeText(14);
                         break;
                     case 17:
-                        //ゴーレムとの戦闘
                         encountEnemy(35);
                         break;
                     case 18:
@@ -1070,7 +1026,6 @@ namespace storyMode
                         activeText(17);
                         break;
                     case 21:
-                        //敵に襲われる
                         encountEnemy(37);
                         break;
                     case 22:
@@ -1080,7 +1035,6 @@ namespace storyMode
                         activeText(19);
                         break;
                     case 24:
-                        //化け物との戦闘
                         encountEnemy(40);
                         break;
                     case 25:
@@ -1110,29 +1064,24 @@ namespace storyMode
                         activeText(4);
                         break;
                     case 6:
-                        //敵との戦闘
                         encountEnemy(69);
                         break;
                     case 7:
-                        //敵との戦闘
                         encountEnemy(70);
                         break;
                     case 8:
                         activeText(5);
                         break;
                     case 9:
-                        //敵との戦闘
                         encountEnemy(71);
                         break;
                     case 10:
                         activeText(6);
                         break;
                     case 11:
-                        //敵との戦闘
                         encountEnemy(72);
                         break;
                     case 12:
-                        //ボスとの戦闘
                         encountEnemy(73);
                         break;
                     case 13:
@@ -1157,7 +1106,6 @@ namespace storyMode
                         activeText(15);
                         break;
                     case 22:
-                        //魔物との戦闘
                         encountEnemy(74);
                         break;
                     case 23:
@@ -1167,7 +1115,6 @@ namespace storyMode
                         activeText(17);
                         break;
                     case 25:
-                        //ラスボスとの戦闘
                         encountEnemy(75);
                         break;
                     case 26:
@@ -1198,7 +1145,6 @@ namespace storyMode
                         activeText(4);
                         break;
                     case 6:
-                        //敵との戦闘
                         encountEnemy(76);
                         break;
                     case 7:
@@ -1208,7 +1154,6 @@ namespace storyMode
                         activeText(6);
                         break;
                     case 9:
-                        //敵との戦闘
                         encountEnemy(77);
                         break;
                     case 10:
@@ -1218,7 +1163,6 @@ namespace storyMode
                         activeText(8);
                         break;
                     case 12:
-                        //湧水の使徒との戦闘
                         encountEnemy(5);
                         break;
                     case 13:
@@ -1243,25 +1187,21 @@ namespace storyMode
                         activeText(16);
                         break;
                     case 21:
-                        //魔物との戦闘
                         encountEnemy(78);
                         break;
                     case 22:
                         activeText(17);
                         break;
                     case 23:
-                        //魔物との戦闘
                         encountEnemy(79);
                         break;
                     case 24:
-                        //魔物との戦闘
                         encountEnemy(80);
                         break;
                     case 25:
                         activeText(18);
                         break;
                     case 27:
-                        //時の門番との戦闘
                         encountEnemy(81);
                         break;
                     case 28:
@@ -1302,14 +1242,12 @@ namespace storyMode
                         activeText(7);
                         break;
                     case 9:
-                        //戦闘
                         encountEnemy(82);
                         break;
                     case 10:
                         activeText(8);
                         break;
                     case 11:
-                        //戦闘
                         encountEnemy(83);
                         break;
                     case 12:
@@ -1319,21 +1257,18 @@ namespace storyMode
                         activeText(10);
                         break;
                     case 14:
-                        //戦闘
                         encountEnemy(92);
                         break;
                     case 15:
                         activeText(11);
                         break;
                     case 16:
-                        //湧水の使徒と戦闘
                         encountEnemy(5);
                         break;
                     case 17:
                         activeText(12);
                         break;
                     case 18:
-                        //最古のドラゴンと戦闘
                         encountEnemy(89);
                         break;
                     case 19:
@@ -1355,36 +1290,30 @@ namespace storyMode
                         activeText(19);
                         break;
                     case 26:
-                        //戦闘
                         encountEnemy(84);
                         break;
                     case 27:
-                        //戦闘
                         encountEnemy(85);
                         break;
                     case 28:
                         activeText(20);
                         break;
                     case 29:
-                        //戦闘
                         encountEnemy(86);
                         break;
                     case 30:
-                        //戦闘
                         encountEnemy(87);
                         break;
                     case 31:
                         activeText(21);
                         break;
                     case 32:
-                        //戦闘
                         encountEnemy(88);
                         break;
                     case 33:
                         activeText(22);
                         break;
                     case 34:
-                        //戦闘
                         encountEnemy(90);
                         break;
                     case 35:
@@ -1462,7 +1391,6 @@ namespace storyMode
                         StartCoroutine(changeStage(0, 4));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 9:
-                        //ドラゴンとの戦闘
                         encountEnemy(10);
                         break;
                     case 12:
@@ -1535,11 +1463,9 @@ namespace storyMode
                         PlayerConfig.unLockEquipment[54] = true;
                         break;
                     case 16:
-                        //教導の使徒と戦闘
                         encountEnemy(102);
                         break;
                     case 15:
-                        //ごろつきと戦闘
                         encountEnemy(93);
                         break;
                     case 17:
@@ -1561,7 +1487,6 @@ namespace storyMode
                         StartCoroutine(changeStage(0, 7));//現在のステージ数：現在のチャプターを送って次のステージへ移る
                         break;
                     case 15:
-                        //少年と戦闘
                         encountEnemy(46);
                         break;
                     case 16:
@@ -1579,7 +1504,6 @@ namespace storyMode
                 switch (eventNum)
                 {
                     case 10:
-                        //護国の使徒との戦闘
                         encountEnemy(91);
                         break;
                     case 11:

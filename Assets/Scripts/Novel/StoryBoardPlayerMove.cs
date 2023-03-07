@@ -1,4 +1,5 @@
 using UnityEngine;
+using UniRx;
 using UnityEngine.SceneManagement;
 
 namespace storyMode
@@ -10,15 +11,19 @@ namespace storyMode
         private GameObject GameManager;
         StoryBoardEvent Event;
         ProgressRecorder Recoder;
+
+        private readonly ReactiveProperty<int> _playerProgress = new ReactiveProperty<int>(1);
+        public IReadOnlyReactiveProperty<int> PlayerProgress => _playerProgress;
         void Start()
         {
             GameManager = GameObject.Find("GameManager");
             Recoder = GameManager.GetComponent<ProgressRecorder>();
             Event = GameManager.GetComponent<StoryBoardEvent>();
             PlayerFarstPosition();
+
         }
 
-        public void PlayerMove(int tileNum)
+        public void PlayerMove(int tileNum,Vector3 tileObjectPosition)
         {
             var ProgressCharacter = FindObjectOfType<ProgressRecorder>();
             var TileName = "tile (" + tileNum + ")";//タイルの名前を検索
@@ -28,15 +33,15 @@ namespace storyMode
                 Debug.LogError("指定したタイルが存在しません");
                 return;
             }
-            var distance = Vector3.Distance(gameObject.transform.position, TileObject.transform.position);
-            if (distance < 180)
+            if (PlayerCanMoveDistance(tileObjectPosition))
             {
                 this.transform.position = TileObject.transform.position;
 
                 if (!ProgressCharacter.GetProgressed[tileNum])
                 {
+                    _playerProgress.Value = tileNum;
+
                     Event.startEvent(tileNum);//tileのイベントを行う
-                    TileObject.GetComponent<EventCheck>().EventUsed(tileNum);//タイルのイベント処理後のアクションを行う
                 }
                 else
                 {
@@ -64,6 +69,14 @@ namespace storyMode
         public void nextPosition(Vector3 movePositionObject)
         {
             transform.position = movePositionObject;
+        }
+
+        //プレイヤーが移動可能な距離の場合はtrueの値を返す
+        private bool PlayerCanMoveDistance(Vector3 moveTargetPosition)
+        {
+            var distance = Vector3.Distance(gameObject.transform.position, moveTargetPosition);
+            if (distance < 180) return true;
+            else return false;
         }
     }
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UniRx;
 using UnityEngine.SceneManagement;
 
 namespace storyMode
@@ -11,6 +11,8 @@ namespace storyMode
         /// <summary>
         /// ストーリーモードでプレイヤーの進捗状況の管理を行う
         /// </summary>
+
+
         private static bool Init = false;
         private static bool[] Progressed = new bool[100];
         private static int LastProgressed = 1;
@@ -18,14 +20,15 @@ namespace storyMode
 
         public static bool BattleDefeated = false;
         StoryBoardEvent eventSystem;
+        StoryBoardPlayerMove playerMove;
 
         public int GetPlayerLastProgressed { get => PlayerLastProgressed; }
         public bool[] GetProgressed { get => Progressed; }
 
         void Awake()
         {
-
             eventSystem = FindObjectOfType<StoryBoardEvent>().GetComponent<StoryBoardEvent>();
+            playerMove = FindObjectOfType<StoryBoardPlayerMove>().GetComponent<StoryBoardPlayerMove>();
             if (PlayerConfig.LastPlayStory != SceneManager.GetActiveScene().name)
             {
                 setResetProgressed();//前回遊んでいたストーリーシーンと違う場合は数値を初期化する。
@@ -36,7 +39,17 @@ namespace storyMode
                 TileColorGray();
                 Debug.Log("ProgressRecorderのデータを初期化は行いませんでした");
             }
-            //if (!Init) setResetProgressed();//初期化がされていない場合は初期化する
+
+            playerMove.PlayerProgress
+                .Where(PlayerProgress => !Progressed[PlayerProgress])
+                .Subscribe(PlayerProgress =>
+                {
+                    LastProgressed = PlayerLastProgressed;
+                    Progressed[PlayerProgress] = true;
+                    PlayerLastProgressed = PlayerProgress;
+                });
+
+
         }
 
         public void setResetProgressed()//各データの初期化
@@ -50,18 +63,6 @@ namespace storyMode
             }
         }
 
-        public void completeEvent(int i)
-        {
-            LastProgressed = PlayerLastProgressed;
-            Progressed[i] = true;
-            RecordPlayerLastEvent(i);
-        }
-
-        public void RecordPlayerLastEvent(int i)
-        {
-            PlayerLastProgressed = i;
-        }
-
         private void defeatedCheck()
         {
             if(BattleDefeated)          //戦闘に敗北した場合
@@ -70,10 +71,6 @@ namespace storyMode
                 Progressed[PlayerLastProgressed] = false;
                 PlayerLastProgressed = LastProgressed;
                 BattleDefeated = false;
-            }
-            else                        //戦闘に勝利した場合
-            {
-                //eventSystem.endEvent(PlayerConfig.lastChapter + 1);
             }
         }
 

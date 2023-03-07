@@ -2891,7 +2891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b25d1b2601266b438ff927c08e734dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DevelopMode: 0
+  DevelopMode: 1
   isDataReset: 0
 --- !u!1 &816116595
 GameObject:

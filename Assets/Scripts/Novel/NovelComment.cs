@@ -95,7 +95,6 @@ namespace storyMode
 
         private void endTalk()
         {
-            //Debug.Log("chapterが代わりました。lastCpaterは" + lastCapter + "：capterは" + capter);
             eventSystem.endEvent(int.Parse(capter));
             PlayerConfig.lastChapter = int.Parse(capter);
             transform.parent.gameObject.SetActive(false);
@@ -118,6 +117,7 @@ namespace storyMode
             readEnd = true;
         }
 
+        //配列の数値を処理
         public void convertData(string[] _dataList)
         {
             capter = _dataList[0];
@@ -210,7 +210,6 @@ namespace storyMode
             if (PlayerConfig.afterBattle)
             {
                 transform.parent.gameObject.SetActive(false);
-                Debug.Log("戦闘画面から戻りました");
                 PlayerConfig.afterBattle = false;
             }
             else

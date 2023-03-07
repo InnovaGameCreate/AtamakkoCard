@@ -18,8 +18,6 @@ public class PlayerConfig : MonoBehaviour
     public static int ArenaRank;//アリーナのランク
     public static string LastPlayStory;//最後に遊んだ章を記録する
     public static int PlayerRate;//オンラインのプレイヤーのレート
-    private int DevelopModeCardNum;//cardの個数
-    private int DevelopModeEquipmentNum;//equipmentの個数
     private static int isTutorial;//0の時はチュートリアルをまだ受けていない
     public static bool afterBattle = false;//戦闘後かどうか
     private static bool isInit = true;
@@ -59,74 +57,27 @@ public class PlayerConfig : MonoBehaviour
         StartCoroutine(CardData.GetData());
         StartCoroutine(enemyDeckData.GetData());
         StartCoroutine(equipmentData.GetData());
-        Debug.Log("チュートリアル：" + IsTutorial);
         if (isInit)
         {
-            Init();
+            Init();//プレイヤーコンフィグを読み込む
             isInit = false;
         }
         if (IsTutorial == 0 || DevelopMode)
         {
-            Init();
             Debug.Log("チュートリアル処理を行いました。");
+            Init();//プレイヤーコンフィグを読み込む
             IsTutorial = 1;
             PlayerPrefs.SetInt("Tutorial", IsTutorial);//チュートリアルを一度だけ行わせる
-            Equipmnet.Clear();
-            Deck.Clear();
-            unLockCard.Clear();
-            unLockEquipment.Clear();
-            DevelopModeEquipmentNum = Resources.Load<equipmentIcon>("EquipmentIcon").equipmentIconList.Count;
-            DevelopModeCardNum = Resources.Load<CardIcon>("CardIcon").cardIconList.Count;
-            for (int i = 0; i < DevelopModeCardNum; i++)
-            {
-                unLockCard.Add(false);
-            }
-            for (int i = 0; i < DevelopModeEquipmentNum; i++)
-            {
-                unLockEquipment.Add(false);
-            }
-            for (int i = 0; i < 8; i++)
-            {
-                unLockCard[i] = true;
-            }
-            unLockEquipment[0] = true;
-            unLockEquipment[1] = true;
-            unLockEquipment[2] = true;
-            unLockEquipment[48] = true;
-            unLockEquipment[49] = true;
-            unLockEquipment[51] = true;
-
-            Equipmnet.Add(1);
-            Equipmnet.Add(0);
-            Equipmnet.Add(2);
-            Equipmnet.Add(48);
-            Equipmnet.Add(49);
-            Equipmnet.Add(51);
-            Deck.Add(1);
-            Deck.Add(1);
-            Deck.Add(0);
-            Deck.Add(0);
-            Deck.Add(2);
-            Deck.Add(2);
-            Deck.Add(5);
-            Deck.Add(5);
-            Deck.Add(6);
-            Deck.Add(6);
-            Deck.Add(7);
-            Deck.Add(8);
-
-            ArenaRank = 21;
-            LastPlayStory = "null";
-            PlayerRate = 1500;
-            StoryProgress = 1;
+            DataClear();//データをすべて消す
+            DataSet();//データの初期値を入力する。
+            PlayerStatusReset();//プレイヤーのステータスの初期化
 
             SetData();
         }
-        Debug.Log("チュートリアル：" + IsTutorial);
-        if (isDataReset && DataReset) Reset();
+        if (isDataReset && DataReset) PlayerStatusReset();
     }
 
-    public void Reset()
+    public void PlayerStatusReset()
     {
         Debug.Log("デバック処理を行いました。");
         ArenaRank = 21;
@@ -135,4 +86,44 @@ public class PlayerConfig : MonoBehaviour
         StoryProgress = 1;
         DataReset = false;
     }
+
+    //データのリセットと空データの設定
+    private void DataClear()
+    {
+        Equipmnet.Clear();
+        Deck.Clear();
+        unLockCard.Clear();
+        unLockEquipment.Clear();
+
+        var DevelopModeEquipmentNum = Resources.Load<equipmentIcon>("EquipmentIcon").equipmentIconList.Count;//用意されているEquipmentの数
+        var DevelopModeCardNum = Resources.Load<CardIcon>("CardIcon").cardIconList.Count;//用意されているcardの数
+        for (int i = 0; i < DevelopModeCardNum; i++)
+        {
+            unLockCard.Add(false);
+        }
+        for (int i = 0; i < DevelopModeEquipmentNum; i++)
+        {
+            unLockEquipment.Add(false);
+        }
+    }
+
+    //初期値の設定
+    private void DataSet()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            unLockCard[i] = true;
+        }
+        unLockEquipment[0] = true;
+        unLockEquipment[1] = true;
+        unLockEquipment[2] = true;
+        unLockEquipment[48] = true;
+        unLockEquipment[49] = true;
+        unLockEquipment[51] = true;
+
+        Equipmnet.AddRange(new List<int>() { 1, 0, 2, 48, 49, 51 });
+        Deck.AddRange(new List<int>() { 1, 1, 0, 0, 2, 2, 5, 5, 6, 6, 7, 8 });
+    }
+
+    
 }
